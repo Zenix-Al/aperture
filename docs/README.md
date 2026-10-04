@@ -29,7 +29,3 @@ For a first project, follow these in order:
 - [Add-on platform contracts](addon-platform/README.md).
 
 Current guides describe the active framework. Checked-in CI inventories and size references live under [audits](../audits/README.md). Disposable test output stays under ignored `.artifacts/` and `tests/.tmp*`.
-
-## Planned maintenance
-
-[Identifier migration](../TODO_APERTURE_NAMING.md) tracks the coordinated naming change across shared UI, add-on markup, tests and generated audit inputs. Shared identifiers, standalone core contracts and current reports are updated; the final cross-cutting review remains pending.
