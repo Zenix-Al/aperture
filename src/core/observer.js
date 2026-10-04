@@ -1,0 +1,326 @@
+let observer = null;
+import { resourceManager } from "./resourceManager.js";
+import { debugLog } from "./logger.js";
+import { reportFeatureFailure } from "./featureHealth.js";
+import { getCoreContext } from "./coreContext.js";
+const callbacks = new Map();
+
+let observerProfileKeys = null;
+function profileKeys() {
+  if (observerProfileKeys) return observerProfileKeys;
+  const { id } = getCoreContext();
+  observerProfileKeys = Object.freeze({
+    flag: `${id}:observer:profiling`,
+    storage: `${id}.observerProfile`,
+    summary: `${id}:observer:lastSummary`,
+    history: `${id}:observer:history`,
+    label: `[${id} ObserverProfiler]`,
+  });
+  return observerProfileKeys;
+}
+const OBSERVER_PROFILE_WINDOW_MS = 10000;
+const OBSERVER_PROFILE_SLOW_TICK_MS = 16;
+const OBSERVER_PROFILE_SLOW_CALLBACK_MS = 8;
+
+function nowMs() {
+  if (typeof performance !== "undefined" && typeof performance.now === "function") {
+    return performance.now();
+  }
+  return Date.now();
+}
+
+function getGlobalScope() {
+  if (typeof globalThis !== "undefined") return globalThis;
+  return null;
+}
+
+function isObserverProfilingEnabled() {
+  const scope = getGlobalScope();
+  if (!scope) return false;
+  if (scope[profileKeys().flag] === true) return true;
+  try {
+    return window.localStorage?.getItem(profileKeys().storage) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function createObserverProfileState() {
+  return {
+    windowStartAt: nowMs(),
+    ticks: 0,
+    mutationsSeen: 0,
+    callbacksRun: 0,
+    callbacksFilteredOut: 0,
+    totalTickMs: 0,
+    maxTickMs: 0,
+    slowTicks: 0,
+    maxRegisteredCallbacks: 0,
+    perCallback: new Map(),
+  };
+}
+
+let observerProfileState = createObserverProfileState();
+
+function resetObserverProfileState() {
+  observerProfileState = createObserverProfileState();
+}
+
+function getOrCreateCallbackProfile(id) {
+  let entry = observerProfileState.perCallback.get(id);
+  if (!entry) {
+    entry = {
+      runs: 0,
+      filteredOut: 0,
+      totalMs: 0,
+      maxMs: 0,
+      slowRuns: 0,
+    };
+    observerProfileState.perCallback.set(id, entry);
+  }
+  return entry;
+}
+
+function maybeFlushObserverProfileWindow(now) {
+  const elapsed = now - observerProfileState.windowStartAt;
+  if (elapsed < OBSERVER_PROFILE_WINDOW_MS) return;
+
+  const callbackSummary = {};
+  for (const [id, stats] of observerProfileState.perCallback.entries()) {
+    callbackSummary[id] = {
+      runs: stats.runs,
+      filteredOut: stats.filteredOut,
+      avgMs: stats.runs > 0 ? Number((stats.totalMs / stats.runs).toFixed(3)) : 0,
+      maxMs: Number(stats.maxMs.toFixed(3)),
+      slowRuns: stats.slowRuns,
+    };
+  }
+
+  const summary = {
+    windowMs: Number(elapsed.toFixed(1)),
+    ticks: observerProfileState.ticks,
+    mutationsSeen: observerProfileState.mutationsSeen,
+    callbacksRun: observerProfileState.callbacksRun,
+    callbacksFilteredOut: observerProfileState.callbacksFilteredOut,
+    avgTickMs:
+      observerProfileState.ticks > 0
+        ? Number((observerProfileState.totalTickMs / observerProfileState.ticks).toFixed(3))
+        : 0,
+    maxTickMs: Number(observerProfileState.maxTickMs.toFixed(3)),
+    slowTicks: observerProfileState.slowTicks,
+    maxRegisteredCallbacks: observerProfileState.maxRegisteredCallbacks,
+    callbacks: callbackSummary,
+  };
+
+  const scope = getGlobalScope();
+  if (scope) {
+    scope[profileKeys().summary] = summary;
+    const history = Array.isArray(scope[profileKeys().history])
+      ? scope[profileKeys().history]
+      : [];
+    history.push(summary);
+    if (history.length > 20) history.shift();
+    scope[profileKeys().history] = history;
+  }
+
+  if (isObserverProfilingEnabled()) {
+    console.info(`${profileKeys().label} MutationObserver profile window summary`, summary);
+  }
+  debugLog("ObserverProfiler", "MutationObserver profile window summary", { data: summary });
+  resetObserverProfileState();
+}
+
+function reportObserverError(healthId, phase, error) {
+  const details = reportFeatureFailure(healthId, error, phase);
+  console.error(`[Observer] ${phase} failed for ${healthId}:`, error);
+  return details;
+}
+
+export function getObserverProfileSnapshot() {
+  const callbackSummary = {};
+  for (const [id, stats] of observerProfileState.perCallback.entries()) {
+    callbackSummary[id] = {
+      runs: stats.runs,
+      filteredOut: stats.filteredOut,
+      avgMs: stats.runs > 0 ? stats.totalMs / stats.runs : 0,
+      maxMs: stats.maxMs,
+      slowRuns: stats.slowRuns,
+    };
+  }
+  return {
+    windowStartAt: observerProfileState.windowStartAt,
+    ticks: observerProfileState.ticks,
+    mutationsSeen: observerProfileState.mutationsSeen,
+    callbacksRun: observerProfileState.callbacksRun,
+    callbacksFilteredOut: observerProfileState.callbacksFilteredOut,
+    totalTickMs: observerProfileState.totalTickMs,
+    maxTickMs: observerProfileState.maxTickMs,
+    slowTicks: observerProfileState.slowTicks,
+    maxRegisteredCallbacks: observerProfileState.maxRegisteredCallbacks,
+    callbacks: callbackSummary,
+  };
+}
+
+export function resetObserverProfileSnapshot() {
+  resetObserverProfileState();
+}
+
+export function setObserverProfilingEnabled(enabled) {
+  const scope = getGlobalScope();
+  if (!scope) return false;
+  const next = Boolean(enabled);
+  scope[profileKeys().flag] = next;
+  try {
+    if (next) {
+      window.localStorage?.setItem(profileKeys().storage, "1");
+    } else {
+      window.localStorage?.removeItem(profileKeys().storage);
+    }
+  } catch {
+    // ignore storage write failures
+  }
+  if (next) {
+    resetObserverProfileState();
+  }
+  return true;
+}
+
+/**
+ * The main callback that runs when the MutationObserver detects changes.
+ * It iterates over all registered feature callbacks.
+ * @param {MutationRecord[]} mutationsList
+ * @param {MutationObserver} obs
+ */
+function masterCallback(mutationsList, obs) {
+  const profiling = isObserverProfilingEnabled();
+  const tickStart = profiling ? nowMs() : 0;
+
+  if (profiling) {
+    observerProfileState.ticks += 1;
+    observerProfileState.mutationsSeen += mutationsList.length;
+    observerProfileState.maxRegisteredCallbacks = Math.max(
+      observerProfileState.maxRegisteredCallbacks,
+      callbacks.size,
+    );
+  }
+
+  for (const [id, { callback, filter, healthId }] of callbacks.entries()) {
+    let callbackStats = null;
+    if (profiling) {
+      callbackStats = getOrCreateCallbackProfile(id);
+    }
+
+    if (typeof filter === "function") {
+      let shouldRun = false;
+      try {
+        shouldRun = filter(mutationsList, obs);
+      } catch (error) {
+        reportObserverError(healthId, `observer.filter:${id}`, error);
+      }
+      if (!shouldRun) {
+        if (profiling) {
+          observerProfileState.callbacksFilteredOut += 1;
+          callbackStats.filteredOut += 1;
+        }
+        continue;
+      }
+    }
+
+    const callbackStart = profiling ? nowMs() : 0;
+    try {
+      callback(mutationsList, obs);
+    } catch (error) {
+      reportObserverError(healthId, `observer.callback:${id}`, error);
+    }
+
+    if (profiling) {
+      const callbackDuration = nowMs() - callbackStart;
+      observerProfileState.callbacksRun += 1;
+      callbackStats.runs += 1;
+      callbackStats.totalMs += callbackDuration;
+      callbackStats.maxMs = Math.max(callbackStats.maxMs, callbackDuration);
+      if (callbackDuration >= OBSERVER_PROFILE_SLOW_CALLBACK_MS) {
+        callbackStats.slowRuns += 1;
+      }
+    }
+  }
+
+  if (profiling) {
+    const tickDuration = nowMs() - tickStart;
+    observerProfileState.totalTickMs += tickDuration;
+    observerProfileState.maxTickMs = Math.max(observerProfileState.maxTickMs, tickDuration);
+    if (tickDuration >= OBSERVER_PROFILE_SLOW_TICK_MS) {
+      observerProfileState.slowTicks += 1;
+      if (isObserverProfilingEnabled()) {
+        console.warn(
+          `${profileKeys().label} Slow MutationObserver tick: ${tickDuration.toFixed(2)}ms`,
+        );
+      }
+      debugLog("ObserverProfiler", `Slow MutationObserver tick: ${tickDuration.toFixed(2)}ms`, {
+        level: "warn",
+      });
+    }
+    maybeFlushObserverProfileWindow(nowMs());
+  }
+}
+
+/**
+ * Starts the shared MutationObserver if it's not already running.
+ */
+function startObserver() {
+  if (observer) return; // Already running
+
+  observer = new MutationObserver(masterCallback);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+}
+
+/**
+ * Stops the shared MutationObserver if no callbacks are registered.
+ */
+function stopObserver() {
+  if (observer && callbacks.size === 0) {
+    observer.disconnect();
+    observer = null;
+    if (isObserverProfilingEnabled()) {
+      maybeFlushObserverProfileWindow(nowMs());
+    }
+  }
+}
+
+export function addObserverCallback(id, callback, options = {}) {
+  if (callbacks.has(id)) return;
+  callbacks.set(id, {
+    callback,
+    filter: typeof options.filter === "function" ? options.filter : null,
+    healthId: String(options.healthId || id || "observer").trim(),
+  });
+  resourceManager.register(
+    `observer:${id}`,
+    () => {
+      callbacks.delete(id);
+      stopObserver();
+    },
+    options.ownerId || null,
+  );
+  startObserver();
+}
+
+export function removeObserverCallback(id) {
+  callbacks.delete(id);
+  resourceManager.unregister(`observer:${id}`);
+  stopObserver();
+}
+
+export function removeAllObserverCallbacks() {
+  for (const id of Array.from(callbacks.keys())) {
+    callbacks.delete(id);
+    resourceManager.unregister(`observer:${id}`);
+  }
+  stopObserver();
+  if (isObserverProfilingEnabled()) {
+    maybeFlushObserverProfileWindow(nowMs());
+  }
+}

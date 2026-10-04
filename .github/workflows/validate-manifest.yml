@@ -1,0 +1,77 @@
+name: Validate framework and examples
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 24 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Lint core and add-ons
+        run: |
+          npm run lint
+          npm run lint:addons
+      - name: Run unit tests
+        run: npm test
+      - name: Run production-bundle browser tests
+        run: npm run test:browser
+      - name: Check generated feature manifests
+        run: |
+          npm run check:manifest
+          npm run check:manifest -- --config projects/reading-desk/config.json
+      - name: Check add-on metadata and source structure
+        run: |
+          npm run check:addons:manifest
+          npm run check:addons:catalog
+          npm run check:addons:structure
+          npm run check:addons:manifest -- --config projects/reading-desk/config.json
+          npm run check:addons:catalog -- --config projects/reading-desk/config.json
+          npm run check:addons:structure -- --config projects/reading-desk/config.json
+      - name: Check platform contracts and size regressions
+        run: |
+          npm run check:addons:api
+          npm run check:addons:baseline
+          npm run check:addons:size
+          npm run check:core
+          npm run check:css
+      - name: Check documentation and inventories
+        run: |
+          npm run check:docs
+          npm run check:inventory
+      - name: Build core and add-ons without changing versions or distributions
+        run: |
+          npm run build:smoke
+          npm run build:core:smoke
+          npm run build:addons:smoke
+          npm run build:smoke -- --config projects/reading-desk/config.json
+          npm run build:addons:smoke -- --config projects/reading-desk/config.json
+      - name: Check whitespace and tracked-file changes
+        if: always()
+        run: |
+          git diff --check
+          git diff --exit-code
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-evidence
+          path: .artifacts/browser/
+          if-no-files-found: ignore

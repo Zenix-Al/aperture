@@ -1,0 +1,28 @@
+[
+  {
+    "id": "example-addon",
+    "name": "Reading Desk Bookmark",
+    "description": "One route bookmark and one owned panel",
+    "version": "0.1.0",
+    "pageScopes": [
+      "reading"
+    ],
+    "runtimeMode": "core-required",
+    "matches": [
+      "http://localhost:4173/reading/*"
+    ],
+    "grants": [
+      "none"
+    ],
+    "runAt": "document-idle",
+    "requiresCore": true,
+    "capabilities": [
+      "feature",
+      "storage",
+      "ui.mount",
+      "ui.style"
+    ],
+    "downloadUrl": "",
+    "trusted": true
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "addons": [
+    {
+      "id": "example-addon",
+      "name": "Reading Desk Bookmark",
+      "namespace": "https://example.org/reading-desk/addons/bookmark",
+      "description": "One route bookmark and one owned panel",
+      "version": "0.1.0",
+      "entry": "projects/reading-desk/bookmark.js",
+      "outfile": "projects/reading-desk/dist/bookmark.user.js",
+      "matches": [
+        "http://localhost:4173/reading/*"
+      ],
+      "grants": [
+        "none"
+      ],
+      "runAt": "document-idle",
+      "pageScopes": [
+        "reading"
+      ],
+      "runtimeMode": "core-required",
+      "requiresCore": true,
+      "capabilities": [
+        "feature",
+        "storage",
+        "ui.mount",
+        "ui.style"
+      ]
+    }
+  ]
+}

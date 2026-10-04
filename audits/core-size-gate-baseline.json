@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "sourceReport": "audits/core-size-baseline.json",
+  "sourceReportSha256": "6df34d0c6543a2b31f0ce2fca70310880a88692beec4672ffa835e68afa86809",
+  "thresholds": {
+    "authoredArea": {
+      "absoluteBytes": 1024,
+      "percentage": 1
+    },
+    "readable": {
+      "absoluteBytes": 2048,
+      "percentage": 1
+    },
+    "uglified": {
+      "absoluteBytes": 1024,
+      "percentage": 1
+    },
+    "gzip": {
+      "absoluteBytes": 4096,
+      "percentage": 2
+    }
+  },
+  "rationale": {
+    "type": "file",
+    "path": "docs/architecture/core-size-baseline.md",
+    "sha256": "46de54c477796dfdbe700f3dd6db0d097131fab4cc5a24fc6e8736779daa48ac"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "reading-desk",
+  "storageNamespace": "reading_desk",
+  "metadata": {
+    "name": "Reading Desk",
+    "namespace": "https://example.org/reading-desk",
+    "description": "Local reading helper built with Aperture",
+    "author": "Aperture contributors",
+    "license": "MIT",
+    "matches": [
+      "http://localhost:4173/reading/*",
+      "http://localhost:4173/shelf/*"
+    ],
+    "grants": [
+      "GM.setValue",
+      "GM.getValue",
+      "GM.deleteValue"
+    ],
+    "runAt": "document-start"
+  },
+  "build": {
+    "application": "projects/reading-desk/application.js",
+    "settings": "projects/reading-desk/settings.js",
+    "entry": "src/main.js",
+    "featuresDir": "projects/reading-desk/features",
+    "featureManifest": "projects/reading-desk/generated/features.generated.js",
+    "versionFile": "projects/reading-desk/version.json",
+    "outputDir": "projects/reading-desk/dist",
+    "outputName": "reading-desk",
+    "addonsManifest": "projects/reading-desk/addons.manifest.json",
+    "catalogDir": "projects/reading-desk/generated/catalog",
+    "cacheFile": "projects/reading-desk/generated/addon-build-cache.json",
+    "ui": "projects/reading-desk/ui.js"
+  },
+  "routes": {
+    "isReading": {
+      "hostEquals": [
+        "localhost"
+      ],
+      "pathStartsWith": [
+        "/reading/"
+      ]
+    },
+    "isShelf": {
+      "hostEquals": [
+        "localhost"
+      ],
+      "pathStartsWith": [
+        "/shelf/"
+      ]
+    }
+  },
+  "theme": "default"
+}

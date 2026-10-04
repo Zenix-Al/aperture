@@ -1,0 +1,182 @@
+import project from "aperture:project";
+const idPrefix = `${project.id}-${project.storageNamespace}`;
+import { resourceManager } from "../../../core/resourceManager.js";
+import { markThemedRoot, themeValue } from "../../theme.js";
+import { createEl } from "../../../utils/dom.js";
+
+function listFocusableInDialog(rootEl) {
+  if (!rootEl) return [];
+  return [...rootEl.querySelectorAll("button, [href], input, select, textarea, [tabindex]")].filter(
+    (node) => {
+      if (!(node instanceof HTMLElement)) return false;
+      if (node.tabIndex < 0) return false;
+      if (node.hasAttribute("disabled")) return false;
+      return node.offsetParent !== null || node === document.activeElement;
+    },
+  );
+}
+
+function resolveAddonDialogSurfaceMetrics(payload = {}) {
+  const requestedSize = String(payload?.size || payload?.dialogSize || "")
+    .trim()
+    .toLowerCase();
+
+  if (requestedSize === "full") {
+    return {
+      width: "calc(100vw - 24px)",
+      maxHeight: "calc(100vh - 24px)",
+      overlayPadding: "12px",
+      overlayAlignItems: "center",
+    };
+  }
+
+  if (requestedSize === "xl") {
+    return {
+      width: "min(1320px, calc(100vw - 24px))",
+      maxHeight: "calc(100vh - 32px)",
+      overlayPadding: "16px",
+      overlayAlignItems: "center",
+    };
+  }
+
+  if (requestedSize === "lg") {
+    return {
+      width: "min(1040px, calc(100vw - 24px))",
+      maxHeight: "calc(100vh - 48px)",
+      overlayPadding: "40px 16px 16px",
+      overlayAlignItems: "flex-start",
+    };
+  }
+
+  if (requestedSize === "sm") {
+    return {
+      width: "min(520px, calc(100vw - 24px))",
+      maxHeight: "calc(100vh - 96px)",
+      overlayPadding: "72px 16px 16px",
+      overlayAlignItems: "flex-start",
+    };
+  }
+
+  return {
+    width: "min(720px, calc(100vw - 24px))",
+    maxHeight: "calc(100vh - 96px)",
+    overlayPadding: "72px 16px 16px",
+    overlayAlignItems: "flex-start",
+  };
+}
+
+export function trapAddonDialogFocus(event, surfaceEl) {
+  if (event.key !== "Tab") return;
+
+  const focusable = listFocusableInDialog(surfaceEl);
+  if (focusable.length === 0) {
+    event.preventDefault();
+    surfaceEl?.focus();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = document.activeElement;
+
+  if (!event.shiftKey && active === last) {
+    event.preventDefault();
+    first.focus();
+    return;
+  }
+
+  if (event.shiftKey && active === first) {
+    event.preventDefault();
+    last.focus();
+  }
+}
+
+export function focusAddonDialog(surfaceEl) {
+  const id = `ui:addon-dialog-focus:${surfaceEl.dataset.addonId}:${surfaceEl.dataset.dialogId}`;
+  resourceManager.cleanup(id);
+  const timer = window.setTimeout(() => {
+    resourceManager.cleanup(id);
+    if (surfaceEl.isConnected === false) return;
+    const focusable = listFocusableInDialog(surfaceEl);
+    if (focusable.length > 0) {
+      focusable[0].focus();
+      return;
+    }
+    surfaceEl.focus();
+  }, 0);
+  resourceManager.register(id, () => window.clearTimeout(timer), "ui:addon-dialogs");
+}
+
+export function createAddonDialogElements({
+  addonId,
+  dialogId,
+  title = "Dialog",
+  html = "",
+  payload = {},
+} = {}) {
+  const surfaceMetrics = resolveAddonDialogSurfaceMetrics(payload);
+  const addonOwnsScroll = payload?.scrollMode === "addon";
+
+  const overlayEl = createEl("div", {
+    className: "aperture-addon-dialog-overlay",
+    attrs: {
+      "data-addon-id": addonId,
+      "data-dialog-id": dialogId,
+    },
+    style: {
+      position: "fixed",
+      inset: "0",
+      display: "flex",
+      alignItems: surfaceMetrics.overlayAlignItems,
+      justifyContent: "center",
+      padding: surfaceMetrics.overlayPadding,
+      background: themeValue("backdrop", "rgba(7, 9, 13, 0.56)"),
+      pointerEvents: "auto",
+    },
+  });
+
+  const surfaceEl = createEl("div", {
+    className: "aperture-addon-dialog-surface",
+    attrs: {
+      "data-addon-id": addonId,
+      "data-dialog-id": dialogId,
+      role: "dialog",
+      "aria-modal": "true",
+      "aria-label": title || "Dialog",
+      tabIndex: -1,
+    },
+    style: {
+      width: surfaceMetrics.width,
+      maxHeight: surfaceMetrics.maxHeight,
+      overflow: addonOwnsScroll ? "hidden" : "auto",
+      border: `1px solid ${themeValue("border-strong", "#454b55")}`,
+      borderRadius: "10px",
+      background: themeValue("modal", "#1f2329"),
+      color: themeValue("text", "#d8dbe0"),
+      boxShadow: themeValue("shadow", "0 18px 48px rgba(0, 0, 0, 0.42)"),
+    },
+  });
+
+  const contentEl = createEl("div", {
+    className: "aperture-addon-dialog-content",
+    attrs: {
+      id: `${idPrefix}-addon-dialog-content-${addonId}-${dialogId}`,
+      "data-addon-id": addonId,
+      "data-dialog-id": dialogId,
+    },
+    style: addonOwnsScroll
+      ? {
+        width: "100%",
+        minHeight: "0",
+        overflow: "hidden",
+      }
+      : undefined,
+  });
+  contentEl.innerHTML = html;
+
+  markThemedRoot(overlayEl);
+  surfaceEl.appendChild(contentEl);
+  overlayEl.appendChild(surfaceEl);
+
+  return { overlayEl, surfaceEl, contentEl };
+}

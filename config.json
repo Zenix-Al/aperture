@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "aperture-example",
+  "storageNamespace": "aperture_example",
+  "metadata": {
+    "name": "Aperture Example",
+    "namespace": "https://example.org/aperture",
+    "description": "Example project built with the preserved Aperture framework",
+    "author": "Aperture contributors",
+    "license": "MIT",
+    "matches": [
+      "http://localhost/*"
+    ],
+    "grants": [
+      "GM.setValue",
+      "GM.getValue",
+      "GM.deleteValue"
+    ],
+    "runAt": "document-start"
+  },
+  "build": {
+    "application": "projects/example/application.js",
+    "settings": "projects/example/settings.js",
+    "entry": "src/main.js",
+    "featuresDir": "projects/example/features",
+    "featureManifest": "projects/example/generated/features.generated.js",
+    "versionFile": "projects/example/version.json",
+    "outputDir": "projects/example/dist",
+    "outputName": "aperture-example",
+    "addonsManifest": "projects/example/addons.manifest.json",
+    "catalogDir": "projects/example/generated/catalog",
+    "cacheFile": "projects/example/generated/addon-build-cache.json",
+    "ui": "projects/example/ui.js"
+  },
+  "routes": {
+    "isExample": {
+      "hostEquals": [
+        "localhost"
+      ]
+    }
+  },
+  "theme": "default",
+  "addonUpdates": {}
+}

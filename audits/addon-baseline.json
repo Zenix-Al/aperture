@@ -1,0 +1,1383 @@
+{
+  "reportSchemaVersion": 1,
+  "tool": "addon-baseline",
+  "scope": {
+    "included": [
+      "addons/** source",
+      "src/services/addonsService.js",
+      "src/services/addons/**",
+      "src/ui/components/addons/**",
+      "src/ui/renderers/addonsRenderer.js"
+    ],
+    "excluded": [
+      "addons/**/dist/**",
+      "addons/.build-cache.json",
+      "generated catalog output",
+      "timestamps",
+      "absolute machine paths"
+    ]
+  },
+  "manifest": {
+    "entries": [
+      {
+        "id": "example-addon",
+        "name": "Aperture Example Add-on",
+        "namespace": "https://example.org/aperture/addons/example-addon",
+        "description": "Example add-on built from the preserved add-on architecture",
+        "version": "0.1.0",
+        "entry": "addons/example-addon/src/main.js",
+        "outfile": "projects/example/dist/example-addon.user.js",
+        "matches": [
+          "http://localhost/*"
+        ],
+        "grants": [
+          "none"
+        ],
+        "runAt": "document-idle",
+        "pageScopes": [
+          "example"
+        ],
+        "runtimeMode": "core-required",
+        "requiresCore": true,
+        "capabilities": [
+          "toast",
+          "feature",
+          "storage",
+          "page",
+          "observer",
+          "ui.style",
+          "ui.mount",
+          "ui.dialog",
+          "ui.dock",
+          "idb"
+        ]
+      }
+    ]
+  },
+  "trustedCatalog": {
+    "source": "src/generated/trusted-addon-catalog.5902d7b34f457c17.json",
+    "projection": [
+      {
+        "id": "example-addon",
+        "name": "Aperture Example Add-on",
+        "description": "Example add-on built from the preserved add-on architecture",
+        "version": "0.1.0",
+        "pageScopes": [
+          "example"
+        ],
+        "runtimeMode": "core-required",
+        "matches": [
+          "http://localhost/*"
+        ],
+        "downloadUrl": "",
+        "trusted": true
+      }
+    ],
+    "runtimeFreshDefault": false
+  },
+  "publicActions": [
+    {
+      "id": "toast.show",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "toast"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "toast",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "feature.enable",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "feature"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "feature",
+      "scopePolicy": "management",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "feature.disable",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "feature"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "feature",
+      "scopePolicy": "management",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "feature.refresh",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "feature"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "feature",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "storage.get",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "storage"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "storage",
+      "scopePolicy": "runtime",
+      "payloadValidator": "keyPayload"
+    },
+    {
+      "id": "storage.set",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "storage"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "storage",
+      "scopePolicy": "runtime",
+      "payloadValidator": "valuePayload"
+    },
+    {
+      "id": "storage.getUsage",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "storage"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "storage",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "page.getContext",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "page"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "page",
+      "scopePolicy": "runtime",
+      "ownership": "request-scoped-read-only",
+      "cleanup": "none; no live references or resources are returned",
+      "payloadValidator": "validatePageContextPayload"
+    },
+    {
+      "id": "idb.get",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "keyPayload"
+    },
+    {
+      "id": "idb.put",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "valuePayload"
+    },
+    {
+      "id": "idb.delete",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "keyPayload"
+    },
+    {
+      "id": "idb.bulkPut",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "idb.bulkDelete",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "idb.query",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "idb.count",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "idb"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "idb",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "observer.watch",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "observer"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "observer",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "observer.unwatch",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "observer"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "observer",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "observer.waitFor",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "observer"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "observer",
+      "scopePolicy": "runtime",
+      "ownership": "addon-scoped one-shot observer subscription",
+      "cleanup": "remove on match, timeout, unwatch, or addon teardown",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.dock.setButtons",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.dock"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.dock.removeButtons",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.dock"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.mount",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.mount"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.update",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.mount"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.unmount",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.mount"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.dialog.open",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.dialog"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.dialog.close",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.dialog"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.dialog.update",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.dialog"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "ownership": "addon-owned dialog content",
+      "cleanup": "dialog teardown removes the owned entry; update fails after ownership ends",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.confirm",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.dialog"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.style.register",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.style"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    },
+    {
+      "id": "ui.style.unregister",
+      "protocolVersion": 1,
+      "requiredCapabilities": [
+        "ui",
+        "ui.style"
+      ],
+      "timeoutMs": 5000,
+      "auditCategory": "ui",
+      "scopePolicy": "runtime",
+      "payloadValidator": "objectPayload"
+    }
+  ],
+  "actionPolicies": [
+    {
+      "id": "addon.access",
+      "scopePolicy": "management"
+    },
+    {
+      "id": "addon.throttle",
+      "scopePolicy": "management"
+    },
+    {
+      "id": "feature.disable",
+      "scopePolicy": "management"
+    },
+    {
+      "id": "feature.enable",
+      "scopePolicy": "management"
+    }
+  ],
+  "serviceExports": [
+    "clearAddonState",
+    "disableAddonsService",
+    "getAddonActionBlockReason",
+    "getAddonExecutionBlockReason",
+    "getAddonLifecycleSnapshot",
+    "getAddonState",
+    "initAddonsConsoleBridge",
+    "invokeAddonCoreAction",
+    "isAddonsServiceDisabled",
+    "isCatalogFresh",
+    "listKnownAddons",
+    "listRegisteredAddons",
+    "notifyAllAddonsBeforePageChange",
+    "refreshAddonSecurityPolicies",
+    "registerAddon",
+    "removeAddonInstallationTrace",
+    "replaceRegisteredAddons",
+    "setAddonStateValue",
+    "shutdownAddonsService",
+    "subscribeAddonsRegistry",
+    "unregisterAddon",
+    "validateAddonRegistration"
+  ],
+  "identifiers": {
+    "addonIds": [
+      "example-addon"
+    ],
+    "capabilities": [
+      "feature",
+      "idb",
+      "observer",
+      "page",
+      "routing",
+      "storage",
+      "toast",
+      "ui",
+      "ui.dialog",
+      "ui.dock",
+      "ui.mount",
+      "ui.style"
+    ],
+    "coreEvents": [],
+    "sourceConstants": [
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_BULK_PROGRESS_DIALOG_ID",
+        "value": "example-addon-bulk-progress"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_DIALOG_ID",
+        "value": "example-addon-dialog"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_DOCK_MOUNT_ID",
+        "value": "example-addon-dock-widget"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_EXTRA_MOUNT_ID",
+        "value": "example-addon-extra"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_IDB_DB_NAME",
+        "value": "example-playground"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_IDB_PRIMARY_KEY",
+        "value": "hello-world"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_IDB_STORE_NAME",
+        "value": "records"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_OBSERVER_ID",
+        "value": "example-addon-observer"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_PANEL_DIALOG_ID",
+        "value": "example-addon-panel-dialog"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_SETTINGS_KEY",
+        "value": "settings"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_STORAGE_KEY",
+        "value": "playground"
+      },
+      {
+        "path": "addons/example-addon/src/constants.js",
+        "name": "EXAMPLE_STYLE_ID",
+        "value": "example-addon-style"
+      }
+    ]
+  },
+  "behaviorSnapshots": {
+    "registration": {
+      "requestEvent": "aperture:aperture-example:aperture_example:addons-command",
+      "requestType": "register",
+      "responseProjection": [
+        "id",
+        "name",
+        "version",
+        "description",
+        "status",
+        "capabilities",
+        "pageScopes"
+      ],
+      "postRegistrationEvent": "after-register"
+    },
+    "enable": {
+      "coreCommand": "enable",
+      "state": {
+        "status": "installed",
+        "enabled": true
+      },
+      "emittedEvents": [
+        "enable"
+      ],
+      "persistence": [
+        "addons.byAddon",
+        "addons.installedMeta"
+      ]
+    },
+    "disable": {
+      "coreCommand": "disable",
+      "state": {
+        "status": "disabled",
+        "enabled": false
+      },
+      "emittedEvents": [
+        "before-disable",
+        "teardown",
+        "disable"
+      ],
+      "cleanup": [
+        "observers",
+        "ui",
+        "styles",
+        "dialogs",
+        "mounts"
+      ]
+    },
+    "refresh": {
+      "coreCommand": "refresh",
+      "emittedEvents": [
+        "refresh"
+      ]
+    },
+    "beforePageChange": {
+      "coreCommand": "before-page-change",
+      "cleanupBeforeNotification": true
+    },
+    "teardown": {
+      "coreCommand": "teardown",
+      "acknowledgment": "teardown-complete",
+      "watchdogMs": 1200,
+      "acknowledgmentRequired": true
+    },
+    "coreAbsent": {
+      "ping": {
+        "ok": false
+      },
+      "coreRequiredResult": "exit-without-registration"
+    },
+    "outOfScopeAction": {
+      "featureToggle": "allowed-for-management",
+      "otherActions": "addon_out_of_scope"
+    },
+    "capabilityRejection": {
+      "result": {
+        "ok": false,
+        "reason": "permission_denied"
+      }
+    }
+  },
+  "addons": [
+    {
+      "id": "example-addon",
+      "source": {
+        "fileCount": 38,
+        "authoredBytes": 74211,
+        "physicalLines": 2245,
+        "nonblankLines": 2052,
+        "files": [
+          {
+            "path": "addons/example-addon/src/api/bridge.js",
+            "bytes": 1963,
+            "physicalLines": 53,
+            "nonblankLines": 48
+          },
+          {
+            "path": "addons/example-addon/src/api/feature.js",
+            "bytes": 288,
+            "physicalLines": 11,
+            "nonblankLines": 9
+          },
+          {
+            "path": "addons/example-addon/src/api/idb.js",
+            "bytes": 767,
+            "physicalLines": 27,
+            "nonblankLines": 21
+          },
+          {
+            "path": "addons/example-addon/src/api/meta.js",
+            "bytes": 190,
+            "physicalLines": 7,
+            "nonblankLines": 6
+          },
+          {
+            "path": "addons/example-addon/src/api/observer.js",
+            "bytes": 529,
+            "physicalLines": 20,
+            "nonblankLines": 18
+          },
+          {
+            "path": "addons/example-addon/src/api/page.js",
+            "bytes": 155,
+            "physicalLines": 5,
+            "nonblankLines": 5
+          },
+          {
+            "path": "addons/example-addon/src/api/storage.js",
+            "bytes": 413,
+            "physicalLines": 17,
+            "nonblankLines": 15
+          },
+          {
+            "path": "addons/example-addon/src/api/toast.js",
+            "bytes": 163,
+            "physicalLines": 6,
+            "nonblankLines": 6
+          },
+          {
+            "path": "addons/example-addon/src/api/ui/dialog.js",
+            "bytes": 509,
+            "physicalLines": 18,
+            "nonblankLines": 15
+          },
+          {
+            "path": "addons/example-addon/src/api/ui/dock.js",
+            "bytes": 223,
+            "physicalLines": 7,
+            "nonblankLines": 6
+          },
+          {
+            "path": "addons/example-addon/src/api/ui/mount.js",
+            "bytes": 312,
+            "physicalLines": 11,
+            "nonblankLines": 9
+          },
+          {
+            "path": "addons/example-addon/src/api/ui/style.js",
+            "bytes": 271,
+            "physicalLines": 12,
+            "nonblankLines": 11
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/idb.js",
+            "bytes": 2757,
+            "physicalLines": 91,
+            "nonblankLines": 90
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/index.js",
+            "bytes": 935,
+            "physicalLines": 35,
+            "nonblankLines": 30
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/metadata.js",
+            "bytes": 1213,
+            "physicalLines": 33,
+            "nonblankLines": 32
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/observer.js",
+            "bytes": 881,
+            "physicalLines": 27,
+            "nonblankLines": 26
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/storage.js",
+            "bytes": 1008,
+            "physicalLines": 35,
+            "nonblankLines": 33
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/ui.js",
+            "bytes": 3109,
+            "physicalLines": 94,
+            "nonblankLines": 93
+          },
+          {
+            "path": "addons/example-addon/src/app/commands.js",
+            "bytes": 2422,
+            "physicalLines": 72,
+            "nonblankLines": 69
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "bytes": 11309,
+            "physicalLines": 326,
+            "nonblankLines": 296
+          },
+          {
+            "path": "addons/example-addon/src/app/lifecycle.js",
+            "bytes": 232,
+            "physicalLines": 8,
+            "nonblankLines": 7
+          },
+          {
+            "path": "addons/example-addon/src/app/registration.js",
+            "bytes": 2820,
+            "physicalLines": 78,
+            "nonblankLines": 69
+          },
+          {
+            "path": "addons/example-addon/src/app/settings.js",
+            "bytes": 1373,
+            "physicalLines": 44,
+            "nonblankLines": 40
+          },
+          {
+            "path": "addons/example-addon/src/app/uiController.js",
+            "bytes": 6625,
+            "physicalLines": 204,
+            "nonblankLines": 188
+          },
+          {
+            "path": "addons/example-addon/src/constants.js",
+            "bytes": 1208,
+            "physicalLines": 34,
+            "nonblankLines": 33
+          },
+          {
+            "path": "addons/example-addon/src/core/adaptor.js",
+            "bytes": 67,
+            "physicalLines": 1,
+            "nonblankLines": 1
+          },
+          {
+            "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+            "bytes": 8445,
+            "physicalLines": 206,
+            "nonblankLines": 188
+          },
+          {
+            "path": "addons/example-addon/src/domain/playgroundData.js",
+            "bytes": 1113,
+            "physicalLines": 41,
+            "nonblankLines": 37
+          },
+          {
+            "path": "addons/example-addon/src/domain/state.js",
+            "bytes": 1390,
+            "physicalLines": 56,
+            "nonblankLines": 54
+          },
+          {
+            "path": "addons/example-addon/src/main.js",
+            "bytes": 2062,
+            "physicalLines": 57,
+            "nonblankLines": 51
+          },
+          {
+            "path": "addons/example-addon/src/ui/bindings.js",
+            "bytes": 3051,
+            "physicalLines": 82,
+            "nonblankLines": 75
+          },
+          {
+            "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+            "bytes": 3285,
+            "physicalLines": 78,
+            "nonblankLines": 71
+          },
+          {
+            "path": "addons/example-addon/src/ui/dialog.js",
+            "bytes": 670,
+            "physicalLines": 17,
+            "nonblankLines": 17
+          },
+          {
+            "path": "addons/example-addon/src/ui/dock.html",
+            "bytes": 198,
+            "physicalLines": 5,
+            "nonblankLines": 5
+          },
+          {
+            "path": "addons/example-addon/src/ui/dockRenderer.js",
+            "bytes": 255,
+            "physicalLines": 6,
+            "nonblankLines": 5
+          },
+          {
+            "path": "addons/example-addon/src/ui/example.css",
+            "bytes": 5010,
+            "physicalLines": 222,
+            "nonblankLines": 188
+          },
+          {
+            "path": "addons/example-addon/src/ui/extraMount.js",
+            "bytes": 312,
+            "physicalLines": 10,
+            "nonblankLines": 9
+          },
+          {
+            "path": "addons/example-addon/src/ui/panel.js",
+            "bytes": 6678,
+            "physicalLines": 189,
+            "nonblankLines": 176
+          }
+        ]
+      },
+      "builds": {
+        "regular": {
+          "mode": "regular",
+          "bytes": 89646,
+          "gzipBytes": 19932,
+          "contributors": [
+            {
+              "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+              "bytes": 10698
+            },
+            {
+              "path": "addons/shared/runtimeLifecycle.js",
+              "bytes": 9221
+            },
+            {
+              "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+              "bytes": 8091
+            },
+            {
+              "path": "addons/example-addon/src/ui/panel.js",
+              "bytes": 6554
+            },
+            {
+              "path": "addons/example-addon/src/app/uiController.js",
+              "bytes": 6231
+            },
+            {
+              "path": "addons/shared/coreBridge.js",
+              "bytes": 5468
+            },
+            {
+              "path": "addons/example-addon/src/ui/example.css",
+              "bytes": 5260
+            },
+            {
+              "path": "addons/example-addon/src/ui/bindings.js",
+              "bytes": 3041
+            },
+            {
+              "path": "addons/example-addon/src/app/actions/ui.js",
+              "bytes": 2751
+            },
+            {
+              "path": "addons/example-addon/src/app/actions/idb.js",
+              "bytes": 2482
+            },
+            {
+              "path": "addons/example-addon/src/app/commands.js",
+              "bytes": 2350
+            },
+            {
+              "path": "addons/example-addon/src/app/registration.js",
+              "bytes": 2325
+            },
+            {
+              "path": "addons/example-addon/src/api/bridge.js",
+              "bytes": 1983
+            },
+            {
+              "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+              "bytes": 1856
+            },
+            {
+              "path": "addons/example-addon/src/main.js",
+              "bytes": 1760
+            },
+            {
+              "path": "addons/example-addon/src/domain/state.js",
+              "bytes": 1472
+            },
+            {
+              "path": "addons/example-addon/src/app/settings.js",
+              "bytes": 1285
+            },
+            {
+              "path": "addons/example-addon/src/constants.js",
+              "bytes": 1143
+            },
+            {
+              "path": "addons/example-addon/src/domain/playgroundData.js",
+              "bytes": 1015
+            },
+            {
+              "path": "addons/example-addon/src/app/actions/metadata.js",
+              "bytes": 955
+            }
+          ]
+        },
+        "release": {
+          "mode": "release",
+          "bytes": 61829,
+          "gzipBytes": 15935,
+          "contributors": [
+            {
+              "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+              "bytes": 6779
+            },
+            {
+              "path": "addons/shared/runtimeLifecycle.js",
+              "bytes": 6436
+            },
+            {
+              "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+              "bytes": 5984
+            },
+            {
+              "path": "addons/example-addon/src/ui/panel.js",
+              "bytes": 5481
+            },
+            {
+              "path": "addons/example-addon/src/ui/example.css",
+              "bytes": 5033
+            },
+            {
+              "path": "addons/shared/coreBridge.js",
+              "bytes": 3910
+            },
+            {
+              "path": "addons/example-addon/src/app/uiController.js",
+              "bytes": 3816
+            },
+            {
+              "path": "addons/example-addon/src/app/actions/ui.js",
+              "bytes": 1938
+            },
+            {
+              "path": "addons/example-addon/src/ui/bindings.js",
+              "bytes": 1935
+            },
+            {
+              "path": "addons/example-addon/src/app/actions/idb.js",
+              "bytes": 1685
+            },
+            {
+              "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+              "bytes": 1660
+            },
+            {
+              "path": "addons/example-addon/src/app/commands.js",
+              "bytes": 1559
+            },
+            {
+              "path": "addons/example-addon/src/app/registration.js",
+              "bytes": 1311
+            },
+            {
+              "path": "addons/example-addon/src/app/settings.js",
+              "bytes": 1017
+            },
+            {
+              "path": "addons/example-addon/src/domain/state.js",
+              "bytes": 951
+            },
+            {
+              "path": "addons/example-addon/src/constants.js",
+              "bytes": 868
+            },
+            {
+              "path": "addons/example-addon/src/domain/playgroundData.js",
+              "bytes": 767
+            },
+            {
+              "path": "addons/example-addon/src/main.js",
+              "bytes": 729
+            },
+            {
+              "path": "addons/example-addon/src/app/actions/metadata.js",
+              "bytes": 708
+            },
+            {
+              "path": "addons/example-addon/src/ui/dialog.js",
+              "bytes": 655
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "coreServiceFootprint": {
+    "addonsService": {
+      "fileCount": 1,
+      "authoredBytes": 1666,
+      "physicalLines": 43,
+      "nonblankLines": 41,
+      "files": [
+        {
+          "path": "src/services/addonsService.js",
+          "bytes": 1666,
+          "physicalLines": 43,
+          "nonblankLines": 41
+        }
+      ]
+    },
+    "servicesAddons": {
+      "fileCount": 33,
+      "authoredBytes": 189147,
+      "physicalLines": 4905,
+      "nonblankLines": 4250,
+      "files": [
+        {
+          "path": "src/services/addons/access.js",
+          "bytes": 4489,
+          "physicalLines": 125,
+          "nonblankLines": 108
+        },
+        {
+          "path": "src/services/addons/actionRuntime.js",
+          "bytes": 4178,
+          "physicalLines": 121,
+          "nonblankLines": 116
+        },
+        {
+          "path": "src/services/addons/actions/composition.js",
+          "bytes": 2217,
+          "physicalLines": 59,
+          "nonblankLines": 52
+        },
+        {
+          "path": "src/services/addons/actions/contract.js",
+          "bytes": 909,
+          "physicalLines": 40,
+          "nonblankLines": 37
+        },
+        {
+          "path": "src/services/addons/actions/families/idb.js",
+          "bytes": 4386,
+          "physicalLines": 72,
+          "nonblankLines": 61
+        },
+        {
+          "path": "src/services/addons/actions/families/lifecycle.js",
+          "bytes": 2719,
+          "physicalLines": 69,
+          "nonblankLines": 65
+        },
+        {
+          "path": "src/services/addons/actions/families/observer.js",
+          "bytes": 1643,
+          "physicalLines": 38,
+          "nonblankLines": 34
+        },
+        {
+          "path": "src/services/addons/actions/families/page.js",
+          "bytes": 546,
+          "physicalLines": 17,
+          "nonblankLines": 16
+        },
+        {
+          "path": "src/services/addons/actions/families/storage.js",
+          "bytes": 3830,
+          "physicalLines": 85,
+          "nonblankLines": 81
+        },
+        {
+          "path": "src/services/addons/actions/families/toast.js",
+          "bytes": 549,
+          "physicalLines": 16,
+          "nonblankLines": 14
+        },
+        {
+          "path": "src/services/addons/actions/families/ui.js",
+          "bytes": 6594,
+          "physicalLines": 98,
+          "nonblankLines": 95
+        },
+        {
+          "path": "src/services/addons/actions/pageContext.js",
+          "bytes": 4292,
+          "physicalLines": 94,
+          "nonblankLines": 85
+        },
+        {
+          "path": "src/services/addons/actions/policy.js",
+          "bytes": 301,
+          "physicalLines": 11,
+          "nonblankLines": 9
+        },
+        {
+          "path": "src/services/addons/actions/registry.js",
+          "bytes": 3628,
+          "physicalLines": 71,
+          "nonblankLines": 67
+        },
+        {
+          "path": "src/services/addons/apiPolicy.js",
+          "bytes": 2464,
+          "physicalLines": 66,
+          "nonblankLines": 57
+        },
+        {
+          "path": "src/services/addons/bootstrap.js",
+          "bytes": 3918,
+          "physicalLines": 103,
+          "nonblankLines": 96
+        },
+        {
+          "path": "src/services/addons/bridgeServer.js",
+          "bytes": 13044,
+          "physicalLines": 356,
+          "nonblankLines": 334
+        },
+        {
+          "path": "src/services/addons/catalog.js",
+          "bytes": 8608,
+          "physicalLines": 208,
+          "nonblankLines": 186
+        },
+        {
+          "path": "src/services/addons/coreActions.js",
+          "bytes": 1187,
+          "physicalLines": 27,
+          "nonblankLines": 23
+        },
+        {
+          "path": "src/services/addons/idbStore.js",
+          "bytes": 13963,
+          "physicalLines": 416,
+          "nonblankLines": 366
+        },
+        {
+          "path": "src/services/addons/invocation.js",
+          "bytes": 7993,
+          "physicalLines": 190,
+          "nonblankLines": 174
+        },
+        {
+          "path": "src/services/addons/knownAddons.js",
+          "bytes": 11162,
+          "physicalLines": 289,
+          "nonblankLines": 272
+        },
+        {
+          "path": "src/services/addons/lifecycle.js",
+          "bytes": 6123,
+          "physicalLines": 183,
+          "nonblankLines": 161
+        },
+        {
+          "path": "src/services/addons/observer.js",
+          "bytes": 8077,
+          "physicalLines": 228,
+          "nonblankLines": 189
+        },
+        {
+          "path": "src/services/addons/protocol.js",
+          "bytes": 2561,
+          "physicalLines": 33,
+          "nonblankLines": 29
+        },
+        {
+          "path": "src/services/addons/registry.js",
+          "bytes": 12435,
+          "physicalLines": 349,
+          "nonblankLines": 301
+        },
+        {
+          "path": "src/services/addons/runtimeLifecycle.js",
+          "bytes": 3816,
+          "physicalLines": 98,
+          "nonblankLines": 87
+        },
+        {
+          "path": "src/services/addons/scope.js",
+          "bytes": 6883,
+          "physicalLines": 163,
+          "nonblankLines": 33
+        },
+        {
+          "path": "src/services/addons/settingsUi.js",
+          "bytes": 6080,
+          "physicalLines": 176,
+          "nonblankLines": 162
+        },
+        {
+          "path": "src/services/addons/shared.js",
+          "bytes": 1442,
+          "physicalLines": 56,
+          "nonblankLines": 50
+        },
+        {
+          "path": "src/services/addons/state.js",
+          "bytes": 13420,
+          "physicalLines": 304,
+          "nonblankLines": 255
+        },
+        {
+          "path": "src/services/addons/uiHost.js",
+          "bytes": 18354,
+          "physicalLines": 579,
+          "nonblankLines": 490
+        },
+        {
+          "path": "src/services/addons/uiSanitizer.js",
+          "bytes": 7336,
+          "physicalLines": 165,
+          "nonblankLines": 145
+        }
+      ]
+    },
+    "uiIntegration": {
+      "fileCount": 16,
+      "authoredBytes": 46169,
+      "physicalLines": 1448,
+      "nonblankLines": 1264,
+      "files": [
+        {
+          "path": "src/ui/components/addons/actionButton.js",
+          "bytes": 379,
+          "physicalLines": 14,
+          "nonblankLines": 13
+        },
+        {
+          "path": "src/ui/components/addons/addonCard.js",
+          "bytes": 5136,
+          "physicalLines": 182,
+          "nonblankLines": 154
+        },
+        {
+          "path": "src/ui/components/addons/addonDialog.js",
+          "bytes": 5048,
+          "physicalLines": 182,
+          "nonblankLines": 163
+        },
+        {
+          "path": "src/ui/components/addons/addonDockGroup.js",
+          "bytes": 1480,
+          "physicalLines": 58,
+          "nonblankLines": 49
+        },
+        {
+          "path": "src/ui/components/addons/addonMount.js",
+          "bytes": 1282,
+          "physicalLines": 50,
+          "nonblankLines": 42
+        },
+        {
+          "path": "src/ui/components/addons/addonPanelActions.js",
+          "bytes": 2039,
+          "physicalLines": 64,
+          "nonblankLines": 56
+        },
+        {
+          "path": "src/ui/components/addons/addonPanelSettings.js",
+          "bytes": 4189,
+          "physicalLines": 147,
+          "nonblankLines": 125
+        },
+        {
+          "path": "src/ui/components/addons/addonScopes.js",
+          "bytes": 231,
+          "physicalLines": 5,
+          "nonblankLines": 5
+        },
+        {
+          "path": "src/ui/components/addons/addonStyle.js",
+          "bytes": 418,
+          "physicalLines": 10,
+          "nonblankLines": 10
+        },
+        {
+          "path": "src/ui/components/addons/addonUiHosts.js",
+          "bytes": 2624,
+          "physicalLines": 84,
+          "nonblankLines": 74
+        },
+        {
+          "path": "src/ui/components/addons/badge.js",
+          "bytes": 236,
+          "physicalLines": 9,
+          "nonblankLines": 8
+        },
+        {
+          "path": "src/ui/components/addons/index.js",
+          "bytes": 1030,
+          "physicalLines": 23,
+          "nonblankLines": 23
+        },
+        {
+          "path": "src/ui/components/addons/settingPath.js",
+          "bytes": 178,
+          "physicalLines": 4,
+          "nonblankLines": 4
+        },
+        {
+          "path": "src/ui/components/addons/settingsController.js",
+          "bytes": 13858,
+          "physicalLines": 369,
+          "nonblankLines": 325
+        },
+        {
+          "path": "src/ui/components/addons/statusMeta.js",
+          "bytes": 340,
+          "physicalLines": 7,
+          "nonblankLines": 7
+        },
+        {
+          "path": "src/ui/renderers/addonsRenderer.js",
+          "bytes": 7701,
+          "physicalLines": 240,
+          "nonblankLines": 206
+        }
+      ]
+    }
+  },
+  "trustGatingContradiction": {
+    "status": "not-reproduced",
+    "fixture": null,
+    "reason": "Retired product-specific contradiction; generic trust gating remains covered by the add-on platform regressions.",
+    "sourceEvidence": [
+      "addons/masked-direct-addon/src/main.js#statusMessage",
+      "addons/masked-direct-addon/src/main.js#refreshAccessState",
+      "src/services/addons/knownAddons.js#buildKnownAddonsSnapshot"
+    ]
+  },
+  "deterministic": {
+    "outputHasTimestamps": false,
+    "outputHasAbsolutePaths": false,
+    "buildsUseTemporaryOutput": true,
+    "productionBuilderInvoked": true,
+    "versionsUpdated": false,
+    "cacheUpdated": false,
+    "trackedDistUpdated": false
+  }
+}

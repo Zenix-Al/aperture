@@ -1,0 +1,144 @@
+{
+  "bootstrap": [
+    "abortActiveBootstrap",
+    "clearBootstrapSummary",
+    "createBootstrapFailureHandler",
+    "getLastBootstrapSummary",
+    "resetBootstrapForTests",
+    "runBootstrapPipeline",
+    "runBootstrapStep"
+  ],
+  "bridge": [
+    "dispatchPageBridgeEvent",
+    "ensurePageBridge",
+    "requestPageBridge",
+    "subscribePageBridgeEvent"
+  ],
+  "catalog": [
+    "listFeaturesByBootstrapMode",
+    "listRegisteredFeatures",
+    "registerFeature",
+    "resetFeatureCatalogForTests",
+    "validateFeatureDescriptor"
+  ],
+  "debounce": [
+    "createDebouncedTask"
+  ],
+  "detection": [
+    "detectPage",
+    "matchesPageDefinition"
+  ],
+  "factory": [
+    "createFeature",
+    "createLifecycleContext",
+    "initGlobalErrorListeners",
+    "normalizeFeatureBootstrapMode",
+    "resetGlobalErrorListeners",
+    "resolveFeatureId"
+  ],
+  "frame": [
+    "createFrameBudget",
+    "nextFrame",
+    "runFrameBudgeted"
+  ],
+  "health": [
+    "HEALTH_ERROR_CODE_NAMESPACES",
+    "clearFeatureStatus",
+    "clearHealthEventsForTests",
+    "getAllFeatureStatuses",
+    "getFeatureErrors",
+    "getFeatureStatus",
+    "getHealthDiagnostics",
+    "getHealthEvents",
+    "getRuntimeErrors",
+    "pushFeatureError",
+    "pushRuntimeError",
+    "recordHealthEvent",
+    "recordSelectorDiagnostic",
+    "redactDiagnosticValue",
+    "registerDiagnosticsProvider",
+    "reportFeatureFailure",
+    "reportFeatureWarning",
+    "reportRuntimeError",
+    "setFeatureStatus",
+    "subscribeFeatureHealth"
+  ],
+  "inputs": [
+    "configureCoreContext",
+    "getCoreContext"
+  ],
+  "listeners": [
+    "addListener",
+    "createRegistrar",
+    "removeAllListeners",
+    "removeListener"
+  ],
+  "logger": [
+    "debugLog"
+  ],
+  "observer": [
+    "addObserverCallback",
+    "getObserverProfileSnapshot",
+    "removeAllObserverCallbacks",
+    "removeObserverCallback",
+    "resetObserverProfileSnapshot",
+    "setObserverProfilingEnabled"
+  ],
+  "pageLifecycle": [
+    "createPageLifecycleHandlers"
+  ],
+  "queue": [
+    "createDebouncedTask",
+    "createTaskQueue",
+    "disposeAllTaskQueues",
+    "getTaskQueueDiagnostics",
+    "pauseAllTaskQueues",
+    "resumeAllTaskQueues"
+  ],
+  "resources": [
+    "assertNoResourceLeaks",
+    "createResourceOwner",
+    "getResourceSnapshot",
+    "releaseOwner",
+    "resetResourceManagerForTests",
+    "resourceManager"
+  ],
+  "route": [
+    "abortCurrentRoute",
+    "beginRoute",
+    "getRouteContext",
+    "isRouteContextCurrent",
+    "normalizeRouteUrl",
+    "resetRouteStateForTests",
+    "setRoutePageFlags"
+  ],
+  "routeObserver": [
+    "initRouteObserver",
+    "resetRouteObserverForTests"
+  ],
+  "scope": [
+    "featureMatchesPageScopes"
+  ],
+  "state": [
+    "createStateManager"
+  ],
+  "styled": [
+    "createStyledFeature"
+  ],
+  "styles": [
+    "acquireStyle",
+    "clearAllStyles",
+    "getStyleRegistrySnapshot",
+    "removeStyle"
+  ],
+  "teardown": [
+    "getRuntimeState",
+    "markRuntimeRunning",
+    "markRuntimeStarting",
+    "registerTeardownResetter",
+    "resetTeardownForTests",
+    "resumeRuntime",
+    "suspendRuntime",
+    "teardownAll"
+  ]
+}

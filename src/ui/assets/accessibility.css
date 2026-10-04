@@ -1,0 +1,11 @@
+:host { color: var(--aperture-text, #c5c9d0); }
+/* Framework accessibility states within this owned Shadow root. */
+:focus-visible { outline: 2px solid var(--aperture-focus, #c15858) !important; outline-offset: 2px; }
+button:disabled, input:disabled, select:disabled { cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+#tag-config-button:hover, .aperture-page-dock-btn:hover { background: var(--aperture-dock-accent-hover, var(--aperture-accent-hover, #cc3131)); }
+#tag-config-button:active, .aperture-page-dock-btn:active { background: var(--aperture-dock-accent-active, var(--aperture-accent-active, #cc3131)); }
+
+
+.tag-chip.aperture-chip { background: var(--aperture-chip, #20242a); color: var(--aperture-text, #c5c9d0); border: 1px solid var(--aperture-border-subtle, #31343a); }

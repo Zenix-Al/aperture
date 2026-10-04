@@ -1,0 +1,37 @@
+{
+  "addons": [
+    {
+      "id": "example-addon",
+      "name": "Aperture Example Add-on",
+      "namespace": "https://example.org/aperture/addons/example-addon",
+      "description": "Example add-on built from the preserved add-on architecture",
+      "version": "0.1.0",
+      "entry": "addons/example-addon/src/main.js",
+      "outfile": "projects/example/dist/example-addon.user.js",
+      "matches": [
+        "http://localhost/*"
+      ],
+      "grants": [
+        "none"
+      ],
+      "runAt": "document-idle",
+      "pageScopes": [
+        "example"
+      ],
+      "runtimeMode": "core-required",
+      "requiresCore": true,
+      "capabilities": [
+        "toast",
+        "feature",
+        "storage",
+        "page",
+        "observer",
+        "ui.style",
+        "ui.mount",
+        "ui.dialog",
+        "ui.dock",
+        "idb"
+      ]
+    }
+  ]
+}

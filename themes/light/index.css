@@ -1,0 +1,42 @@
+/* aperture-theme:1 */
+:root {
+  --aperture-addon-running: #14675f;
+  --aperture-addon-pinned: #24548c;
+  --aperture-dock-accent: #315ca8;
+  --aperture-dock-accent-hover: #244980;
+  --aperture-dock-accent-active: #193862;
+  --aperture-dock-border: #607086;
+  --aperture-accent: #315ca8;
+  --aperture-accent-hover: #244980;
+  --aperture-accent-active: #193862;
+  --aperture-focus: #315ca8;
+  --aperture-text-primary: #17202b;
+  --aperture-text: #253448;
+  --aperture-text-secondary: #43536a;
+  --aperture-text-muted: #596579;
+  --aperture-on-accent: #ffffff;
+  --aperture-modal: #ffffff;
+  --aperture-sidebar: #e9eef6;
+  --aperture-card: #f4f6fa;
+  --aperture-control: #ffffff;
+  --aperture-raised: #e1e7f0;
+  --aperture-row: #d7dfec;
+  --aperture-border-strong: #607086;
+  --aperture-border-control: #607086;
+  --aperture-border-subtle: #b5c0d0;
+  --aperture-divider: #b5c0d0;
+  --aperture-backdrop: rgba(0, 0, 0, 0.6);
+  --aperture-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+  --aperture-scrollbar-track: #e9eef6;
+  --aperture-scrollbar-thumb: #315ca8;
+  --aperture-chip: #e1e7f0;
+  --aperture-success: #216e39;
+  --aperture-warning: #875409;
+  --aperture-error: #a62722;
+  --aperture-disabled: #596579;
+  --aperture-success-surface: #216e39;
+  --aperture-warning-surface: #875409;
+  --aperture-error-surface: #a62722;
+  --aperture-accent-subtle: rgba(49, 92, 168, 0.12);
+  --aperture-accent-border: rgba(49, 92, 168, 0.35);
+}

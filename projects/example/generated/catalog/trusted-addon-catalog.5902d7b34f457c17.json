@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "identifier": "5902d7b34f457c17ec732bb1374862b48ca10fa0b339c08831fdcce022f4f30c",
+  "catalog": [
+    {
+      "id": "example-addon",
+      "name": "Aperture Example Add-on",
+      "description": "Example add-on built from the preserved add-on architecture",
+      "version": "0.1.0",
+      "pageScopes": [
+        "example"
+      ],
+      "runtimeMode": "core-required",
+      "matches": [
+        "http://localhost/*"
+      ],
+      "grants": [
+        "none"
+      ],
+      "runAt": "document-idle",
+      "requiresCore": true,
+      "capabilities": [
+        "toast",
+        "feature",
+        "storage",
+        "page",
+        "observer",
+        "ui.style",
+        "ui.mount",
+        "ui.dialog",
+        "ui.dock",
+        "idb"
+      ],
+      "downloadUrl": "",
+      "trusted": true
+    }
+  ]
+}

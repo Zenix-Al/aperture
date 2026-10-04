@@ -1,0 +1,2185 @@
+{
+  "reportSchemaVersion": 1,
+  "package": "ADDON-API-AUDIT-01",
+  "scope": {
+    "productionAddons": [
+      "example-addon"
+    ],
+    "included": [
+      "addons/*/src/**",
+      "addons/shared/**",
+      "addons/addons.manifest.json",
+      "src/services/addons/actions/**",
+      "tests/**"
+    ],
+    "excluded": [
+      "addons/*/dist/**",
+      "addons/.build-cache.json",
+      "registration-handshake redesign",
+      "new public actions"
+    ]
+  },
+  "inventory": {
+    "addOns": [
+      {
+        "id": "example-addon",
+        "manifest": {
+          "entry": "addons/example-addon/src/main.js",
+          "matches": [
+            "http://localhost/*"
+          ],
+          "grants": [
+            "none"
+          ],
+          "runAt": "document-idle",
+          "runtimeMode": "core-required",
+          "pageScopes": [
+            "example"
+          ],
+          "capabilities": [
+            "toast",
+            "feature",
+            "storage",
+            "page",
+            "observer",
+            "ui.style",
+            "ui.mount",
+            "ui.dialog",
+            "ui.dock",
+            "idb"
+          ]
+        },
+        "sourceFiles": [
+          "addons/example-addon/src/api/bridge.js",
+          "addons/example-addon/src/api/feature.js",
+          "addons/example-addon/src/api/idb.js",
+          "addons/example-addon/src/api/meta.js",
+          "addons/example-addon/src/api/observer.js",
+          "addons/example-addon/src/api/page.js",
+          "addons/example-addon/src/api/storage.js",
+          "addons/example-addon/src/api/toast.js",
+          "addons/example-addon/src/api/ui/dialog.js",
+          "addons/example-addon/src/api/ui/dock.js",
+          "addons/example-addon/src/api/ui/mount.js",
+          "addons/example-addon/src/api/ui/style.js",
+          "addons/example-addon/src/app/actions/idb.js",
+          "addons/example-addon/src/app/actions/index.js",
+          "addons/example-addon/src/app/actions/metadata.js",
+          "addons/example-addon/src/app/actions/observer.js",
+          "addons/example-addon/src/app/actions/storage.js",
+          "addons/example-addon/src/app/actions/ui.js",
+          "addons/example-addon/src/app/commands.js",
+          "addons/example-addon/src/app/createExampleAddonApp.js",
+          "addons/example-addon/src/app/lifecycle.js",
+          "addons/example-addon/src/app/registration.js",
+          "addons/example-addon/src/app/settings.js",
+          "addons/example-addon/src/app/uiController.js",
+          "addons/example-addon/src/constants.js",
+          "addons/example-addon/src/core/adaptor.js",
+          "addons/example-addon/src/domain/bulkImport/controller.js",
+          "addons/example-addon/src/domain/playgroundData.js",
+          "addons/example-addon/src/domain/state.js",
+          "addons/example-addon/src/main.js",
+          "addons/example-addon/src/ui/bindings.js",
+          "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "addons/example-addon/src/ui/dialog.js",
+          "addons/example-addon/src/ui/dock.html",
+          "addons/example-addon/src/ui/dockRenderer.js",
+          "addons/example-addon/src/ui/example.css",
+          "addons/example-addon/src/ui/extraMount.js",
+          "addons/example-addon/src/ui/panel.js"
+        ],
+        "rawActions": [
+          {
+            "id": "addon.access",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/meta.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"addon.access\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 101,
+                "text": "renderButton(\"meta-access\", \"addon.access\"),"
+              }
+            ]
+          },
+          {
+            "id": "addon.throttle",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/meta.js",
+                "line": 6,
+                "text": "return core.invokeCoreAction(\"addon.throttle\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 102,
+                "text": "renderButton(\"meta-throttle\", \"addon.throttle\"),"
+              }
+            ]
+          },
+          {
+            "id": "feature.disable",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/feature.js",
+                "line": 6,
+                "text": "return core.invokeCoreAction(\"feature.disable\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 115,
+                "text": "renderButton(\"feature-disable\", \"feature.disable\", \"danger\"),"
+              }
+            ]
+          },
+          {
+            "id": "feature.enable",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/feature.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"feature.enable\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 113,
+                "text": "renderButton(\"feature-enable\", \"feature.enable\"),"
+              }
+            ]
+          },
+          {
+            "id": "feature.refresh",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/feature.js",
+                "line": 10,
+                "text": "return core.invokeCoreAction(\"feature.refresh\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 114,
+                "text": "renderButton(\"feature-refresh\", \"feature.refresh\"),"
+              }
+            ]
+          },
+          {
+            "id": "idb.bulkDelete",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 18,
+                "text": "return core.invokeCoreAction(\"idb.bulkDelete\", payload || {});"
+              }
+            ]
+          },
+          {
+            "id": "idb.bulkPut",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 14,
+                "text": "return core.invokeCoreAction(\"idb.bulkPut\", payload || {});"
+              }
+            ]
+          },
+          {
+            "id": "idb.count",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 26,
+                "text": "return core.invokeCoreAction(\"idb.count\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 143,
+                "text": "renderButton(\"idb-count\", \"idb.count\"),"
+              }
+            ]
+          },
+          {
+            "id": "idb.delete",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 10,
+                "text": "return core.invokeCoreAction(\"idb.delete\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 144,
+                "text": "renderButton(\"idb-delete\", \"idb.delete\"),"
+              }
+            ]
+          },
+          {
+            "id": "idb.get",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"idb.get\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 139,
+                "text": "renderButton(\"idb-get\", \"idb.get\"),"
+              }
+            ]
+          },
+          {
+            "id": "idb.put",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 6,
+                "text": "return core.invokeCoreAction(\"idb.put\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 138,
+                "text": "renderButton(\"idb-put\", \"idb.put\"),"
+              }
+            ]
+          },
+          {
+            "id": "idb.query",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/idb.js",
+                "line": 22,
+                "text": "return core.invokeCoreAction(\"idb.query\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 142,
+                "text": "renderButton(\"idb-query\", \"idb.query\"),"
+              }
+            ]
+          },
+          {
+            "id": "observer.unwatch",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/observer.js",
+                "line": 9,
+                "text": "return core.invokeCoreAction(\"observer.unwatch\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 156,
+                "text": "renderButton(\"observer-unwatch\", \"observer.unwatch\"),"
+              }
+            ]
+          },
+          {
+            "id": "observer.waitFor",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/observer.js",
+                "line": 15,
+                "text": "return core.invokeCoreAction(\"observer.waitFor\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 154,
+                "text": "renderButton(\"observer-wait\", \"observer.waitFor\"),"
+              }
+            ]
+          },
+          {
+            "id": "observer.watch",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/observer.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"observer.watch\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 153,
+                "text": "renderButton(\"observer-watch\", \"observer.watch\"),"
+              }
+            ]
+          },
+          {
+            "id": "page.getContext",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/page.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"page.getContext\", {}).then((result) =>"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 103,
+                "text": "renderButton(\"meta-page\", \"page.getContext\"),"
+              }
+            ]
+          },
+          {
+            "id": "storage.get",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/storage.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"storage.get\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 128,
+                "text": "renderButton(\"storage-get\", \"storage.get\"),"
+              }
+            ]
+          },
+          {
+            "id": "storage.getUsage",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/storage.js",
+                "line": 16,
+                "text": "return core.invokeCoreAction(\"storage.getUsage\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 129,
+                "text": "renderButton(\"storage-usage\", \"storage.getUsage\"),"
+              }
+            ]
+          },
+          {
+            "id": "storage.set",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/storage.js",
+                "line": 9,
+                "text": "return core.invokeCoreAction(\"storage.set\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 127,
+                "text": "renderButton(\"storage-set\", \"storage.set\"),"
+              }
+            ]
+          },
+          {
+            "id": "toast.show",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/toast.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"toast.show\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 112,
+                "text": "renderButton(\"toast-show\", \"toast.show\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.confirm",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/dialog.js",
+                "line": 17,
+                "text": "return core.invokeCoreAction(\"ui.confirm\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 172,
+                "text": "renderButton(\"dialog-confirm\", \"ui.confirm\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.dialog.close",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/dialog.js",
+                "line": 6,
+                "text": "return core.invokeCoreAction(\"ui.dialog.close\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 173,
+                "text": "renderButton(\"dialog-close\", \"ui.dialog.close\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.dialog.open",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/dialog.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"ui.dialog.open\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 170,
+                "text": "renderButton(\"dialog-open\", \"ui.dialog.open\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.dialog.update",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/dialog.js",
+                "line": 13,
+                "text": "return core.invokeCoreAction(\"ui.dialog.update\", { dialogId, html });"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 171,
+                "text": "renderButton(\"dialog-update\", \"ui.dialog.update\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.dock.removeButtons",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/dock.js",
+                "line": 6,
+                "text": "return core.invokeCoreAction(\"ui.dock.removeButtons\", {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 175,
+                "text": "renderButton(\"dock-remove\", \"ui.dock.removeButtons\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.dock.setButtons",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/dock.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"ui.dock.setButtons\", { buttons });"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 174,
+                "text": "renderButton(\"dock-set\", \"ui.dock.setButtons\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.mount",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/mount.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"ui.mount\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 167,
+                "text": "renderButton(\"mount-extra\", \"ui.mount\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.style.register",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/style.js",
+                "line": 2,
+                "text": "return core.invokeCoreAction(\"ui.style.register\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 165,
+                "text": "renderButton(\"style-register\", \"ui.style.register\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.style.unregister",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/style.js",
+                "line": 9,
+                "text": "return core.invokeCoreAction(\"ui.style.unregister\", {"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 166,
+                "text": "renderButton(\"style-unregister\", \"ui.style.unregister\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.unmount",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/mount.js",
+                "line": 10,
+                "text": "return core.invokeCoreAction(\"ui.unmount\", { mountId });"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 169,
+                "text": "renderButton(\"unmount-extra\", \"ui.unmount\"),"
+              }
+            ]
+          },
+          {
+            "id": "ui.update",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/api/ui/mount.js",
+                "line": 6,
+                "text": "return core.invokeCoreAction(\"ui.update\", payload || {});"
+              },
+              {
+                "path": "addons/example-addon/src/ui/panel.js",
+                "line": 168,
+                "text": "renderButton(\"update-extra\", \"ui.update\"),"
+              }
+            ]
+          }
+        ],
+        "globalEventListeners": [
+          {
+            "path": "addons/example-addon/src/ui/bindings.js",
+            "line": 19,
+            "text": "document.addEventListener(\"click\", panelClickHandler, true);"
+          },
+          {
+            "path": "addons/example-addon/src/ui/bindings.js",
+            "line": 64,
+            "text": "window.addEventListener(\"click\", dockClickHandler, true);"
+          }
+        ],
+        "bridgeEvents": [],
+        "storageKeys": [
+          {
+            "key": "EXAMPLE_IDB_PRIMARY_KEY=hello-world",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/constants.js",
+                "line": 12,
+                "text": "export const EXAMPLE_IDB_PRIMARY_KEY = \"hello-world\";"
+              }
+            ]
+          },
+          {
+            "key": "EXAMPLE_SETTINGS_KEY=settings",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/constants.js",
+                "line": 9,
+                "text": "export const EXAMPLE_SETTINGS_KEY = \"settings\";"
+              }
+            ]
+          },
+          {
+            "key": "EXAMPLE_STORAGE_KEY=playground",
+            "callSites": [
+              {
+                "path": "addons/example-addon/src/constants.js",
+                "line": 8,
+                "text": "export const EXAMPLE_STORAGE_KEY = \"playground\";"
+              }
+            ]
+          }
+        ],
+        "pollingAndTimers": [
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 31,
+            "text": "token.timer = window.setTimeout(finish, Math.max(0, Number(ms) || 0));"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 90,
+            "text": "const timer = window.setTimeout(() => {"
+          }
+        ],
+        "urlAndPageParsing": [],
+        "coreDomAssumptions": [
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 83,
+            "text": "const node = document.createElement(\"div\");"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 86,
+            "text": "document.body.appendChild(node);"
+          },
+          {
+            "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+            "line": 52,
+            "text": "const bar = root.querySelector('[data-role=\"bulk-progress-bar\"]');"
+          },
+          {
+            "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+            "line": 53,
+            "text": "const detail = root.querySelector('[data-role=\"bulk-progress-detail\"]');"
+          },
+          {
+            "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+            "line": 54,
+            "text": "const title = root.querySelector(\".aperture-example-progress-title\");"
+          }
+        ],
+        "directGmAccess": [],
+        "cancellationAndTeardown": [
+          {
+            "path": "addons/example-addon/src/api/bridge.js",
+            "line": 39,
+            "text": "debugLog(\"example-addon\", \"Teardown acknowledgment dispatched.\", { data: { reason } });"
+          },
+          {
+            "path": "addons/example-addon/src/api/feature.js",
+            "line": 6,
+            "text": "return core.invokeCoreAction(\"feature.disable\", {});"
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/idb.js",
+            "line": 58,
+            "text": "\"bulk-import-cancel\": async () => {"
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/idb.js",
+            "line": 60,
+            "text": "return { ok: true, value: \"cancellation requested\" };"
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/index.js",
+            "line": 26,
+            "text": "action === \"feature-disable\" ||"
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/index.js",
+            "line": 27,
+            "text": "action === \"bulk-import-cancel\""
+          },
+          {
+            "path": "addons/example-addon/src/app/actions/metadata.js",
+            "line": 31,
+            "text": "\"feature-disable\": () => disableFeature(core),"
+          },
+          {
+            "path": "addons/example-addon/src/app/commands.js",
+            "line": 34,
+            "text": "case \"disable\":"
+          },
+          {
+            "path": "addons/example-addon/src/app/commands.js",
+            "line": 35,
+            "text": "void lifecycle.disable(context).catch((error) => onError(\"disable-command\", error, \"disable_failed\"));"
+          },
+          {
+            "path": "addons/example-addon/src/app/commands.js",
+            "line": 62,
+            "text": "case \"teardown\":"
+          },
+          {
+            "path": "addons/example-addon/src/app/commands.js",
+            "line": 63,
+            "text": "void lifecycle.teardown(context).catch((error) => onError(\"teardown-command\", error, \"teardown_failed\"));"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 37,
+            "text": "window.clearTimeout(token.timer);"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 45,
+            "text": "window.clearTimeout(token.timer);"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 101,
+            "text": "window.clearTimeout(timer);"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 108,
+            "text": "window.clearTimeout(timer);"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 198,
+            "text": "onEnable: async ({ isCurrent }) => {"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 202,
+            "text": "if (!isCurrent()) return { ok: false, reason: \"enable_superseded\" };"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 209,
+            "text": "debugLog(runtime.addonId, \"Lifecycle disable started.\", { data: lifecycle?.getSnapshot?.() });"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 215,
+            "text": "await ui.disable(\"disable\");"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 217,
+            "text": "debugLog(runtime.addonId, \"Lifecycle disable completed.\", {"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 222,
+            "text": "onRefresh: async ({ isCurrent }) => {"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 225,
+            "text": "if (!isCurrent()) return { ok: false, reason: \"refresh_superseded\" };"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 240,
+            "text": "await ui.disable(reason);"
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 288,
+            "text": "// registration with an enable, disable, refresh, or teardown command."
+          },
+          {
+            "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+            "line": 297,
+            "text": "// either from its local default or call feature.disable after registering."
+          },
+          {
+            "path": "addons/example-addon/src/app/registration.js",
+            "line": 19,
+            "text": "// Re-registering after enable/disable can replace core's current projection"
+          },
+          {
+            "path": "addons/example-addon/src/app/uiController.js",
+            "line": 154,
+            "text": "async function disable(reason = \"disable\") {"
+          },
+          {
+            "path": "addons/example-addon/src/app/uiController.js",
+            "line": 196,
+            "text": "disable,"
+          },
+          {
+            "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+            "line": 33,
+            "text": "<button type=\"button\" class=\"aperture-example-button secondary\" data-example-action=\"bulk-import-cancel\">"
+          },
+          {
+            "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+            "line": 34,
+            "text": "Cancel Import"
+          },
+          {
+            "path": "addons/example-addon/src/ui/panel.js",
+            "line": 93,
+            "text": "The dock launcher is mounted with <code>ui.mount</code> on <code>page.dock</code>. Feature disable will hide this panel and dock until you re-enable the add-on from core."
+          },
+          {
+            "path": "addons/example-addon/src/ui/panel.js",
+            "line": 115,
+            "text": "renderButton(\"feature-disable\", \"feature.disable\", \"danger\"),"
+          }
+        ],
+        "rawActionCount": 60
+      }
+    ],
+    "bridgeEvents": [],
+    "coverage": {
+      "manifestAddonCount": 1,
+      "inventoriedAddonCount": 1,
+      "everyManifestAddonInventoried": true,
+      "rawActionIdsAccountedFor": true,
+      "unknownLiteralActions": []
+    }
+  },
+  "rawActions": [
+    {
+      "id": "addon.access",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/meta.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"addon.access\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 101,
+          "text": "renderButton(\"meta-access\", \"addon.access\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "addon.throttle",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/meta.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"addon.throttle\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 102,
+          "text": "renderButton(\"meta-throttle\", \"addon.throttle\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "feature.disable",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/feature.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"feature.disable\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 115,
+          "text": "renderButton(\"feature-disable\", \"feature.disable\", \"danger\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "feature.enable",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/feature.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"feature.enable\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 113,
+          "text": "renderButton(\"feature-enable\", \"feature.enable\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "feature.refresh",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/feature.js",
+          "line": 10,
+          "text": "return core.invokeCoreAction(\"feature.refresh\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 114,
+          "text": "renderButton(\"feature-refresh\", \"feature.refresh\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.bulkDelete",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 18,
+          "text": "return core.invokeCoreAction(\"idb.bulkDelete\", payload || {});"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.bulkPut",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 14,
+          "text": "return core.invokeCoreAction(\"idb.bulkPut\", payload || {});"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.count",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 26,
+          "text": "return core.invokeCoreAction(\"idb.count\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 143,
+          "text": "renderButton(\"idb-count\", \"idb.count\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.delete",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 10,
+          "text": "return core.invokeCoreAction(\"idb.delete\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 144,
+          "text": "renderButton(\"idb-delete\", \"idb.delete\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.get",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"idb.get\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 139,
+          "text": "renderButton(\"idb-get\", \"idb.get\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.put",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"idb.put\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 138,
+          "text": "renderButton(\"idb-put\", \"idb.put\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "idb.query",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/idb.js",
+          "line": 22,
+          "text": "return core.invokeCoreAction(\"idb.query\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 142,
+          "text": "renderButton(\"idb-query\", \"idb.query\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "observer.unwatch",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/observer.js",
+          "line": 9,
+          "text": "return core.invokeCoreAction(\"observer.unwatch\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 156,
+          "text": "renderButton(\"observer-unwatch\", \"observer.unwatch\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "observer.waitFor",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/observer.js",
+          "line": 15,
+          "text": "return core.invokeCoreAction(\"observer.waitFor\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 154,
+          "text": "renderButton(\"observer-wait\", \"observer.waitFor\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "observer.watch",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/observer.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"observer.watch\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 153,
+          "text": "renderButton(\"observer-watch\", \"observer.watch\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "page.getContext",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/page.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"page.getContext\", {}).then((result) =>"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 103,
+          "text": "renderButton(\"meta-page\", \"page.getContext\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "storage.get",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/storage.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"storage.get\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 128,
+          "text": "renderButton(\"storage-get\", \"storage.get\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "storage.getUsage",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/storage.js",
+          "line": 16,
+          "text": "return core.invokeCoreAction(\"storage.getUsage\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 129,
+          "text": "renderButton(\"storage-usage\", \"storage.getUsage\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "storage.set",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/storage.js",
+          "line": 9,
+          "text": "return core.invokeCoreAction(\"storage.set\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 127,
+          "text": "renderButton(\"storage-set\", \"storage.set\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "toast.show",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/toast.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"toast.show\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 112,
+          "text": "renderButton(\"toast-show\", \"toast.show\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.confirm",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 17,
+          "text": "return core.invokeCoreAction(\"ui.confirm\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 172,
+          "text": "renderButton(\"dialog-confirm\", \"ui.confirm\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.dialog.close",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"ui.dialog.close\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 173,
+          "text": "renderButton(\"dialog-close\", \"ui.dialog.close\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.dialog.open",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"ui.dialog.open\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 170,
+          "text": "renderButton(\"dialog-open\", \"ui.dialog.open\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.dialog.update",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 13,
+          "text": "return core.invokeCoreAction(\"ui.dialog.update\", { dialogId, html });"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 171,
+          "text": "renderButton(\"dialog-update\", \"ui.dialog.update\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.dock.removeButtons",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dock.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"ui.dock.removeButtons\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 175,
+          "text": "renderButton(\"dock-remove\", \"ui.dock.removeButtons\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.dock.setButtons",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dock.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"ui.dock.setButtons\", { buttons });"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 174,
+          "text": "renderButton(\"dock-set\", \"ui.dock.setButtons\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.mount",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/mount.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"ui.mount\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 167,
+          "text": "renderButton(\"mount-extra\", \"ui.mount\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.style.register",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/style.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"ui.style.register\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 165,
+          "text": "renderButton(\"style-register\", \"ui.style.register\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.style.unregister",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/style.js",
+          "line": 9,
+          "text": "return core.invokeCoreAction(\"ui.style.unregister\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 166,
+          "text": "renderButton(\"style-unregister\", \"ui.style.unregister\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.unmount",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/mount.js",
+          "line": 10,
+          "text": "return core.invokeCoreAction(\"ui.unmount\", { mountId });"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 169,
+          "text": "renderButton(\"unmount-extra\", \"ui.unmount\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    },
+    {
+      "id": "ui.update",
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/mount.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"ui.update\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 168,
+          "text": "renderButton(\"update-extra\", \"ui.update\"),"
+        }
+      ],
+      "consumers": [
+        "example-addon"
+      ],
+      "consumerCount": 1
+    }
+  ],
+  "candidates": [
+    {
+      "candidateActionId": "page.getContext",
+      "problem": "Several add-ons independently parse URL, route, thread, and page context.",
+      "pattern": {},
+      "proposedCapability": "page",
+      "scopePolicy": "runtime; read-only and route-generation bound",
+      "payloadBounds": "No payload beyond the current route context; caller supplies no selector or URL source.",
+      "resultBounds": "Normalized hostname/pathname, page scopes, route generation, and bounded thread ID/title/image fields; no DOM objects.",
+      "ownershipCleanup": "No retained resources; result becomes stale when the supplied route generation changes.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core descriptor/wrapper approximately +1.5-2.5 KB readable; consumers should remove duplicated parsers, exact delta requires implementation measurement.",
+      "compatibility": "Additive action; older cores require an add-on-local parser fallback.",
+      "decision": "implement",
+      "rank": 1,
+      "reason": "Three production add-ons have overlapping route parsing, and a bounded normalized result reduces correctness drift without exposing core DOM.",
+      "consumerIds": [
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon"
+      ],
+      "callSites": [],
+      "consumerCount": 3,
+      "consumers": [
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon"
+      ]
+    },
+    {
+      "candidateActionId": "observer.waitFor",
+      "problem": "Core-page add-ons use selector polling, mount retries, and loading checks with separate timer cleanup.",
+      "pattern": {},
+      "proposedCapability": "observer",
+      "scopePolicy": "runtime; one-shot, owner-scoped, core page scopes only",
+      "payloadBounds": "One allowlisted selector or fixed observer target, required timeout <= 30 seconds, no arbitrary callback.",
+      "resultBounds": "At most one sanitized node descriptor or a timeout/cancel result; no unbounded node collection.",
+      "ownershipCleanup": "Core owns the observer/timer under the add-on owner and cancels it on disable, route invalidation, or teardown.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core observer descriptor approximately +1.5-3 KB readable; removes repeated timer scaffolding only after consumer migration.",
+      "compatibility": "Additive action; hybrid add-ons retain a local implementation on standalone hosts.",
+      "decision": "implement",
+      "rank": 2,
+      "reason": "At least four add-ons show bounded wait/poll behavior; central ownership directly reduces stale callbacks and cleanup risk.",
+      "consumerIds": [
+        "site-repair-addon",
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon"
+      ],
+      "callSites": [],
+      "consumerCount": 4,
+      "consumers": [
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon",
+        "site-repair-addon"
+      ]
+    },
+    {
+      "candidateActionId": "ui.dialog.update",
+      "problem": "Open dialogs are updated through direct content-element lookup or close/reopen loops.",
+      "pattern": {},
+      "proposedCapability": "ui.dialog",
+      "scopePolicy": "runtime; add-on-owned dialog only",
+      "payloadBounds": "Existing dialog ID plus bounded sanitized HTML or structured progress fields; same HTML ceiling as dialog.open.",
+      "resultBounds": "{ ok, value: { dialogId, updated } } or ownership/size validation error; no DOM reference.",
+      "ownershipCleanup": "Core updates only the owning dialog and rejects updates after close, disable, or teardown.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core descriptor/wrapper approximately +0.8-1.8 KB readable; consumer savings depend on removing direct content lookup.",
+      "compatibility": "Additive action; older cores fall back to existing render or close/reopen behavior.",
+      "decision": "implement",
+      "rank": 3,
+      "reason": "Example, Library, and Latest Filters each maintain open dialog content outside the current dialog action.",
+      "consumerIds": [
+        "example-addon",
+        "latest-filters-addon",
+        "library-addon"
+      ],
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"ui.dialog.open\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"ui.dialog.close\", {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/dialog.js",
+          "line": 5,
+          "text": "<p>This dialog was opened through <code>ui.dialog.open</code>.</p>"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 170,
+          "text": "renderButton(\"dialog-open\", \"ui.dialog.open\"),"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 173,
+          "text": "renderButton(\"dialog-close\", \"ui.dialog.close\"),"
+        }
+      ],
+      "consumerCount": 3,
+      "consumers": [
+        "example-addon",
+        "latest-filters-addon",
+        "library-addon"
+      ]
+    },
+    {
+      "candidateActionId": "ui.mount.actions",
+      "problem": "Some mounted UI uses separate global click routing instead of declarative core-managed actions.",
+      "pattern": {},
+      "proposedCapability": "ui.mount",
+      "scopePolicy": "runtime; bounded declared action IDs only",
+      "payloadBounds": "Action ID from a manifest/runtime declaration and bounded primitive payload; no selectors or inline code.",
+      "resultBounds": "No arbitrary callback; core emits an add-on-scoped command with the declared action ID.",
+      "ownershipCleanup": "Unmount removes routing automatically; listener ownership belongs to the mount owner.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core event-routing code likely +2-4 KB readable before consumer savings.",
+      "compatibility": "Would require a new capability negotiation path and fallback for older cores.",
+      "decision": "reject",
+      "rank": 8,
+      "reason": "Only Library currently demonstrates the specific cross-boundary workaround; Example and Latest keep their click handlers inside add-on-owned UI, so the multi-consumer threshold is not met.",
+      "consumerIds": [
+        "library-addon"
+      ],
+      "callSites": [],
+      "consumerCount": 1,
+      "consumers": [
+        "library-addon"
+      ]
+    },
+    {
+      "candidateActionId": "storage.subscribe",
+      "problem": "Storage refresh and cross-tab behavior could be centralized if multiple add-ons shared the same semantic store.",
+      "pattern": {},
+      "proposedCapability": "storage",
+      "scopePolicy": "runtime; own add-on storage bucket only",
+      "payloadBounds": "One bounded key and sanitized value; no complete core-config payloads or cross-add-on keys.",
+      "resultBounds": "Changed key/value metadata only, with local-write loop prevention.",
+      "ownershipCleanup": "Explicit unsubscribe and owner teardown; listeners must not survive disable.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core listener/reconciliation path likely +2-4 KB readable plus lifecycle tests.",
+      "compatibility": "Would require capability negotiation and a separate contract from removed core config synchronization.",
+      "decision": "reject",
+      "rank": 7,
+      "reason": "The only value-change listener is Masked + Direct add-on transport, which must remain add-on-owned; Latest Filters uses direct GM only for its local preset fallback. No shared core-storage subscription gap is proven.",
+      "consumerIds": [
+        "masked-direct-addon"
+      ],
+      "callSites": [],
+      "consumerCount": 1,
+      "consumers": [
+        "masked-direct-addon"
+      ]
+    },
+    {
+      "candidateActionId": "addon.getContext",
+      "problem": "Core-connected add-ons request access and throttle metadata through separate calls or assemble local context.",
+      "pattern": {},
+      "proposedCapability": "management/read",
+      "scopePolicy": "management; read-only, never handshake or secret data",
+      "payloadBounds": "No caller payload; response fields must be individually bounded and redacted.",
+      "resultBounds": "Existing access and throttle projections plus optional protocol/scope metadata; no config object.",
+      "ownershipCleanup": "No retained resources.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core descriptor/wrapper approximately +1-2 KB readable; may remove one round trip per bootstrap.",
+      "compatibility": "Additive action; fallback to addon.access and addon.throttle.",
+      "decision": "defer",
+      "rank": 6,
+      "reason": "All core add-ons already use the two stable, separately authorized projections; combining them changes no demonstrated correctness failure and risks mixing management policy with throttling.",
+      "consumerIds": [
+        "example-addon",
+        "halloween-theme-addon",
+        "site-repair-addon",
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon"
+      ],
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/meta.js",
+          "line": 1,
+          "text": "export function getAddonAccess(core) {"
+        },
+        {
+          "path": "addons/example-addon/src/api/meta.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"addon.access\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/api/meta.js",
+          "line": 5,
+          "text": "export function getCoreThrottle(core) {"
+        },
+        {
+          "path": "addons/example-addon/src/api/meta.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"addon.throttle\", {});"
+        },
+        {
+          "path": "addons/example-addon/src/app/actions/metadata.js",
+          "line": 1,
+          "text": "import { getAddonAccess, getCoreThrottle } from \"../../api/meta.js\";"
+        },
+        {
+          "path": "addons/example-addon/src/app/actions/metadata.js",
+          "line": 9,
+          "text": "const result = await getAddonAccess(core);"
+        },
+        {
+          "path": "addons/example-addon/src/app/actions/metadata.js",
+          "line": 16,
+          "text": "const result = await getCoreThrottle(core);"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 2,
+          "text": "import { getAddonAccess, getCoreThrottle } from \"../api/meta.js\";"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 115,
+          "text": "getAddonAccess(core),"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 116,
+          "text": "getCoreThrottle(core),"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 298,
+          "text": "const access = await getAddonAccess(core);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 9,
+          "text": "import { getCoreThrottle } from \"../../api/meta.js\";"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 154,
+          "text": "const throttleResult = await getCoreThrottle(core);"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 101,
+          "text": "renderButton(\"meta-access\", \"addon.access\"),"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 102,
+          "text": "renderButton(\"meta-throttle\", \"addon.throttle\"),"
+        }
+      ],
+      "consumerCount": 6,
+      "consumers": [
+        "example-addon",
+        "halloween-theme-addon",
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon",
+        "site-repair-addon"
+      ]
+    },
+    {
+      "candidateActionId": "ui.progress",
+      "problem": "Long imports maintain progress state and dialog update/close behavior in add-on code.",
+      "pattern": {},
+      "proposedCapability": "ui.dialog",
+      "scopePolicy": "runtime; add-on-owned progress instance",
+      "payloadBounds": "Bounded counters, status enum, and message lengths; no arbitrary HTML if structured progress is sufficient.",
+      "resultBounds": "Progress update acknowledgement and cancellation state.",
+      "ownershipCleanup": "Cancel/close aborts the owning operation and removes the progress dialog on teardown.",
+      "publicApi": true,
+      "estimatedSourceDelta": "Core progress family likely +3-6 KB readable; overlaps ui.dialog.update.",
+      "compatibility": "New action family would require fallback and duplicate semantics with current dialogs.",
+      "decision": "defer",
+      "rank": 5,
+      "reason": "Example and Library are two consumers, but their immediate shared gap is dialog update ownership; measure ui.dialog.update first before adding a larger specialized progress API.",
+      "consumerIds": [
+        "example-addon",
+        "library-addon"
+      ],
+      "callSites": [
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 2,
+          "text": "return core.invokeCoreAction(\"ui.dialog.open\", payload || {});"
+        },
+        {
+          "path": "addons/example-addon/src/api/ui/dialog.js",
+          "line": 6,
+          "text": "return core.invokeCoreAction(\"ui.dialog.close\", {"
+        },
+        {
+          "path": "addons/example-addon/src/app/actions/idb.js",
+          "line": 17,
+          "text": "export function createIdbActions({ core, state, bulkImport }) {"
+        },
+        {
+          "path": "addons/example-addon/src/app/actions/idb.js",
+          "line": 35,
+          "text": "\"idb-bulk-put\": () => bulkImport.run(),"
+        },
+        {
+          "path": "addons/example-addon/src/app/actions/idb.js",
+          "line": 59,
+          "text": "bulkImport.requestCancellation();"
+        },
+        {
+          "path": "addons/example-addon/src/app/commands.js",
+          "line": 3,
+          "text": "EXAMPLE_BULK_PROGRESS_DIALOG_ID,"
+        },
+        {
+          "path": "addons/example-addon/src/app/commands.js",
+          "line": 13,
+          "text": "bulkImport,"
+        },
+        {
+          "path": "addons/example-addon/src/app/commands.js",
+          "line": 51,
+          "text": "if (String(detail.dialogId || \"\").trim() === EXAMPLE_BULK_PROGRESS_DIALOG_ID) {"
+        },
+        {
+          "path": "addons/example-addon/src/app/commands.js",
+          "line": 52,
+          "text": "if (bulkImport.handleDialogClosed() && state.enabled) onDialogClosed(\"bulk\", detail);"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 4,
+          "text": "import { createBulkImportController } from \"../domain/bulkImport/controller.js\";"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 128,
+          "text": "const bulkImport = createBulkImportController({"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 188,
+          "text": "bulkImport,"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 211,
+          "text": "bulkImport.requestCancellation();"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 236,
+          "text": "bulkImport.requestCancellation();"
+        },
+        {
+          "path": "addons/example-addon/src/app/createExampleAddonApp.js",
+          "line": 255,
+          "text": "bulkImport,"
+        },
+        {
+          "path": "addons/example-addon/src/constants.js",
+          "line": 3,
+          "text": "export const EXAMPLE_BULK_PROGRESS_DIALOG_ID = \"example-addon-bulk-progress\";"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 2,
+          "text": "EXAMPLE_BULK_PROGRESS_DIALOG_ID,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 12,
+          "text": "createBulkImportProgressMarkup,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 13,
+          "text": "} from \"../../ui/bulkImportProgressDialog.js\";"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 22,
+          "text": "export function createBulkImportController({ core, state, syncPanel, wait }) {"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 91,
+          "text": "function updateProgress(progress) {"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 92,
+          "text": "state.idb.bulkImport = { ...state.idb.bulkImport, ...progress };"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 98,
+          "text": "EXAMPLE_BULK_PROGRESS_DIALOG_ID,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 99,
+          "text": "createBulkImportProgressMarkup({"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 100,
+          "text": "total: active?.total || progress?.total || 0,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 101,
+          "text": "totalBatches: progress?.totalBatches || 0,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 103,
+          "text": "progress,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 108,
+          "text": "async function openProgress(progress, throttle) {"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 110,
+          "text": "dialogId: EXAMPLE_BULK_PROGRESS_DIALOG_ID,"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 112,
+          "text": "html: createBulkImportProgressMarkup({ total: progress.total, totalBatches: progress.totalBatches, throttle, progress }),"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 117,
+          "text": "if (!result?.ok) throw new Error(`Progress dialog failed: ${result?.reason || \"unknown\"}`);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 118,
+          "text": "updateProgress(progress);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 121,
+          "text": "async function closeProgress(reason = \"bulk-import-finished\") {"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 125,
+          "text": "await closeDialog(core, EXAMPLE_BULK_PROGRESS_DIALOG_ID, reason);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 131,
+          "text": "updateProgress({ status: \"cancelling\", cancelled: true });"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 159,
+          "text": "const progress = { status: \"running\", processed: 0, total: records.length, completedBatches: 0, totalBatches: batches.length, failed: 0, cancelled: false };"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 162,
+          "text": "updateProgress(progress);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 163,
+          "text": "await openProgress(progress, throttle);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 171,
+          "text": "progress.failed += batches[index].length;"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 172,
+          "text": "progress.status = \"failed\";"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 173,
+          "text": "updateProgress(progress);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 175,
+          "text": "await closeProgress(\"bulk-import-failed\");"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 178,
+          "text": "progress.processed += batches[index].length;"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 179,
+          "text": "progress.completedBatches += 1;"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 180,
+          "text": "updateProgress(progress);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 185,
+          "text": "progress.status = active?.cancelled ? \"cancelled\" : \"completed\";"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 186,
+          "text": "progress.cancelled = Boolean(active?.cancelled);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 187,
+          "text": "updateProgress(progress);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 188,
+          "text": "await wait(progress.cancelled ? 150 : 300);"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 189,
+          "text": "await closeProgress(progress.cancelled ? \"bulk-import-cancelled\" : \"bulk-import-complete\");"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 192,
+          "text": "state.idb.lastRecord = { dummyImported: progress.processed, totalRequested: progress.total, totalBatches: progress.totalBatches, cancelled: progress.cancelled };"
+        },
+        {
+          "path": "addons/example-addon/src/domain/bulkImport/controller.js",
+          "line": 194,
+          "text": "return { ok: true, value: { processed: progress.processed, total: progress.total, totalBatches: progress.totalBatches, cancelled: progress.cancelled } };"
+        },
+        {
+          "path": "addons/example-addon/src/domain/state.js",
+          "line": 17,
+          "text": "bulkImport: {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 1,
+          "text": "export function createBulkImportProgressMarkup({"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 5,
+          "text": "progress = {},"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 13,
+          "text": "const processed = Math.max(0, Number(progress?.processed || 0));"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 14,
+          "text": "const status = String(progress?.status || \"preparing\").trim();"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 15,
+          "text": "const title = progress?.cancelled || status === \"cancelling\""
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 24,
+          "text": "<div class=\"aperture-example-progress\">"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 25,
+          "text": "<div class=\"aperture-example-progress-title\">${title}</div>"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 26,
+          "text": "<progress data-role=\"bulk-progress-bar\" max=\"${Math.max(1, total)}\" value=\"${Math.min(processed, Math.max(1, Number(total) || 1))}\"></progress>"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 27,
+          "text": "<div class=\"aperture-example-progress-detail\" data-role=\"bulk-progress-detail\">"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 28,
+          "text": "${processed} / ${total} records | ${Math.max(0, Number(progress?.completedBatches || 0))} / ${totalBatches} batches | failed ${Math.max(0, Number(progress?.failed || 0))}"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 30,
+          "text": "<div class=\"aperture-example-progress-note\">"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 36,
+          "text": "<div class=\"aperture-example-progress-note\">Closing this dialog stops the import after the current batch.</div>"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 41,
+          "text": "export function updateBulkImportProgressView(root, progress = {}, fallbackTotal = 0) {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 44,
+          "text": "const processed = Math.max(0, Number(progress?.processed || 0));"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 45,
+          "text": "const total = Math.max(0, Number(progress?.total || fallbackTotal || 0));"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 46,
+          "text": "const completedBatches = Math.max(0, Number(progress?.completedBatches || 0));"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 47,
+          "text": "const totalBatches = Math.max(0, Number(progress?.totalBatches || 0));"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 48,
+          "text": "const failed = Math.max(0, Number(progress?.failed || 0));"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 49,
+          "text": "const cancelled = Boolean(progress?.cancelled);"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 50,
+          "text": "const status = String(progress?.status || \"running\").trim();"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 52,
+          "text": "const bar = root.querySelector('[data-role=\"bulk-progress-bar\"]');"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 53,
+          "text": "const detail = root.querySelector('[data-role=\"bulk-progress-detail\"]');"
+        },
+        {
+          "path": "addons/example-addon/src/ui/bulkImportProgressDialog.js",
+          "line": 54,
+          "text": "const title = root.querySelector(\".aperture-example-progress-title\");"
+        },
+        {
+          "path": "addons/example-addon/src/ui/dialog.js",
+          "line": 5,
+          "text": "<p>This dialog was opened through <code>ui.dialog.open</code>.</p>"
+        },
+        {
+          "path": "addons/example-addon/src/ui/example.css",
+          "line": 179,
+          "text": ".aperture-example-progress {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/example.css",
+          "line": 184,
+          "text": ".aperture-example-progress-title {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/example.css",
+          "line": 190,
+          "text": ".aperture-example-progress progress {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/example.css",
+          "line": 195,
+          "text": ".aperture-example-progress-detail {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/example.css",
+          "line": 201,
+          "text": ".aperture-example-progress-note {"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 57,
+          "text": "bulkImport: state.idb.bulkImport,"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 170,
+          "text": "renderButton(\"dialog-open\", \"ui.dialog.open\"),"
+        },
+        {
+          "path": "addons/example-addon/src/ui/panel.js",
+          "line": 173,
+          "text": "renderButton(\"dialog-close\", \"ui.dialog.close\"),"
+        }
+      ],
+      "consumerCount": 2,
+      "consumers": [
+        "example-addon",
+        "library-addon"
+      ]
+    },
+    {
+      "candidateActionId": "addons.shared.cancellableTask",
+      "problem": "Add-ons repeat retry loops, timer cleanup, cancellation flags, and stale-commit guards.",
+      "pattern": {},
+      "proposedCapability": "none (addons/shared)",
+      "scopePolicy": "local add-on runtime; no core action",
+      "payloadBounds": "Owner ID, generation, AbortSignal, bounded delay/retry count, and caller-supplied operation.",
+      "resultBounds": "Promise result or normalized cancellation; no bridge payload changes.",
+      "ownershipCleanup": "Shared helper owns timers and pending operations for one add-on and releases them on disable/teardown.",
+      "publicApi": false,
+      "estimatedSourceDelta": "Shared helper approximately +1-2 KB authored; expected net reduction after at least three consumers migrate.",
+      "compatibility": "Source-only refactor; bridge protocol and public actions unchanged.",
+      "decision": "use local shared helper",
+      "rank": 4,
+      "reason": "This is repeated add-on boilerplate rather than a missing core capability; keep ownership local and avoid expanding the core service.",
+      "consumerIds": [
+        "site-repair-addon",
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon"
+      ],
+      "callSites": [],
+      "consumerCount": 4,
+      "consumers": [
+        "latest-filters-addon",
+        "library-addon",
+        "masked-direct-addon",
+        "site-repair-addon"
+      ]
+    }
+  ],
+  "approvedNextPackage": [
+    "page.getContext",
+    "observer.waitFor",
+    "ui.dialog.update",
+    "addons.shared.cancellableTask"
+  ],
+  "rejectedOrDeferred": [
+    {
+      "id": "ui.mount.actions",
+      "decision": "reject",
+      "reason": "Only Library currently demonstrates the specific cross-boundary workaround; Example and Latest keep their click handlers inside add-on-owned UI, so the multi-consumer threshold is not met."
+    },
+    {
+      "id": "storage.subscribe",
+      "decision": "reject",
+      "reason": "The only value-change listener is Masked + Direct add-on transport, which must remain add-on-owned; Latest Filters uses direct GM only for its local preset fallback. No shared core-storage subscription gap is proven."
+    },
+    {
+      "id": "addon.getContext",
+      "decision": "defer",
+      "reason": "All core add-ons already use the two stable, separately authorized projections; combining them changes no demonstrated correctness failure and risks mixing management policy with throttling."
+    },
+    {
+      "id": "ui.progress",
+      "decision": "defer",
+      "reason": "Example and Library are two consumers, but their immediate shared gap is dialog update ownership; measure ui.dialog.update first before adding a larger specialized progress API."
+    }
+  ],
+  "security": {
+    "registrationHandshake": "preserved; no security or transport work accepted",
+    "publicActionChanges": 0,
+    "trustRegressionMatrix": "existing ADDON-TRUST-GATING-01 tests remain applicable; no trust policy changed"
+  },
+  "deterministic": {
+    "timestamps": false,
+    "absoluteMachinePaths": false,
+    "generatedUserscriptsChanged": false,
+    "versionsChanged": false,
+    "buildCacheChanged": false,
+    "trackedDistChanged": false
+  }
+}

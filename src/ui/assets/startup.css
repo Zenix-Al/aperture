@@ -1,0 +1,182 @@
+:host {
+  font: 400 14px/1.6 Arial, sans-serif;
+  color: var(--aperture-text, #ccc);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Global scrollbar styling for UI inside the shadow root
+   Applies to all scrollable elements without needing per-element rules. */
+* {
+  /* Firefox */
+  scrollbar-color: var(--aperture-scrollbar-thumb, var(--aperture-accent, #893839)) var(--aperture-scrollbar-track, var(--aperture-modal, #191b1e));
+  scrollbar-width: thin;
+}
+
+/* WebKit browsers */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--aperture-scrollbar-track, var(--aperture-modal, #191b1e));
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--aperture-scrollbar-thumb, var(--aperture-accent, #893839));
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--aperture-z-toast, 13210); /* above settings modal (13000) and dialog backdrops (13100) */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 10px;
+  background-color: var(--aperture-raised, #333);
+  color: var(--aperture-on-accent, #fff);
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#aperture-page-dock {
+  position: fixed;
+  left: 0;
+  bottom: 20px;
+  z-index: var(--aperture-z-dock, 10020);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: calc(100vw - 12px);
+  padding-left: 8px;
+  /* Don't block clicks on the page behind the dock (only the buttons should be clickable). */
+  pointer-events: none;
+}
+
+#aperture-page-dock-main-slot,
+.aperture-page-dock-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#aperture-page-dock-addon-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  overflow: visible;
+  margin-bottom: 8px;
+}
+
+.aperture-page-dock-group {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#tag-config-button {
+  padding: 10px 12px;
+  font-size: 20px;
+  min-width: 52px;
+}
+
+#tag-config-button,
+.aperture-page-dock-btn {
+  cursor: pointer;
+  border: 2px inset var(--aperture-dock-border, var(--aperture-border-control, #461616));
+  background: var(--aperture-dock-accent, var(--aperture-accent, #cc3131));
+  color: var(--aperture-on-accent, #fff);
+  border-radius: 8px;
+  box-shadow: var(--aperture-shadow, 0 4px 8px rgba(0, 0, 0, 0.2));
+  opacity: 0.75;
+  pointer-events: auto;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.aperture-page-dock-btn {
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.aperture-page-dock-btn.secondary {
+  border-color: var(--aperture-border-control, #3b4f63);
+  background: var(--aperture-raised, #2b3947);
+}
+
+.aperture-page-dock-btn.saved {
+  border-color: var(--aperture-border-control, #356d63);
+  background: var(--aperture-chip, #244c45);
+}
+
+#tag-config-button:hover,
+.aperture-page-dock-btn:hover {
+  opacity: 1;
+}
+
+#tag-config-button:active,
+.aperture-page-dock-btn:active {
+  transform: scale(0.9);
+}
+
+#aperture-page-dock.is-collapsed #tag-config-button {
+  transform: translateX(calc(-100% + 26px));
+  opacity: 0.9;
+}
+
+#aperture-page-dock.is-collapsed .aperture-page-dock-btn {
+  transform: translateX(calc(-100% + 14px));
+  opacity: 0.7;
+}
+
+#aperture-page-dock.is-collapsed #tag-config-button:hover,
+#aperture-page-dock.is-collapsed #tag-config-button:focus-visible,
+#aperture-page-dock.is-collapsed .aperture-page-dock-btn:hover,
+#aperture-page-dock.is-collapsed .aperture-page-dock-btn:focus-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  #aperture-page-dock {
+    bottom: 12px;
+    gap: 8px;
+    padding-left: 6px;
+  }
+
+  #tag-config-button,
+  .aperture-page-dock-btn {
+    padding: 9px 12px;
+  }
+}

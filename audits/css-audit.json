@@ -1,0 +1,3642 @@
+{
+  "reportSchemaVersion": 1,
+  "tool": "css-audit",
+  "stylesheet": "src/ui/assets/startup.css + src/ui/assets/css.css",
+  "stylesheets": [
+    "src/ui/assets/startup.css",
+    "src/ui/assets/css.css"
+  ],
+  "authoredBytes": 30927,
+  "bundle": {
+    "readable": {
+      "fullBytes": 530997,
+      "gzipBytes": 112472,
+      "contributionBytes": 24011
+    },
+    "uglified": {
+      "fullBytes": 261642,
+      "gzipBytes": 79369,
+      "contributionBytes": 27499
+    }
+  },
+  "ruleCount": 179,
+  "styleRuleCount": 179,
+  "selectorCount": 198,
+  "declarationCount": 741,
+  "mediaQueryCount": 4,
+  "keyframeCount": 0,
+  "customProperties": [],
+  "customPropertyReferences": [
+    "--aperture-accent",
+    "--aperture-accent-active",
+    "--aperture-accent-border",
+    "--aperture-accent-hover",
+    "--aperture-accent-subtle",
+    "--aperture-addon-pinned",
+    "--aperture-addon-running",
+    "--aperture-backdrop",
+    "--aperture-border-control",
+    "--aperture-border-strong",
+    "--aperture-border-subtle",
+    "--aperture-card",
+    "--aperture-chip",
+    "--aperture-control",
+    "--aperture-disabled",
+    "--aperture-divider",
+    "--aperture-dock-accent",
+    "--aperture-dock-border",
+    "--aperture-error",
+    "--aperture-focus",
+    "--aperture-modal",
+    "--aperture-on-accent",
+    "--aperture-raised",
+    "--aperture-row",
+    "--aperture-scrollbar-thumb",
+    "--aperture-scrollbar-track",
+    "--aperture-shadow",
+    "--aperture-sidebar",
+    "--aperture-success",
+    "--aperture-text",
+    "--aperture-text-muted",
+    "--aperture-text-primary",
+    "--aperture-text-secondary",
+    "--aperture-warning",
+    "--aperture-z-dialog",
+    "--aperture-z-dock",
+    "--aperture-z-settings",
+    "--aperture-z-toast",
+    "--excluded-color",
+    "--excluded-text-color",
+    "--marked-color",
+    "--marked-text-color",
+    "--preferred-color",
+    "--preferred-text-color"
+  ],
+  "animationNames": [],
+  "selectors": [
+    {
+      "selector": ":host",
+      "sourceLine": 1,
+      "atRules": []
+    },
+    {
+      "selector": "*",
+      "sourceLine": 6,
+      "atRules": []
+    },
+    {
+      "selector": "*::before",
+      "sourceLine": 6,
+      "atRules": []
+    },
+    {
+      "selector": "*::after",
+      "sourceLine": 6,
+      "atRules": []
+    },
+    {
+      "selector": "*",
+      "sourceLine": 12,
+      "atRules": []
+    },
+    {
+      "selector": "*::-webkit-scrollbar",
+      "sourceLine": 21,
+      "atRules": []
+    },
+    {
+      "selector": "*::-webkit-scrollbar-track",
+      "sourceLine": 26,
+      "atRules": []
+    },
+    {
+      "selector": "*::-webkit-scrollbar-thumb",
+      "sourceLine": 30,
+      "atRules": []
+    },
+    {
+      "selector": "#toast-container",
+      "sourceLine": 37,
+      "atRules": []
+    },
+    {
+      "selector": ".toast",
+      "sourceLine": 49,
+      "atRules": []
+    },
+    {
+      "selector": ".toast.show",
+      "sourceLine": 61,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock",
+      "sourceLine": 66,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock-main-slot",
+      "sourceLine": 81,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-group",
+      "sourceLine": 81,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock-addon-slot",
+      "sourceLine": 88,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-group",
+      "sourceLine": 98,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-button",
+      "sourceLine": 103,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-button",
+      "sourceLine": 109,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-btn",
+      "sourceLine": 109,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-btn",
+      "sourceLine": 126,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-btn.secondary",
+      "sourceLine": 133,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-btn.saved",
+      "sourceLine": 138,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-button:hover",
+      "sourceLine": 143,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-btn:hover",
+      "sourceLine": 143,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-button:active",
+      "sourceLine": 148,
+      "atRules": []
+    },
+    {
+      "selector": ".aperture-page-dock-btn:active",
+      "sourceLine": 148,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed #tag-config-button",
+      "sourceLine": 153,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed .aperture-page-dock-btn",
+      "sourceLine": 158,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed #tag-config-button:hover",
+      "sourceLine": 163,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed #tag-config-button:focus-visible",
+      "sourceLine": 163,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed .aperture-page-dock-btn:hover",
+      "sourceLine": 163,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed .aperture-page-dock-btn:focus-visible",
+      "sourceLine": 163,
+      "atRules": []
+    },
+    {
+      "selector": "#aperture-page-dock",
+      "sourceLine": 172,
+      "atRules": [
+        "@media (max-width: 640px)"
+      ]
+    },
+    {
+      "selector": "#tag-config-button",
+      "sourceLine": 178,
+      "atRules": [
+        "@media (max-width: 640px)"
+      ]
+    },
+    {
+      "selector": ".aperture-page-dock-btn",
+      "sourceLine": 178,
+      "atRules": [
+        "@media (max-width: 640px)"
+      ]
+    },
+    {
+      "selector": ".tag-priority-note",
+      "sourceLine": 184,
+      "atRules": []
+    },
+    {
+      "selector": ".modal-error-notif",
+      "sourceLine": 196,
+      "atRules": []
+    },
+    {
+      "selector": ".centered-item",
+      "sourceLine": 210,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-wrapper-inner",
+      "sourceLine": 217,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal",
+      "sourceLine": 224,
+      "atRules": []
+    },
+    {
+      "selector": ".drag-ghost",
+      "sourceLine": 240,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-actions",
+      "sourceLine": 250,
+      "atRules": []
+    },
+    {
+      "selector": ".offscreen-copy",
+      "sourceLine": 264,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-btn",
+      "sourceLine": 283,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-btn:hover",
+      "sourceLine": 299,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-btn.preferred",
+      "sourceLine": 303,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-btn.excluded",
+      "sourceLine": 307,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-btn.marked",
+      "sourceLine": 311,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-btn",
+      "sourceLine": 318,
+      "atRules": [
+        "@media (max-width: 480px)"
+      ]
+    },
+    {
+      "selector": ".preferred-tag-remove",
+      "sourceLine": 326,
+      "atRules": []
+    },
+    {
+      "selector": ".excluded-tag-remove",
+      "sourceLine": 326,
+      "atRules": []
+    },
+    {
+      "selector": ".tag-remove-btn",
+      "sourceLine": 326,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal input",
+      "sourceLine": 345,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal textarea",
+      "sourceLine": 345,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal select",
+      "sourceLine": 345,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal input:focus",
+      "sourceLine": 353,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal textarea:focus",
+      "sourceLine": 353,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal select:focus",
+      "sourceLine": 353,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal input[type=\"checkbox\"]",
+      "sourceLine": 361,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal input[type=\"radio\"]",
+      "sourceLine": 361,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal .config-color-input",
+      "sourceLine": 367,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal .config-color-input::-webkit-color-swatch-wrapper",
+      "sourceLine": 380,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal .config-color-input::-webkit-color-swatch",
+      "sourceLine": 384,
+      "atRules": []
+    },
+    {
+      "selector": ".modal-btn",
+      "sourceLine": 389,
+      "atRules": []
+    },
+    {
+      "selector": ".modal-btn:hover",
+      "sourceLine": 404,
+      "atRules": []
+    },
+    {
+      "selector": ".modal-btn:active",
+      "sourceLine": 409,
+      "atRules": []
+    },
+    {
+      "selector": ".config-button",
+      "sourceLine": 414,
+      "atRules": []
+    },
+    {
+      "selector": ".config-button:hover",
+      "sourceLine": 423,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-box",
+      "sourceLine": 428,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-header",
+      "sourceLine": 436,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-title",
+      "sourceLine": 442,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-actions",
+      "sourceLine": 448,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-close",
+      "sourceLine": 453,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-close:hover",
+      "sourceLine": 463,
+      "atRules": []
+    },
+    {
+      "selector": ".feature-health-content",
+      "sourceLine": 467,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row",
+      "sourceLine": 478,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row label",
+      "sourceLine": 489,
+      "atRules": []
+    },
+    {
+      "selector": ".setting-tooltip-badge",
+      "sourceLine": 499,
+      "atRules": []
+    },
+    {
+      "selector": ".setting-tooltip-badge:hover",
+      "sourceLine": 517,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input[type=\"checkbox\"]",
+      "sourceLine": 523,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input:not([type=\"checkbox\"])",
+      "sourceLine": 532,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row select",
+      "sourceLine": 540,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row select:focus",
+      "sourceLine": 554,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]",
+      "sourceLine": 559,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]:focus",
+      "sourceLine": 570,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]::-webkit-inner-spin-button",
+      "sourceLine": 575,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]::-webkit-outer-spin-button",
+      "sourceLine": 575,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row input[type=\"color\"]",
+      "sourceLine": 581,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row .config-color-input",
+      "sourceLine": 588,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row .config-button",
+      "sourceLine": 594,
+      "atRules": []
+    },
+    {
+      "selector": ".config-row:hover",
+      "sourceLine": 598,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal .modal-content",
+      "sourceLine": 602,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-mobile-panel-header",
+      "sourceLine": 620,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-mobile-panel-title",
+      "sourceLine": 624,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-mobile-nav-btn",
+      "sourceLine": 635,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-mobile-nav-btn:hover",
+      "sourceLine": 647,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal .modal-content",
+      "sourceLine": 653,
+      "atRules": [
+        "@media (max-width: 480px)"
+      ]
+    },
+    {
+      "selector": ".settings-shell",
+      "sourceLine": 658,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-sidebar",
+      "sourceLine": 665,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-sidebar-title",
+      "sourceLine": 675,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav",
+      "sourceLine": 682,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-group",
+      "sourceLine": 691,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-group + .settings-nav-group",
+      "sourceLine": 697,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-group-label",
+      "sourceLine": 703,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-pinned-items",
+      "sourceLine": 711,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-item",
+      "sourceLine": 717,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-item:hover",
+      "sourceLine": 734,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-item.active",
+      "sourceLine": 739,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-item.settings-nav-addon-item",
+      "sourceLine": 745,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-nav-item.settings-nav-addon-item::after",
+      "sourceLine": 750,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-sidebar-footer",
+      "sourceLine": 763,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-framework-version",
+      "sourceLine": 768,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-close-btn",
+      "sourceLine": 776,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-main",
+      "sourceLine": 781,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-panel",
+      "sourceLine": 788,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-panel.active",
+      "sourceLine": 795,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-panel .settings-wrapper-inner",
+      "sourceLine": 799,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-panel-actions",
+      "sourceLine": 803,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-section + .addins-panel-section",
+      "sourceLine": 809,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-header-row",
+      "sourceLine": 813,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-title",
+      "sourceLine": 820,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-subtitle",
+      "sourceLine": 826,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-list",
+      "sourceLine": 833,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-empty-state",
+      "sourceLine": 839,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card",
+      "sourceLine": 839,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-empty-state",
+      "sourceLine": 846,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-empty-title",
+      "sourceLine": 850,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-empty-copy",
+      "sourceLine": 856,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card",
+      "sourceLine": 863,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card-head",
+      "sourceLine": 867,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card-name",
+      "sourceLine": 874,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card-meta",
+      "sourceLine": 880,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card-description",
+      "sourceLine": 886,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card-badges",
+      "sourceLine": 893,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge",
+      "sourceLine": 900,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.planned",
+      "sourceLine": 916,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.installed",
+      "sourceLine": 922,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.running",
+      "sourceLine": 928,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.pinned",
+      "sourceLine": 934,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.disabled",
+      "sourceLine": 940,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.needs-update",
+      "sourceLine": 946,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.error",
+      "sourceLine": 952,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-badge.broken",
+      "sourceLine": 958,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-status-copy",
+      "sourceLine": 964,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-status-copy.disabled",
+      "sourceLine": 972,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-status-copy.needs-update",
+      "sourceLine": 978,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-status-copy.error",
+      "sourceLine": 984,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-status-copy.broken",
+      "sourceLine": 990,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-addon-status-note.disabled",
+      "sourceLine": 996,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-addon-status-note.needs-update",
+      "sourceLine": 1002,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-addon-status-note.error",
+      "sourceLine": 1008,
+      "atRules": []
+    },
+    {
+      "selector": ".settings-addon-status-note.broken",
+      "sourceLine": 1014,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-status-row",
+      "sourceLine": 1020,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-actions",
+      "sourceLine": 1027,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-panel-settings",
+      "sourceLine": 1034,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-setting-row",
+      "sourceLine": 1042,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-card-actions",
+      "sourceLine": 1046,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn",
+      "sourceLine": 1053,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn:hover",
+      "sourceLine": 1069,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn.secondary",
+      "sourceLine": 1075,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn.addon-enable-btn",
+      "sourceLine": 1079,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn.addon-enable-btn:hover",
+      "sourceLine": 1085,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn.addon-disable-btn",
+      "sourceLine": 1091,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn:disabled",
+      "sourceLine": 1095,
+      "atRules": []
+    },
+    {
+      "selector": ".addins-action-btn:disabled:hover",
+      "sourceLine": 1100,
+      "atRules": []
+    },
+    {
+      "selector": "#tag-config-modal",
+      "sourceLine": 1107,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": "#tag-config-modal .modal-content",
+      "sourceLine": 1111,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-shell",
+      "sourceLine": 1120,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-sidebar",
+      "sourceLine": 1126,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-sidebar-title",
+      "sourceLine": 1134,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-nav",
+      "sourceLine": 1139,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-nav-item.settings-nav-addon-item",
+      "sourceLine": 1143,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-nav-item.settings-nav-addon-item::after",
+      "sourceLine": 1147,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-panel:not(#settings-panel-color):not(#settings-panel-addins) .config-row label",
+      "sourceLine": 1152,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-main",
+      "sourceLine": 1156,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-shell.mobile-show-panel .settings-sidebar",
+      "sourceLine": 1163,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-shell.mobile-show-panel .settings-main",
+      "sourceLine": 1167,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-shell.mobile-show-panel .settings-mobile-panel-header",
+      "sourceLine": 1172,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": ".settings-panel",
+      "sourceLine": 1182,
+      "atRules": [
+        "@media (max-width: 760px)"
+      ]
+    },
+    {
+      "selector": "#tag-config-modal.show",
+      "sourceLine": 1190,
+      "atRules": []
+    },
+    {
+      "selector": ".config-header",
+      "sourceLine": 1194,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-backdrop",
+      "sourceLine": 1212,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-panel",
+      "sourceLine": 1223,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-title",
+      "sourceLine": 1232,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-description",
+      "sourceLine": 1239,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-settings",
+      "sourceLine": 1246,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-input",
+      "sourceLine": 1254,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-input:focus",
+      "sourceLine": 1263,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-error",
+      "sourceLine": 1268,
+      "atRules": []
+    },
+    {
+      "selector": ".config-dialog-actions",
+      "sourceLine": 1275,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-list",
+      "sourceLine": 1283,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-item",
+      "sourceLine": 1290,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-label",
+      "sourceLine": 1300,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-handle",
+      "sourceLine": 1307,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-btn",
+      "sourceLine": 1311,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-btn:hover:not(:disabled)",
+      "sourceLine": 1328,
+      "atRules": []
+    },
+    {
+      "selector": ".config-reorder-btn:disabled",
+      "sourceLine": 1334,
+      "atRules": []
+    },
+    {
+      "selector": ".config-transfer-dialog-error",
+      "sourceLine": 1339,
+      "atRules": []
+    }
+  ],
+  "evidenceMap": [
+    {
+      "selector": "#aperture-page-dock",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 5,
+          "excerpt": "const PAGE_DOCK_ID = \"aperture-page-dock\";"
+        },
+        {
+          "file": "tests/reading-desk-browser.test.cjs",
+          "line": 84,
+          "excerpt": "await page.waitForFunction(() => document.querySelector('[data-aperture-ui-owner=\"reading-desk:reading_desk\"]')?.shadowRoot?.querySelector('#aperture-page-dock')?.dataset.hideMode === 'auto');"
+        },
+        {
+          "file": "tests/reading-desk-browser.test.cjs",
+          "line": 86,
+          "excerpt": "await page.waitForFunction(() => document.querySelector('[data-aperture-ui-owner=\"reading-desk:reading_desk\"]')?.shadowRoot?.querySelector('#aperture-page-dock')?.dataset.hideMode === 'manual');"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 81,
+          "excerpt": "const sr=__theme.state.stateManager.get('shadowRoot'), dock=sr.querySelector('#aperture-page-dock'), button=sr.querySelector('#tag-config-button');"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": "#aperture-page-dock-addon-slot",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonUiHosts.js",
+          "line": 10,
+          "excerpt": "export const ADDON_DOCK_SLOT_ID = \"aperture-page-dock-addon-slot\";"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 7,
+          "excerpt": "const PAGE_DOCK_ADDON_SLOT_ID = \"aperture-page-dock-addon-slot\";"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": "#aperture-page-dock-main-slot",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 6,
+          "excerpt": "const PAGE_DOCK_MAIN_SLOT_ID = \"aperture-page-dock-main-slot\";"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": "#settings-panel-addins",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 45,
+          "excerpt": "<div id=\"settings-panel-addins\" class=\"settings-panel\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 45,
+          "excerpt": "<div id=\"settings-panel-addins\" class=\"settings-panel\">"
+        },
+        {
+          "file": "src/ui/components/addons/settingsController.js",
+          "line": 165,
+          "excerpt": "const addinsPanel = shadowRoot.getElementById(\"settings-panel-addins\");"
+        },
+        {
+          "file": "tests/addon-platform.test.cjs",
+          "line": 261,
+          "excerpt": "assert(root.getElementById('settings-panel-general'));assert(root.getElementById('settings-panel-addins'));assert.equal(root.querySelectorAll('[data-target=\"settings-panel-custom\"]').length,1);"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": "#settings-panel-color",
+      "category": "pseudo-or-responsive-only",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": "#tag-config-button",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 85,
+          "excerpt": "if (!shadowRoot || shadowRoot.getElementById(\"tag-config-button\")) return;"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 93,
+          "excerpt": "button.id = \"tag-config-button\";"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 102,
+          "excerpt": "const button = shadowRoot?.getElementById(\"tag-config-button\");"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 93,
+          "excerpt": "button.id = \"tag-config-button\";"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 46,
+          "excerpt": "return {outcomes,unsafe,sibling,a:getComputedStyle(sr.querySelector('[data-addon-id=\"addon-a\"] .demo')).backgroundColor,b:getComputedStyle(document.querySelector('[data-addon-id=\"addon-b\"] .demo')).backgroundColor,bRoot:getComputedStyle(document.querySelector('.aperture-addon-mount[data-addon-id=\"addon-b\"]')).color,c:getComputedStyle(document.querySelector('.aperture-addon-dialog-surface')).backgroundColor,core:getComputedStyle(sr.querySelector('#tag-config-button')).backgroundColor};"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 81,
+          "excerpt": "const sr=__theme.state.stateManager.get('shadowRoot'), dock=sr.querySelector('#aperture-page-dock'), button=sr.querySelector('#tag-config-button');"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": "#tag-config-modal",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/modal.js",
+          "line": 14,
+          "excerpt": "stateManager.get(\"shadowRoot\").getElementById(\"tag-config-modal\").style.display = \"block\";"
+        },
+        {
+          "file": "src/ui/components/modal.js",
+          "line": 15,
+          "excerpt": "stateManager.get(\"shadowRoot\").querySelector(\"#tag-config-modal button:not([disabled])\")?.focus();"
+        },
+        {
+          "file": "src/ui/components/modal.js",
+          "line": 20,
+          "excerpt": "shadowRoot.getElementById(\"tag-config-modal\").style.display = \"none\";"
+        },
+        {
+          "file": "src/ui/components/modal.js",
+          "line": 26,
+          "excerpt": "modal.id = \"tag-config-modal\";"
+        },
+        {
+          "file": "src/ui/components/modal.js",
+          "line": 26,
+          "excerpt": "modal.id = \"tag-config-modal\";"
+        },
+        {
+          "file": "src/ui/settings/modalLifecycle.js",
+          "line": 46,
+          "excerpt": "const modal = shadowRoot.getElementById(\"tag-config-modal\");"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 54,
+          "excerpt": "await page.locator('#aperture-example-aperture_example-ui').getByRole('button',{name:'Open settings'}).focus();await page.keyboard.press('Enter');await page.waitForFunction(()=>__theme.state.stateManager.get('shadowRoot').querySelector('#tag-config-modal').style.display==='block');await page.keyboard.press('Tab');"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 56,
+          "excerpt": "await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>__theme.state.stateManager.get('shadowRoot').querySelector('#tag-config-modal').style.display),'none');"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": "#toast-container",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/toast.js",
+          "line": 38,
+          "excerpt": "let container = shadowRoot.getElementById(\"toast-container\");"
+        },
+        {
+          "file": "src/ui/components/toast.js",
+          "line": 40,
+          "excerpt": "container = createEl(\"div\", { attrs: { id: \"toast-container\" } });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".active",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/settings/panelNavigation.js",
+          "line": 48,
+          "excerpt": "item.classList.toggle(\"active\", isActive);"
+        },
+        {
+          "file": "src/ui/settings/panelNavigation.js",
+          "line": 54,
+          "excerpt": "panel.classList.toggle(\"active\", isActive);"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-action-btn",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/actionButton.js",
+          "line": 5,
+          "excerpt": "className: `addins-action-btn${extraClass ? ` ${extraClass}` : \"\"}`,"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-badge",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/badge.js",
+          "line": 5,
+          "excerpt": "className: `addins-badge${className ? ` ${className}` : \"\"}`,"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 12,
+          "excerpt": "className: \"addins-card\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 20,
+          "excerpt": "className: \"addins-card-head\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 29,
+          "excerpt": "className: \"addins-card-name\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 35,
+          "excerpt": "className: \"addins-card-meta\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 44,
+          "excerpt": "className: \"addins-card-badges\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 87,
+          "excerpt": "className: \"addins-card-description\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 93,
+          "excerpt": "className: \"addins-card-meta\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 113,
+          "excerpt": "className: \"addins-card-actions\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card-actions",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 113,
+          "excerpt": "className: \"addins-card-actions\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card-badges",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 44,
+          "excerpt": "className: \"addins-card-badges\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card-description",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 87,
+          "excerpt": "className: \"addins-card-description\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card-head",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 20,
+          "excerpt": "className: \"addins-card-head\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card-meta",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 35,
+          "excerpt": "className: \"addins-card-meta\","
+        },
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 93,
+          "excerpt": "className: \"addins-card-meta\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-card-name",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 29,
+          "excerpt": "className: \"addins-card-name\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-empty-copy",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 170,
+          "excerpt": "className: \"addins-empty-copy\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-empty-state",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 159,
+          "excerpt": "className: \"addins-empty-state\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-empty-title",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 164,
+          "excerpt": "className: \"addins-empty-title\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-list",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 61,
+          "excerpt": "<div id=\"addins-installed-list\" class=\"addins-list\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 61,
+          "excerpt": "<div id=\"addins-installed-list\" class=\"addins-list\"></div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-actions",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelActions.js",
+          "line": 6,
+          "excerpt": "className: \"addins-panel-actions\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-header-row",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 53,
+          "excerpt": "<div class=\"addins-panel-header-row\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 53,
+          "excerpt": "<div class=\"addins-panel-header-row\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-section",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 52,
+          "excerpt": "<div class=\"addins-panel-section\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 52,
+          "excerpt": "<div class=\"addins-panel-section\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-settings",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 118,
+          "excerpt": "className: \"addins-panel-settings\","
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 93,
+          "excerpt": "const panel=document.createElement('div');panel.className='addins-panel-settings';wrapper.append(panel);"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-status-row",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 61,
+          "excerpt": "className: \"addins-panel-status-row\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-subtitle",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 56,
+          "excerpt": "<div class=\"addins-panel-subtitle\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 56,
+          "excerpt": "<div class=\"addins-panel-subtitle\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-panel-title",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 55,
+          "excerpt": "<div class=\"addins-panel-title\">Installed Add-ins</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 55,
+          "excerpt": "<div class=\"addins-panel-title\">Installed Add-ins</div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-setting-row",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 91,
+          "excerpt": "className: \"config-row addins-setting-row\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addins-status-copy",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonCard.js",
+          "line": 105,
+          "excerpt": "className: `addins-status-copy ${addon.status}`,"
+        },
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 34,
+          "excerpt": "className: \"addins-status-copy disabled\","
+        },
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 72,
+          "excerpt": "className: \"addins-status-copy error\","
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 105,
+          "excerpt": "className: `addins-status-copy ${addon.status}`,"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".addon-disable-btn",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".addon-enable-btn",
+      "category": "pseudo-or-responsive-only",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".aperture-page-dock-btn",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonDockGroup.js",
+          "line": 31,
+          "excerpt": "className: \"aperture-page-dock-btn\","
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 95,
+          "excerpt": "button.className = \"aperture-page-dock-btn\";"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".aperture-page-dock-group",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonDockGroup.js",
+          "line": 17,
+          "excerpt": "className: \"aperture-page-dock-group\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".broken",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".centered-item",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".config-button",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/renderSetting.js",
+          "line": 33,
+          "excerpt": "className: \"config-button\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-color-input",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/createInput.js",
+          "line": 18,
+          "excerpt": "input.classList.add(\"config-color-input\");"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-actions",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 51,
+          "excerpt": "const actions = createEl(\"div\", { className: \"config-dialog-actions\" });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 149,
+          "excerpt": "const actions = createEl(\"div\", { className: \"config-dialog-actions\" });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 297,
+          "excerpt": "const actions = createEl(\"div\", { className: \"config-dialog-actions\" });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 382,
+          "excerpt": "const actions = createEl(\"div\", { className: \"config-dialog-actions\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-backdrop",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 45,
+          "excerpt": "className: \"config-dialog-backdrop\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 125,
+          "excerpt": "className: \"config-dialog-backdrop\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 245,
+          "excerpt": "className: \"config-dialog-backdrop\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 361,
+          "excerpt": "className: \"config-dialog-backdrop\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-description",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 49,
+          "excerpt": "const body = createEl(\"div\", { className: \"config-dialog-description\", text: description });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 132,
+          "excerpt": "const body = createEl(\"div\", { className: \"config-dialog-description\", text: description });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 252,
+          "excerpt": "const body = createEl(\"div\", { className: \"config-dialog-description\", text: description });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 372,
+          "excerpt": "const body = createEl(\"div\", { className: \"config-dialog-description\", text: description });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-error",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 147,
+          "excerpt": "const error = createEl(\"div\", { className: \"config-dialog-error\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-input",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 135,
+          "excerpt": "? createEl(\"textarea\", { className: \"config-dialog-input\" })"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 136,
+          "excerpt": ": createEl(\"input\", { className: \"config-dialog-input\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-panel",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 47,
+          "excerpt": "const panel = createEl(\"div\", { className: \"config-dialog-panel\" });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 128,
+          "excerpt": "const panel = createEl(\"div\", { className: \"config-dialog-panel\" });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 248,
+          "excerpt": "const panel = createEl(\"div\", { className: \"config-dialog-panel\" });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 364,
+          "excerpt": "const panel = createEl(\"div\", { className: \"config-dialog-panel\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-settings",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 376,
+          "excerpt": "const content = createEl(\"div\", { className: \"config-dialog-settings\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-dialog-title",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 48,
+          "excerpt": "const header = createEl(\"div\", { className: \"config-dialog-title\", text: title });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 130,
+          "excerpt": "const header = createEl(\"div\", { className: \"config-dialog-title\", text: title });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 250,
+          "excerpt": "const header = createEl(\"div\", { className: \"config-dialog-title\", text: title });"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 366,
+          "excerpt": "const header = createEl(\"div\", { className: \"config-dialog-title\", text: title });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-header",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 47,
+          "excerpt": "<div class=\"config-header\">Add-ons</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 47,
+          "excerpt": "<div class=\"config-header\">Add-ons</div>"
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 41,
+          "excerpt": "className: \"config-header\","
+        },
+        {
+          "file": "src/ui/renderers/renderSetting.js",
+          "line": 12,
+          "excerpt": "return createEl(\"div\", { className: \"config-header\", text: meta.text });"
+        },
+        {
+          "file": "src/ui/settings/tabs.js",
+          "line": 70,
+          "excerpt": "if (section.label) createEl(\"div\", { className: \"config-header\", text: section.label, mount: wrapper });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-reorder-btn",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 266,
+          "excerpt": "className: \"config-reorder-btn\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 278,
+          "excerpt": "className: \"config-reorder-btn\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-reorder-handle",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 263,
+          "excerpt": "const handle = createEl(\"div\", { className: \"config-reorder-handle\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-reorder-item",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 259,
+          "excerpt": "const row = createEl(\"div\", { className: \"config-reorder-item\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-reorder-label",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 261,
+          "excerpt": "const label = createEl(\"span\", { className: \"config-reorder-label\", text: item.label });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-reorder-list",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 254,
+          "excerpt": "const list = createEl(\"div\", { className: \"config-reorder-list\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-row",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 91,
+          "excerpt": "className: \"config-row addins-setting-row\","
+        },
+        {
+          "file": "src/ui/renderers/renderSetting.js",
+          "line": 28,
+          "excerpt": "const row = createEl(\"div\", { className: \"config-row\" });"
+        },
+        {
+          "file": "src/ui/renderers/renderSetting.js",
+          "line": 55,
+          "excerpt": "const row = createEl(\"div\", { className: \"config-row\" });"
+        },
+        {
+          "file": "tests/groups/core-size-reduction.cjs",
+          "line": 218,
+          "excerpt": "row.className = \"config-row\";"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".config-transfer-dialog-error",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/configTransfer/dialogError.js",
+          "line": 29,
+          "excerpt": "className: \"config-transfer-dialog-error\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".disabled",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 34,
+          "excerpt": "className: \"addins-status-copy disabled\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".drag-ghost",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".error",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 72,
+          "excerpt": "className: \"addins-status-copy error\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 147,
+          "excerpt": "const error = createEl(\"div\", { className: \"config-dialog-error\" });"
+        },
+        {
+          "file": "src/ui/configTransfer/dialogError.js",
+          "line": 29,
+          "excerpt": "className: \"config-transfer-dialog-error\","
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 143,
+          "excerpt": "className: \"settings-addon-status-note error\","
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 154,
+          "excerpt": "addinsCatalogNote.classList.toggle(\"error\", hasCatalogFallback);"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".excluded",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".excluded-tag-remove",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".feature-health-actions",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 190,
+          "excerpt": "className: \"feature-health-actions\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".feature-health-box",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 201,
+          "excerpt": "box = createEl(\"div\", { className: \"feature-health-box\", children: [header, content] });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".feature-health-close",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 179,
+          "excerpt": "const copyBtn = createEl(\"button\", { className: \"feature-health-close\", text: \"Copy\" });"
+        },
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 182,
+          "excerpt": "const retryBtn = createEl(\"button\", { className: \"feature-health-close\", text: \"Retry storage\" });"
+        },
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 186,
+          "excerpt": "const closeBtn = createEl(\"button\", { className: \"feature-health-close\", text: \"Close\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".feature-health-content",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 200,
+          "excerpt": "const content = createEl(\"pre\", { className: \"feature-health-content\" });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".feature-health-header",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 194,
+          "excerpt": "className: \"feature-health-header\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".feature-health-title",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 53,
+          "excerpt": "className: \"feature-health-title\","
+        },
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 196,
+          "excerpt": "createEl(\"div\", { className: \"feature-health-title\", text: \"Diagnostic\" }),"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".installed",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".is-collapsed",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 20,
+          "excerpt": "dock?.classList.remove(\"is-collapsed\");"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 26,
+          "excerpt": "dock?.classList.remove(\"is-collapsed\");"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 33,
+          "excerpt": "dock.classList.add(\"is-collapsed\");"
+        },
+        {
+          "file": "src/ui/components/configButton.js",
+          "line": 112,
+          "excerpt": "dock.classList.remove(\"is-collapsed\");"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 83,
+          "excerpt": "dock.classList.remove('is-collapsed'); getComputedStyle(button).transform;"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 85,
+          "excerpt": "dock.classList.add('is-collapsed'); getComputedStyle(button).transform;"
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 88,
+          "excerpt": "dock.classList.remove('is-collapsed'); getComputedStyle(button).transform;"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".marked",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".mobile-show-panel",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/settings/panelNavigation.js",
+          "line": 25,
+          "excerpt": "shell.classList.remove(\"mobile-show-panel\");"
+        },
+        {
+          "file": "src/ui/settings/panelNavigation.js",
+          "line": 30,
+          "excerpt": "shell.classList.toggle(\"mobile-show-panel\", Boolean(showPanel));"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".modal-btn",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 19,
+          "excerpt": "<button id=\"close-modal\" class=\"modal-btn settings-close-btn\">Close</button>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 19,
+          "excerpt": "<button id=\"close-modal\" class=\"modal-btn settings-close-btn\">Close</button>"
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 53,
+          "excerpt": "className: \"modal-btn dialog-cancel\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 58,
+          "excerpt": "className: \"modal-btn dialog-submit\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 152,
+          "excerpt": "className: \"modal-btn dialog-cancel\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 157,
+          "excerpt": "className: \"modal-btn dialog-submit\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 300,
+          "excerpt": "className: \"modal-btn dialog-cancel\","
+        },
+        {
+          "file": "src/ui/components/dialog.js",
+          "line": 305,
+          "excerpt": "className: \"modal-btn dialog-submit\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".modal-content",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 1,
+          "excerpt": "<div class=\"modal-content\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 1,
+          "excerpt": "<div class=\"modal-content\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".modal-error-notif",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".needs-update",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".offscreen-copy",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/featureHealth/index.js",
+          "line": 46,
+          "excerpt": "textarea.className = \"offscreen-copy\";"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".pinned",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 10,
+          "excerpt": "class=\"settings-nav-group settings-nav-pinned-group\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 14,
+          "excerpt": "<div id=\"settings-nav-pinned-items\" class=\"settings-nav-pinned-items\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 10,
+          "excerpt": "class=\"settings-nav-group settings-nav-pinned-group\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 14,
+          "excerpt": "<div id=\"settings-nav-pinned-items\" class=\"settings-nav-pinned-items\"></div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".planned",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".preferred",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".preferred-tag-remove",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".running",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".saved",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonDockGroup.js",
+          "line": 44,
+          "excerpt": "button.classList.add(\"saved\");"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".secondary",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonDockGroup.js",
+          "line": 42,
+          "excerpt": "button.classList.add(\"secondary\");"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".setting-tooltip-badge",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 103,
+          "excerpt": "className: \"setting-tooltip-badge\","
+        },
+        {
+          "file": "src/ui/renderers/createLabel.js",
+          "line": 11,
+          "excerpt": "className: \"setting-tooltip-badge\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-addon-status-note",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 143,
+          "excerpt": "className: \"settings-addon-status-note error\","
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 56,
+          "excerpt": "note.classList.add(\"settings-addon-status-note\", addon.status);"
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 153,
+          "excerpt": "addinsCatalogNote.classList.toggle(\"settings-addon-status-note\", hasCatalogFallback);"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-close-btn",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 19,
+          "excerpt": "<button id=\"close-modal\" class=\"modal-btn settings-close-btn\">Close</button>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 19,
+          "excerpt": "<button id=\"close-modal\" class=\"modal-btn settings-close-btn\">Close</button>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-framework-version",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 18,
+          "excerpt": "<div class=\"settings-framework-version\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 18,
+          "excerpt": "<div class=\"settings-framework-version\"></div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-main",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 23,
+          "excerpt": "<section class=\"settings-main\" aria-live=\"polite\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 23,
+          "excerpt": "<section class=\"settings-main\" aria-live=\"polite\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-mobile-nav-btn",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 28,
+          "excerpt": "class=\"settings-mobile-nav-btn\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 37,
+          "excerpt": "class=\"settings-mobile-nav-btn\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 28,
+          "excerpt": "class=\"settings-mobile-nav-btn\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 37,
+          "excerpt": "class=\"settings-mobile-nav-btn\""
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-mobile-panel-header",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 24,
+          "excerpt": "<div class=\"settings-mobile-panel-header\" hidden>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 24,
+          "excerpt": "<div class=\"settings-mobile-panel-header\" hidden>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-mobile-panel-title",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 33,
+          "excerpt": "<div id=\"settings-mobile-title\" class=\"settings-mobile-panel-title\">Settings</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 33,
+          "excerpt": "<div id=\"settings-mobile-title\" class=\"settings-mobile-panel-title\">Settings</div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-nav",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 5,
+          "excerpt": "<nav id=\"settings-nav\" class=\"settings-nav\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 6,
+          "excerpt": "<div class=\"settings-nav-group\" id=\"settings-nav-core\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 10,
+          "excerpt": "class=\"settings-nav-group settings-nav-pinned-group\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 13,
+          "excerpt": "<div class=\"settings-nav-group-label\">Pinned Add-ons</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 14,
+          "excerpt": "<div id=\"settings-nav-pinned-items\" class=\"settings-nav-pinned-items\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 5,
+          "excerpt": "<nav id=\"settings-nav\" class=\"settings-nav\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 6,
+          "excerpt": "<div class=\"settings-nav-group\" id=\"settings-nav-core\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 10,
+          "excerpt": "class=\"settings-nav-group settings-nav-pinned-group\""
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-nav-addon-item",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 204,
+          "excerpt": "className: \"settings-nav-item settings-nav-addon-item\","
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-nav-group",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 6,
+          "excerpt": "<div class=\"settings-nav-group\" id=\"settings-nav-core\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 10,
+          "excerpt": "class=\"settings-nav-group settings-nav-pinned-group\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 13,
+          "excerpt": "<div class=\"settings-nav-group-label\">Pinned Add-ons</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 6,
+          "excerpt": "<div class=\"settings-nav-group\" id=\"settings-nav-core\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 10,
+          "excerpt": "class=\"settings-nav-group settings-nav-pinned-group\""
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 13,
+          "excerpt": "<div class=\"settings-nav-group-label\">Pinned Add-ons</div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-nav-group-label",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 13,
+          "excerpt": "<div class=\"settings-nav-group-label\">Pinned Add-ons</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 13,
+          "excerpt": "<div class=\"settings-nav-group-label\">Pinned Add-ons</div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-nav-item",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 204,
+          "excerpt": "className: \"settings-nav-item settings-nav-addon-item\","
+        },
+        {
+          "file": "src/ui/settings/tabs.js",
+          "line": 63,
+          "excerpt": "createEl(\"button\", { text: tab.label, className: \"settings-nav-item\", attrs: { type: \"button\", \"data-target\": panelId }, mount: nav });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-nav-pinned-items",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 14,
+          "excerpt": "<div id=\"settings-nav-pinned-items\" class=\"settings-nav-pinned-items\"></div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 14,
+          "excerpt": "<div id=\"settings-nav-pinned-items\" class=\"settings-nav-pinned-items\"></div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-panel",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 45,
+          "excerpt": "<div id=\"settings-panel-addins\" class=\"settings-panel\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 45,
+          "excerpt": "<div id=\"settings-panel-addins\" class=\"settings-panel\">"
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 26,
+          "excerpt": "className: \"settings-panel\","
+        },
+        {
+          "file": "src/ui/settings/tabs.js",
+          "line": 65,
+          "excerpt": "if (!panel) panel = createEl(\"div\", { className: \"settings-panel\", attrs: { id: panelId }, mount: main });"
+        },
+        {
+          "file": "tests/groups/core-size-reduction.cjs",
+          "line": 216,
+          "excerpt": "panel.className = \"settings-panel\";"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-panel-actions",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".settings-shell",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 2,
+          "excerpt": "<div class=\"settings-shell\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 2,
+          "excerpt": "<div class=\"settings-shell\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-sidebar",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 3,
+          "excerpt": "<aside class=\"settings-sidebar\" aria-label=\"Settings sections\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 4,
+          "excerpt": "<div class=\"settings-sidebar-title\">Settings</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 17,
+          "excerpt": "<div class=\"settings-sidebar-footer\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 3,
+          "excerpt": "<aside class=\"settings-sidebar\" aria-label=\"Settings sections\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 4,
+          "excerpt": "<div class=\"settings-sidebar-title\">Settings</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 17,
+          "excerpt": "<div class=\"settings-sidebar-footer\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-sidebar-footer",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 17,
+          "excerpt": "<div class=\"settings-sidebar-footer\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 17,
+          "excerpt": "<div class=\"settings-sidebar-footer\">"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-sidebar-title",
+      "category": "static-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 4,
+          "excerpt": "<div class=\"settings-sidebar-title\">Settings</div>"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 4,
+          "excerpt": "<div class=\"settings-sidebar-title\">Settings</div>"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".settings-wrapper-inner",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 46,
+          "excerpt": "<div class=\"settings-wrapper-inner\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 46,
+          "excerpt": "<div class=\"settings-wrapper-inner\">"
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 36,
+          "excerpt": "className: \"settings-wrapper-inner\","
+        },
+        {
+          "file": "src/ui/settings/tabs.js",
+          "line": 68,
+          "excerpt": "if (!wrapper) wrapper = createEl(\"div\", { className: \"settings-wrapper-inner\", mount: panel });"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".show",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/toast.js",
+          "line": 74,
+          "excerpt": "toast.classList.add(\"show\");"
+        },
+        {
+          "file": "src/ui/components/toast.js",
+          "line": 78,
+          "excerpt": "toast.classList.remove(\"show\");"
+        },
+        {
+          "file": "src/ui/settings/panelNavigation.js",
+          "line": 25,
+          "excerpt": "shell.classList.remove(\"mobile-show-panel\");"
+        },
+        {
+          "file": "src/ui/settings/panelNavigation.js",
+          "line": 30,
+          "excerpt": "shell.classList.toggle(\"mobile-show-panel\", Boolean(showPanel));"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".tag-actions",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".tag-btn",
+      "category": "pseudo-or-responsive-only",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".tag-priority-note",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 48,
+          "excerpt": "<div id=\"addins-catalog-note\" class=\"tag-priority-note\">"
+        },
+        {
+          "file": "src/ui/assets/ui.html",
+          "line": 48,
+          "excerpt": "<div id=\"addins-catalog-note\" class=\"tag-priority-note\">"
+        },
+        {
+          "file": "src/ui/components/addons/addonPanelSettings.js",
+          "line": 59,
+          "excerpt": "className: \"tag-priority-note\","
+        },
+        {
+          "file": "src/ui/renderers/addonsRenderer.js",
+          "line": 47,
+          "excerpt": "className: \"tag-priority-note\","
+        },
+        {
+          "file": "tests/theme-browser.test.cjs",
+          "line": 92,
+          "excerpt": "const note=document.createElement('div');note.className='tag-priority-note';wrapper.append(note);"
+        }
+      ],
+      "protectedReason": null
+    },
+    {
+      "selector": ".tag-remove-btn",
+      "category": "unresolved",
+      "callSites": [],
+      "protectedReason": "No repository creation/reference evidence; retain conservatively."
+    },
+    {
+      "selector": ".toast",
+      "category": "dynamic-reference",
+      "callSites": [
+        {
+          "file": "src/ui/components/toast.js",
+          "line": 60,
+          "excerpt": "className: \"toast\","
+        },
+        {
+          "file": "src/ui/components/toast.js",
+          "line": 27,
+          "excerpt": "container.classList.add(\"aperture-toast-container\");"
+        }
+      ],
+      "protectedReason": null
+    }
+  ],
+  "dynamicEvidenceFiles": [
+    "src/ui/assets/ui.html",
+    "src/ui/components/addons/actionButton.js",
+    "src/ui/components/addons/addonCard.js",
+    "src/ui/components/addons/addonDockGroup.js",
+    "src/ui/components/addons/addonPanelActions.js",
+    "src/ui/components/addons/addonPanelSettings.js",
+    "src/ui/components/addons/badge.js",
+    "src/ui/components/addons/settingsController.js",
+    "src/ui/components/configButton.js",
+    "src/ui/components/dialog.js",
+    "src/ui/components/featureHealth/index.js",
+    "src/ui/components/modal.js",
+    "src/ui/components/toast.js",
+    "src/ui/configTransfer/dialogError.js",
+    "src/ui/renderers/addonsRenderer.js",
+    "src/ui/renderers/createInput.js",
+    "src/ui/renderers/createLabel.js",
+    "src/ui/renderers/renderSetting.js",
+    "src/ui/settings/modalLifecycle.js",
+    "src/ui/settings/panelNavigation.js",
+    "src/ui/settings/tabs.js",
+    "tests/addon-platform.test.cjs",
+    "tests/groups/core-size-reduction.cjs",
+    "tests/reading-desk-browser.test.cjs",
+    "tests/theme-browser.test.cjs"
+  ],
+  "externalPageSelectors": [],
+  "duplicateSelectorBlocks": [],
+  "duplicateDeclarationGroups": [
+    {
+      "declarations": "outline:none!;border:1px solid var(--aperture-focus, #c15858)!",
+      "occurrences": [
+        {
+          "selectorText": "#tag-config-modal input:focus,\n#tag-config-modal textarea:focus,\n#tag-config-modal select:focus",
+          "sourceLine": 353
+        },
+        {
+          "selectorText": ".config-dialog-input:focus",
+          "sourceLine": 1263
+        }
+      ]
+    },
+    {
+      "declarations": "padding:0!",
+      "occurrences": [
+        {
+          "selectorText": "#tag-config-modal .config-color-input::-webkit-color-swatch-wrapper",
+          "sourceLine": 380
+        },
+        {
+          "selectorText": "#tag-config-modal",
+          "sourceLine": 1107
+        }
+      ]
+    },
+    {
+      "declarations": "background-color:var(--aperture-accent-hover, #b94f4f)!;border-color:var(--aperture-accent-hover, #b94f4f)!",
+      "occurrences": [
+        {
+          "selectorText": ".modal-btn:hover",
+          "sourceLine": 404
+        },
+        {
+          "selectorText": ".config-button:hover",
+          "sourceLine": 423
+        }
+      ]
+    },
+    {
+      "declarations": "outline:none!;border-color:var(--aperture-focus, #c15858)!",
+      "occurrences": [
+        {
+          "selectorText": ".config-row select:focus",
+          "sourceLine": 554
+        },
+        {
+          "selectorText": ".config-row input[type=\"number\"]:focus",
+          "sourceLine": 570
+        }
+      ]
+    },
+    {
+      "declarations": "display:none!",
+      "occurrences": [
+        {
+          "selectorText": ".settings-mobile-panel-header",
+          "sourceLine": 620
+        },
+        {
+          "selectorText": ".settings-shell.mobile-show-panel .settings-sidebar",
+          "sourceLine": 1163
+        }
+      ]
+    },
+    {
+      "declarations": "display:flex!;flex-direction:column!;gap:6px!",
+      "occurrences": [
+        {
+          "selectorText": ".settings-nav-group",
+          "sourceLine": 691
+        },
+        {
+          "selectorText": ".settings-nav-pinned-items",
+          "sourceLine": 711
+        }
+      ]
+    },
+    {
+      "declarations": "display:flex!;justify-content:space-between!;align-items:flex-start!;gap:12px!",
+      "occurrences": [
+        {
+          "selectorText": ".addins-panel-header-row",
+          "sourceLine": 813
+        },
+        {
+          "selectorText": ".addins-card-head",
+          "sourceLine": 867
+        }
+      ]
+    },
+    {
+      "declarations": "padding:14px 16px!",
+      "occurrences": [
+        {
+          "selectorText": ".addins-empty-state",
+          "sourceLine": 846
+        },
+        {
+          "selectorText": ".addins-card",
+          "sourceLine": 863
+        }
+      ]
+    },
+    {
+      "declarations": "margin-top:12px!;display:flex!;flex-wrap:wrap!;gap:8px!",
+      "occurrences": [
+        {
+          "selectorText": ".addins-panel-actions",
+          "sourceLine": 1027
+        },
+        {
+          "selectorText": ".addins-card-actions",
+          "sourceLine": 1046
+        }
+      ]
+    },
+    {
+      "declarations": "background:var(--aperture-accent, #893839)!;border-color:var(--aperture-accent, #893839)!;color:var(--aperture-on-accent, #fff)!",
+      "occurrences": [
+        {
+          "selectorText": ".addins-action-btn:hover",
+          "sourceLine": 1069
+        },
+        {
+          "selectorText": ".config-reorder-btn:hover:not(:disabled)",
+          "sourceLine": 1328
+        }
+      ]
+    },
+    {
+      "declarations": "background:transparent!",
+      "occurrences": [
+        {
+          "selectorText": ".addins-action-btn.secondary",
+          "sourceLine": 1075
+        },
+        {
+          "selectorText": ".addins-action-btn.addon-disable-btn",
+          "sourceLine": 1091
+        }
+      ]
+    },
+    {
+      "declarations": "display:flex!",
+      "occurrences": [
+        {
+          "selectorText": "#tag-config-modal.show",
+          "sourceLine": 1190
+        },
+        {
+          "selectorText": ".config-reorder-handle",
+          "sourceLine": 1307
+        }
+      ]
+    }
+  ],
+  "repeatedDeclarations": [],
+  "conflictingDeclarations": [],
+  "emptyRules": [],
+  "vendorPrefixedRules": [
+    {
+      "selectorText": "*::-webkit-scrollbar",
+      "sourceLine": 21
+    },
+    {
+      "selectorText": "*::-webkit-scrollbar-track",
+      "sourceLine": 26
+    },
+    {
+      "selectorText": "*::-webkit-scrollbar-thumb",
+      "sourceLine": 30
+    },
+    {
+      "selectorText": ".drag-ghost",
+      "sourceLine": 240
+    },
+    {
+      "selectorText": "#tag-config-modal .config-color-input::-webkit-color-swatch-wrapper",
+      "sourceLine": 380
+    },
+    {
+      "selectorText": "#tag-config-modal .config-color-input::-webkit-color-swatch",
+      "sourceLine": 384
+    },
+    {
+      "selectorText": ".config-row input[type=\"number\"]::-webkit-inner-spin-button,\n.config-row input[type=\"number\"]::-webkit-outer-spin-button",
+      "sourceLine": 575
+    }
+  ],
+  "highSpecificitySelectors": [
+    {
+      "selector": "#toast-container",
+      "specificity": 110,
+      "sourceLine": 37
+    },
+    {
+      "selector": "#aperture-page-dock",
+      "specificity": 110,
+      "sourceLine": 66
+    },
+    {
+      "selector": "#aperture-page-dock-main-slot",
+      "specificity": 110,
+      "sourceLine": 81
+    },
+    {
+      "selector": "#aperture-page-dock-addon-slot",
+      "specificity": 110,
+      "sourceLine": 88
+    },
+    {
+      "selector": "#tag-config-button",
+      "specificity": 110,
+      "sourceLine": 103
+    },
+    {
+      "selector": "#tag-config-button",
+      "specificity": 110,
+      "sourceLine": 109
+    },
+    {
+      "selector": "#tag-config-button:hover",
+      "specificity": 110,
+      "sourceLine": 143
+    },
+    {
+      "selector": "#tag-config-button:active",
+      "specificity": 110,
+      "sourceLine": 148
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed #tag-config-button",
+      "specificity": 220,
+      "sourceLine": 153
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed .aperture-page-dock-btn",
+      "specificity": 120,
+      "sourceLine": 158
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed #tag-config-button:hover",
+      "specificity": 220,
+      "sourceLine": 163
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed #tag-config-button:focus-visible",
+      "specificity": 220,
+      "sourceLine": 163
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed .aperture-page-dock-btn:hover",
+      "specificity": 120,
+      "sourceLine": 163
+    },
+    {
+      "selector": "#aperture-page-dock.is-collapsed .aperture-page-dock-btn:focus-visible",
+      "specificity": 120,
+      "sourceLine": 163
+    },
+    {
+      "selector": "#aperture-page-dock",
+      "specificity": 110,
+      "sourceLine": 172
+    },
+    {
+      "selector": "#tag-config-button",
+      "specificity": 110,
+      "sourceLine": 178
+    },
+    {
+      "selector": "#tag-config-modal",
+      "specificity": 110,
+      "sourceLine": 224
+    },
+    {
+      "selector": "#tag-config-modal input",
+      "specificity": 121,
+      "sourceLine": 345
+    },
+    {
+      "selector": "#tag-config-modal textarea",
+      "specificity": 121,
+      "sourceLine": 345
+    },
+    {
+      "selector": "#tag-config-modal select",
+      "specificity": 121,
+      "sourceLine": 345
+    },
+    {
+      "selector": "#tag-config-modal input:focus",
+      "specificity": 121,
+      "sourceLine": 353
+    },
+    {
+      "selector": "#tag-config-modal textarea:focus",
+      "specificity": 121,
+      "sourceLine": 353
+    },
+    {
+      "selector": "#tag-config-modal select:focus",
+      "specificity": 121,
+      "sourceLine": 353
+    },
+    {
+      "selector": "#tag-config-modal input[type=\"checkbox\"]",
+      "specificity": 131,
+      "sourceLine": 361
+    },
+    {
+      "selector": "#tag-config-modal input[type=\"radio\"]",
+      "specificity": 131,
+      "sourceLine": 361
+    },
+    {
+      "selector": "#tag-config-modal .config-color-input",
+      "specificity": 120,
+      "sourceLine": 367
+    },
+    {
+      "selector": "#tag-config-modal .config-color-input::-webkit-color-swatch-wrapper",
+      "specificity": 120,
+      "sourceLine": 380
+    },
+    {
+      "selector": "#tag-config-modal .config-color-input::-webkit-color-swatch",
+      "specificity": 120,
+      "sourceLine": 384
+    },
+    {
+      "selector": ".config-row input[type=\"checkbox\"]",
+      "specificity": 31,
+      "sourceLine": 523
+    },
+    {
+      "selector": ".config-row input:not([type=\"checkbox\"])",
+      "specificity": 41,
+      "sourceLine": 532
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]",
+      "specificity": 31,
+      "sourceLine": 559
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]:focus",
+      "specificity": 41,
+      "sourceLine": 570
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]::-webkit-inner-spin-button",
+      "specificity": 41,
+      "sourceLine": 575
+    },
+    {
+      "selector": ".config-row input[type=\"number\"]::-webkit-outer-spin-button",
+      "specificity": 41,
+      "sourceLine": 575
+    },
+    {
+      "selector": ".config-row input[type=\"color\"]",
+      "specificity": 31,
+      "sourceLine": 581
+    },
+    {
+      "selector": "#tag-config-modal .modal-content",
+      "specificity": 120,
+      "sourceLine": 602
+    },
+    {
+      "selector": "#tag-config-modal .modal-content",
+      "specificity": 120,
+      "sourceLine": 653
+    },
+    {
+      "selector": "#tag-config-modal",
+      "specificity": 110,
+      "sourceLine": 1107
+    },
+    {
+      "selector": "#tag-config-modal .modal-content",
+      "specificity": 120,
+      "sourceLine": 1111
+    },
+    {
+      "selector": ".settings-panel:not(#settings-panel-color):not(#settings-panel-addins) .config-row label",
+      "specificity": 261,
+      "sourceLine": 1152
+    },
+    {
+      "selector": "#tag-config-modal.show",
+      "specificity": 110,
+      "sourceLine": 1190
+    }
+  ],
+  "identicalMediaQueryBlocks": [],
+  "largestRuleGroups": [
+    {
+      "type": "style",
+      "selectorText": "#tag-config-modal .modal-content",
+      "atRules": [],
+      "authoredBytes": 565,
+      "sourceLine": 602
+    },
+    {
+      "type": "style",
+      "selectorText": "#tag-config-button,\n.aperture-page-dock-btn",
+      "atRules": [],
+      "authoredBytes": 523,
+      "sourceLine": 109
+    },
+    {
+      "type": "style",
+      "selectorText": ".setting-tooltip-badge",
+      "atRules": [],
+      "authoredBytes": 417,
+      "sourceLine": 499
+    },
+    {
+      "type": "style",
+      "selectorText": ".config-reorder-btn",
+      "atRules": [],
+      "authoredBytes": 417,
+      "sourceLine": 1311
+    },
+    {
+      "type": "style",
+      "selectorText": ".addins-badge",
+      "atRules": [],
+      "authoredBytes": 413,
+      "sourceLine": 900
+    },
+    {
+      "type": "style",
+      "selectorText": ".modal-btn",
+      "atRules": [],
+      "authoredBytes": 410,
+      "sourceLine": 389
+    },
+    {
+      "type": "style",
+      "selectorText": ".modal-error-notif",
+      "atRules": [],
+      "authoredBytes": 396,
+      "sourceLine": 196
+    },
+    {
+      "type": "style",
+      "selectorText": ".preferred-tag-remove,\n.excluded-tag-remove,\n.tag-remove-btn",
+      "atRules": [],
+      "authoredBytes": 390,
+      "sourceLine": 326
+    },
+    {
+      "type": "style",
+      "selectorText": ".addins-action-btn",
+      "atRules": [],
+      "authoredBytes": 383,
+      "sourceLine": 1053
+    },
+    {
+      "type": "style",
+      "selectorText": "#aperture-page-dock",
+      "atRules": [],
+      "authoredBytes": 374,
+      "sourceLine": 66
+    },
+    {
+      "type": "style",
+      "selectorText": ".tag-priority-note",
+      "atRules": [],
+      "authoredBytes": 369,
+      "sourceLine": 184
+    },
+    {
+      "type": "style",
+      "selectorText": ".settings-nav-item",
+      "atRules": [],
+      "authoredBytes": 355,
+      "sourceLine": 717
+    },
+    {
+      "type": "style",
+      "selectorText": ".config-header",
+      "atRules": [],
+      "authoredBytes": 346,
+      "sourceLine": 1194
+    },
+    {
+      "type": "style",
+      "selectorText": ".config-transfer-dialog-error",
+      "atRules": [],
+      "authoredBytes": 345,
+      "sourceLine": 1339
+    },
+    {
+      "type": "style",
+      "selectorText": ".tag-btn",
+      "atRules": [],
+      "authoredBytes": 340,
+      "sourceLine": 283
+    },
+    {
+      "type": "style",
+      "selectorText": "*",
+      "atRules": [],
+      "authoredBytes": 328,
+      "sourceLine": 12
+    },
+    {
+      "type": "style",
+      "selectorText": ".config-row select",
+      "atRules": [],
+      "authoredBytes": 328,
+      "sourceLine": 540
+    },
+    {
+      "type": "style",
+      "selectorText": ".settings-shell.mobile-show-panel .settings-mobile-panel-header",
+      "atRules": [
+        "@media (max-width: 760px)"
+      ],
+      "authoredBytes": 317,
+      "sourceLine": 1172
+    },
+    {
+      "type": "style",
+      "selectorText": "#tag-config-modal .config-color-input",
+      "atRules": [],
+      "authoredBytes": 308,
+      "sourceLine": 367
+    },
+    {
+      "type": "style",
+      "selectorText": "#aperture-page-dock.is-collapsed #tag-config-button:hover,\n#aperture-page-dock.is-collapsed #tag-config-button:focus-visible,\n#aperture-page-dock.is-collapsed .aperture-page-dock-btn:hover,\n#aperture-page-dock.is-collapsed .aperture-page-dock-btn:focus-visible",
+      "atRules": [],
+      "authoredBytes": 306,
+      "sourceLine": 163
+    }
+  ],
+  "removedSelectors": [],
+  "protectedDynamicSelectors": [
+    "#aperture-page-dock",
+    "#settings-panel-addins",
+    "#tag-config-button",
+    "#tag-config-modal",
+    ".active",
+    ".addins-action-btn",
+    ".addins-badge",
+    ".addins-card",
+    ".addins-card-actions",
+    ".addins-card-badges",
+    ".addins-card-description",
+    ".addins-card-head",
+    ".addins-card-meta",
+    ".addins-card-name",
+    ".addins-empty-copy",
+    ".addins-empty-state",
+    ".addins-empty-title",
+    ".addins-panel-actions",
+    ".addins-panel-settings",
+    ".addins-panel-status-row",
+    ".addins-setting-row",
+    ".addins-status-copy",
+    ".aperture-page-dock-btn",
+    ".aperture-page-dock-group",
+    ".config-button",
+    ".config-color-input",
+    ".config-dialog-actions",
+    ".config-dialog-backdrop",
+    ".config-dialog-description",
+    ".config-dialog-error",
+    ".config-dialog-input",
+    ".config-dialog-panel",
+    ".config-dialog-settings",
+    ".config-dialog-title",
+    ".config-header",
+    ".config-reorder-btn",
+    ".config-reorder-handle",
+    ".config-reorder-item",
+    ".config-reorder-label",
+    ".config-reorder-list",
+    ".config-row",
+    ".config-transfer-dialog-error",
+    ".disabled",
+    ".error",
+    ".feature-health-actions",
+    ".feature-health-box",
+    ".feature-health-close",
+    ".feature-health-content",
+    ".feature-health-header",
+    ".feature-health-title",
+    ".is-collapsed",
+    ".mobile-show-panel",
+    ".modal-btn",
+    ".offscreen-copy",
+    ".saved",
+    ".secondary",
+    ".setting-tooltip-badge",
+    ".settings-addon-status-note",
+    ".settings-nav",
+    ".settings-nav-addon-item",
+    ".settings-nav-item",
+    ".settings-panel",
+    ".settings-wrapper-inner",
+    ".show",
+    ".tag-priority-note",
+    ".toast"
+  ],
+  "protectedExternalSelectors": [],
+  "unresolvedSelectors": [
+    ".addon-disable-btn",
+    ".broken",
+    ".centered-item",
+    ".drag-ghost",
+    ".excluded",
+    ".excluded-tag-remove",
+    ".installed",
+    ".marked",
+    ".modal-error-notif",
+    ".needs-update",
+    ".planned",
+    ".preferred",
+    ".preferred-tag-remove",
+    ".running",
+    ".settings-panel-actions",
+    ".tag-actions",
+    ".tag-remove-btn"
+  ]
+}

@@ -1,0 +1,80 @@
+import js from "@eslint/js";
+import globals from "globals";
+import { defineConfig } from "eslint/config";
+import pkgUnusedImports from "eslint-plugin-unused-imports"; // CommonJS default import
+
+const unusedImports = pkgUnusedImports; // may need .default if ESM resolution
+
+const gmGlobals = [
+  "GM_getValue",
+  "GM_setValue",
+  "GM_addStyle",
+  "GM_deleteValue",
+  "GM_getValues",
+  "GM_setValues",
+  "GM_registerMenuCommand",
+  "GM_notification",
+  "GM_openInTab",
+  "GM_xmlhttpRequest",
+  "GM_download",
+  "unsafeWindow",
+  "GM_getResourceText",
+  "GM",
+  "grecaptcha",
+].reduce((acc, name) => ((acc[name] = "readonly"), acc), {});
+
+export default defineConfig([
+  {
+    files: ["src/**/*.{js,mjs,cjs,user.js}"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...gmGlobals,        __APERTURE_DEBUG__: "readonly",
+        __APERTURE_PROJECT_ID__: "readonly",
+      },
+    },
+    plugins: {
+      "unused-imports": unusedImports,
+    },
+    rules: {
+      "no-undef": "error",
+      "no-unused-vars": ["warn", { vars: "all", args: "after-used", ignoreRestSiblings: false }],
+      "unused-imports/no-unused-vars": "warn",
+    },
+  },
+  {
+    files: ["build.js"],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
+    files: ["addons/*/src/**/*.js", "addons/shared/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...gmGlobals,
+        GM_addValueChangeListener: "readonly",
+        GM_removeValueChangeListener: "readonly",
+        __ADDON_ID__: "readonly",
+        __ADDON_NAME__: "readonly",
+        __ADDON_VERSION__: "readonly",
+        __ADDON_DESCRIPTION__: "readonly",
+        __ADDON_CAPABILITIES__: "readonly",
+        __ADDON_REQUIRES_CORE__: "readonly",
+        __ADDON_PAGE_SCOPES__: "readonly",
+        __ADDON_RUNTIME_MODE__: "readonly",
+        __ADDON_MATCHES__: "readonly",
+        debugLog: "readonly",
+      },
+    },
+    plugins: {
+      "unused-imports": unusedImports,
+    },
+    rules: {
+      "no-undef": "error",
+      "no-unused-vars": ["warn", { vars: "all", args: "after-used", ignoreRestSiblings: false }],
+      "unused-imports/no-unused-vars": "warn",
+    },
+  },
+]);

@@ -1,0 +1,579 @@
+import { resourceManager } from "../../core/resourceManager.js";
+const ownedAddonUi = new Set();
+function ownAddonUi(addonId) {
+  if (ownedAddonUi.has(addonId)) return;
+  resourceManager.register(`ui:addon:${addonId}`, () => { cleanupAddonUi(addonId); ownedAddonUi.delete(addonId); }, `addon:${addonId}`);
+  ownedAddonUi.add(addonId);
+}
+import { acquireStyle, removeStyle, getStyleRegistrySnapshot } from "../../core/styleRegistry.js";
+import { stateManager } from "../../config/state.js";
+import { emitAddonCommand } from "./lifecycle.js";
+import {
+  ADDON_UI_SLOT_POLICY,
+  normalizeAddonMountSlot,
+  sanitizeAddonCss,
+  sanitizeAddonHtml,
+} from "./uiSanitizer.js";
+import { buildAddonDockGroupId, createAddonDockGroup } from "../../ui/components/addons/addonDockGroup.js";
+import { createAddonDialogElements, focusAddonDialog, trapAddonDialogFocus } from "../../ui/components/addons/addonDialog.js";
+import { createAddonMountElement, insertAddonMountElement } from "../../ui/components/addons/addonMount.js";
+import { createAddonStyleElement } from "../../ui/components/addons/addonStyle.js";
+import { ensureAddonDialogHost, getAddonDockSlotElement, resolveAddonMountHost } from "../../ui/components/addons/addonUiHosts.js";
+
+const addonDockButtonsState = new Map();
+const addonStyleRegistry = new Map();
+const addonMountRegistry = new Map();
+const pendingAddonMounts = new Map();
+const addonDialogRegistry = new Map();
+let addonDockFlushTimer = 0;
+let addonMountFlushTimer = 0;
+
+export function sanitizeDockButtons(input) {
+  if (!Array.isArray(input)) return [];
+  return input
+    .map((entry) => {
+      const id = String(entry?.id || "").trim();
+      const label = String(entry?.label || "").trim();
+      if (!id || !label) return null;
+
+      const variant = String(entry?.variant || "primary")
+        .trim()
+        .toLowerCase();
+
+      return {
+        id,
+        label,
+        title: String(entry?.title || "").trim(),
+        disabled: Boolean(entry?.disabled),
+        variant:
+          variant === "secondary" || variant === "saved" || variant === "primary"
+            ? variant
+            : "primary",
+      };
+    })
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
+function getDockSlotElement() {
+  return getAddonDockSlotElement(stateManager.get("shadowRoot"));
+}
+
+function removeAddonDockGroup(addonId) {
+  const slot = getDockSlotElement();
+  if (!slot) return;
+  const group = slot.querySelector(`#${buildAddonDockGroupId(addonId)}`);
+  if (group?.parentNode) {
+    group.parentNode.removeChild(group);
+  }
+}
+
+function syncAddonShadowStyles(addonId) {
+  if (!stateManager.get("shadowRoot")) return;
+  for (const [styleId, element] of addonStyleRegistry.get(addonId) || []) {
+    const id = `addon-ui:${addonId}:${styleId}`;
+    if (!getStyleRegistrySnapshot()[id]?.attached) acquireStyle(id, element.textContent, "shadow", `addon:${addonId}`);
+  }
+}
+
+function renderAddonDockGroup(addonId, buttons) {
+  const slot = getDockSlotElement();
+  if (!slot) return false;
+
+  syncAddonShadowStyles(addonId);
+  createAddonDockGroup(slot, addonId, buttons, {
+    onAction: (actionId) => emitAddonCommand(addonId, "dock-action", { actionId }),
+  });
+  return true;
+}
+
+function flushAddonDockButtons() {
+  const slot = getDockSlotElement();
+  if (!slot) return false;
+
+  addonDockButtonsState.forEach((buttons, addonId) => {
+    if (!Array.isArray(buttons) || buttons.length === 0) {
+      removeAddonDockGroup(addonId);
+      return;
+    }
+    renderAddonDockGroup(addonId, buttons);
+  });
+
+  return true;
+}
+
+function scheduleAddonDockFlush() {
+  if (addonDockFlushTimer) return;
+
+  let remainingAttempts = 40;
+  const tick = () => {
+    addonDockFlushTimer = 0;
+
+    if (flushAddonDockButtons()) {
+      return;
+    }
+
+    remainingAttempts -= 1;
+    if (remainingAttempts <= 0) return;
+    addonDockFlushTimer = window.setTimeout(tick, 250);
+  };
+
+  addonDockFlushTimer = window.setTimeout(tick, 0);
+}
+
+export function sanitizeAddonStyleId(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+function getAddonStyleBucket(addonId) {
+  if (!addonStyleRegistry.has(addonId)) {
+    addonStyleRegistry.set(addonId, new Map());
+  }
+  return addonStyleRegistry.get(addonId);
+}
+
+export function sanitizeAddonMountId(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+export function sanitizeAddonDialogId(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+function getAddonDialogBucket(addonId) {
+  if (!addonDialogRegistry.has(addonId)) {
+    addonDialogRegistry.set(addonId, new Map());
+  }
+  return addonDialogRegistry.get(addonId);
+}
+
+function dispatchAddonDialogClosed(addonId, dialogId, reason) {
+  emitAddonCommand(addonId, "dialog-closed", {
+    dialogId,
+    reason: String(reason || ""),
+  });
+}
+
+function closeAddonDialogInternal(addonId, dialogId, reason = "close") {
+  const bucket = addonDialogRegistry.get(addonId);
+  const normalizedDialogId = sanitizeAddonDialogId(dialogId);
+  if (!bucket || !normalizedDialogId) return { removed: 0 };
+
+  resourceManager.cleanup(`ui:addon-dialog-focus:${addonId}:${normalizedDialogId}`);
+  const entry = bucket.get(normalizedDialogId);
+  if (!entry) return { removed: 0 };
+
+  if (entry.overlayEl?.parentNode) {
+    entry.overlayEl.parentNode.removeChild(entry.overlayEl);
+  }
+
+  bucket.delete(normalizedDialogId);
+  if (bucket.size === 0) addonDialogRegistry.delete(addonId);
+
+  dispatchAddonDialogClosed(addonId, normalizedDialogId, reason);
+  return { removed: 1 };
+}
+
+function removeAddonDialogs(addonId, dialogId = "", reason = "force-cleanup") {
+  const bucket = addonDialogRegistry.get(addonId);
+  if (!bucket || bucket.size === 0) return { removed: 0 };
+
+  const normalizedDialogId = sanitizeAddonDialogId(dialogId);
+  if (normalizedDialogId) {
+    return closeAddonDialogInternal(addonId, normalizedDialogId, reason);
+  }
+
+  let removed = 0;
+  const dialogIds = [...bucket.keys()];
+  dialogIds.forEach((nextDialogId) => {
+    const result = closeAddonDialogInternal(addonId, nextDialogId, reason);
+    removed += Number(result?.removed || 0);
+  });
+  return { removed };
+}
+
+function getAddonMountBucket(addonId) {
+  if (!addonMountRegistry.has(addonId)) {
+    addonMountRegistry.set(addonId, new Map());
+  }
+  return addonMountRegistry.get(addonId);
+}
+
+function pendingMountKey(addonId, mountId) {
+  return `${addonId}::${mountId}`;
+}
+
+function tryMountAddonUi(addonId, payload = {}) {
+  const mountId = sanitizeAddonMountId(payload?.mountId || payload?.id || "");
+  const html = sanitizeAddonHtml(payload?.html || payload?.template || "");
+  const slot = normalizeAddonMountSlot(payload?.slot || "page.panel");
+  const position = String(payload?.position || "append");
+
+  if (!mountId) return { ok: false, reason: "mount_id_required" };
+  if (!slot) return { ok: false, reason: "mount_slot_not_allowed" };
+
+  const host = resolveAddonMountHost(slot, { shadowRoot: stateManager.get("shadowRoot") });
+  if (!host) return { ok: false, reason: "mount_slot_not_found" };
+
+  if (slot === "page.dock") syncAddonShadowStyles(addonId);
+  const bucket = getAddonMountBucket(addonId);
+  const existing = bucket.get(mountId);
+
+  if (existing) {
+    if (existing.dataset?.addonId !== addonId) return { ok: false, reason: "mount_owner_mismatch" };
+    existing.innerHTML = html;
+    return { ok: true, value: { updated: true, mountId } };
+  }
+
+  const mountEl = createAddonMountElement({
+    addonId,
+    mountId,
+    html,
+    slot,
+  });
+
+  insertAddonMountElement(host, mountEl, position);
+  bucket.set(mountId, mountEl);
+
+  return { ok: true, value: { updated: false, mountId } };
+}
+
+function flushPendingAddonMounts() {
+  if (pendingAddonMounts.size === 0) return true;
+
+  for (const [key, entry] of pendingAddonMounts) {
+    const result = tryMountAddonUi(entry.addonId, entry.payload);
+    if (result?.ok) {
+      pendingAddonMounts.delete(key);
+    }
+  }
+
+  return pendingAddonMounts.size === 0;
+}
+
+function scheduleAddonMountFlush() {
+  if (addonMountFlushTimer) return;
+
+  let remainingAttempts = 40;
+  const tick = () => {
+    addonMountFlushTimer = 0;
+
+    if (flushPendingAddonMounts()) {
+      return;
+    }
+
+    remainingAttempts -= 1;
+    if (remainingAttempts <= 0) {
+      pendingAddonMounts.clear();
+      return;
+    }
+    addonMountFlushTimer = window.setTimeout(tick, 250);
+  };
+
+  addonMountFlushTimer = window.setTimeout(tick, 0);
+}
+
+function removeAddonMounts(addonId, mountId = "") {
+  for (const key of [...pendingAddonMounts.keys()]) {
+    const entry = pendingAddonMounts.get(key);
+    if (!entry || entry.addonId !== addonId) continue;
+    const pendingMountId = sanitizeAddonMountId(entry.payload?.mountId || entry.payload?.id || "");
+    if (mountId && pendingMountId !== mountId) {
+      continue;
+    }
+    pendingAddonMounts.delete(key);
+  }
+
+  const bucket = addonMountRegistry.get(addonId);
+  if (!bucket || bucket.size === 0) return { removed: 0 };
+
+  const normalizedMountId = sanitizeAddonMountId(mountId);
+  if (normalizedMountId) {
+    const mountEl = bucket.get(normalizedMountId);
+    if (mountEl?.parentNode) {
+      mountEl.parentNode.removeChild(mountEl);
+    }
+    bucket.delete(normalizedMountId);
+    if (bucket.size === 0) addonMountRegistry.delete(addonId);
+    return { removed: mountEl ? 1 : 0 };
+  }
+
+  let removed = 0;
+  bucket.forEach((mountEl) => {
+    if (mountEl?.parentNode) {
+      mountEl.parentNode.removeChild(mountEl);
+      removed += 1;
+    }
+  });
+  addonMountRegistry.delete(addonId);
+  return { removed };
+}
+
+function removeAddonRegisteredStyles(addonId, styleId = "") {
+  const bucket = addonStyleRegistry.get(addonId);
+  if (!bucket || bucket.size === 0) return { removed: 0 };
+
+  const normalizedStyleId = sanitizeAddonStyleId(styleId);
+  if (normalizedStyleId) {
+    removeStyle(`addon-ui:${addonId}:${normalizedStyleId}`);
+    const styleEl = bucket.get(normalizedStyleId);
+    if (styleEl?.parentNode) {
+      styleEl.parentNode.removeChild(styleEl);
+    }
+    bucket.delete(normalizedStyleId);
+    if (bucket.size === 0) addonStyleRegistry.delete(addonId);
+    return { removed: styleEl ? 1 : 0 };
+  }
+
+  let removed = 0;
+  bucket.forEach((styleEl, styleId) => {
+    removeStyle(`addon-ui:${addonId}:${styleId}`);
+    if (styleEl?.parentNode) {
+      styleEl.parentNode.removeChild(styleEl);
+      removed += 1;
+    }
+  });
+  addonStyleRegistry.delete(addonId);
+  return { removed };
+}
+
+export function setAddonDockButtons(addonId, buttons) {
+  ownAddonUi(addonId);
+  if (buttons.length === 0) {
+    addonDockButtonsState.delete(addonId);
+    removeAddonDockGroup(addonId);
+    return { rendered: true, count: 0 };
+  }
+
+  addonDockButtonsState.set(addonId, buttons);
+  const rendered = renderAddonDockGroup(addonId, buttons);
+  if (!rendered) scheduleAddonDockFlush();
+  return { rendered, count: buttons.length };
+}
+
+export function removeAddonDockButtons(addonId) {
+  addonDockButtonsState.delete(addonId);
+  removeAddonDockGroup(addonId);
+  return { removed: 1 };
+}
+
+export function mountAddonUi(addonId, payload = {}) {
+  ownAddonUi(addonId);
+  const mountId = sanitizeAddonMountId(payload?.mountId || payload?.id || "");
+  const html = sanitizeAddonHtml(payload?.html || payload?.template || "");
+  const slot = normalizeAddonMountSlot(payload?.slot || "page.panel");
+
+  const result = tryMountAddonUi(addonId, payload);
+  if (result?.ok) return result;
+
+  if (result?.reason === "mount_slot_not_found" && slot === "page.dock") {
+    pendingAddonMounts.set(pendingMountKey(addonId, mountId), {
+      addonId,
+      payload: { ...payload, mountId, html, slot },
+    });
+    scheduleAddonMountFlush();
+    return { ok: true, value: { pending: true, mountId } };
+  }
+
+  return result;
+}
+
+export function updateAddonUi(addonId, payload = {}) {
+  const mountId = sanitizeAddonMountId(payload?.mountId || payload?.id || "");
+  const html = sanitizeAddonHtml(payload?.html || payload?.template || "");
+
+  const bucket = addonMountRegistry.get(addonId);
+  const mountEl = bucket?.get(mountId);
+  const pendingKey = pendingMountKey(addonId, mountId);
+  if (!mountEl && pendingAddonMounts.has(pendingKey)) {
+    const pending = pendingAddonMounts.get(pendingKey);
+    pendingAddonMounts.set(pendingKey, {
+      ...pending,
+      payload: {
+        ...pending.payload,
+        ...payload,
+        mountId,
+        html,
+      },
+    });
+    scheduleAddonMountFlush();
+    return { ok: true, value: { pending: true, mountId } };
+  }
+  if (!mountEl) return { ok: false, reason: "mount_not_found" };
+  if (mountEl.dataset?.addonId !== addonId) return { ok: false, reason: "mount_owner_mismatch" };
+
+  mountEl.innerHTML = html;
+  return { ok: true, value: { mountId } };
+}
+
+export function unmountAddonUi(addonId, mountId = "") {
+  return { ok: true, value: removeAddonMounts(addonId, mountId) };
+}
+
+export function openAddonDialog(addonId, payload = {}) {
+  ownAddonUi(addonId);
+  const dialogId = sanitizeAddonDialogId(payload?.dialogId || payload?.id || "");
+  const html = sanitizeAddonHtml(payload?.html || payload?.template || "");
+  const title = String(payload?.title || "Dialog").trim();
+  const closeOnEsc = payload?.closeOnEsc !== false;
+  const closeOnBackdrop = payload?.closeOnBackdrop !== false;
+
+  const host = ensureAddonDialogHost();
+  const bucket = getAddonDialogBucket(addonId);
+
+  closeAddonDialogInternal(addonId, dialogId, "replace");
+
+  const { overlayEl, surfaceEl, contentEl } = createAddonDialogElements({
+    addonId,
+    dialogId,
+    title,
+    html,
+    payload,
+  });
+
+  host.appendChild(overlayEl);
+
+  overlayEl.addEventListener("click", (event) => {
+    if (!closeOnBackdrop) return;
+    if (event.target === overlayEl) {
+      closeAddonDialogInternal(addonId, dialogId, "backdrop");
+    }
+  });
+
+  overlayEl.addEventListener("keydown", (event) => {
+    if (closeOnEsc && event.key === "Escape") {
+      event.preventDefault();
+      closeAddonDialogInternal(addonId, dialogId, "escape");
+      return;
+    }
+    trapAddonDialogFocus(event, surfaceEl);
+  });
+
+  bucket.set(dialogId, {
+    overlayEl,
+    surfaceEl,
+    contentEl,
+    closeOnEsc,
+    closeOnBackdrop,
+  });
+
+  focusAddonDialog(surfaceEl);
+
+  return {
+    ok: true,
+    value: {
+      dialogId,
+      contentId: contentEl.id,
+    },
+  };
+}
+
+export function closeAddonDialog(addonId, dialogId = "", reason = "addon-request") {
+  return { ok: true, value: removeAddonDialogs(addonId, dialogId, reason) };
+}
+
+export function updateAddonDialog(addonId, payload = {}) {
+  const dialogId = sanitizeAddonDialogId(payload?.dialogId || payload?.id || "");
+  const html = sanitizeAddonHtml(payload?.html || payload?.template || "");
+  if (!dialogId) return { ok: false, reason: "dialog_id_required" };
+  if (!html.trim()) return { ok: false, reason: "html_required" };
+
+  const entry = addonDialogRegistry.get(addonId)?.get(dialogId);
+  if (!entry?.contentEl) return { ok: false, reason: "dialog_not_found" };
+  if (entry.contentEl.dataset?.addonId !== addonId) {
+    return { ok: false, reason: "dialog_owner_mismatch" };
+  }
+
+  const preservedScroll = new Map(
+    [...entry.contentEl.querySelectorAll("[data-preserve-scroll]")].map((element) => [
+      String(element.dataset.preserveScroll || ""),
+      { left: element.scrollLeft, top: element.scrollTop },
+    ]),
+  );
+  entry.contentEl.innerHTML = html;
+  entry.contentEl.querySelectorAll("[data-preserve-scroll]").forEach((element) => {
+    const position = preservedScroll.get(String(element.dataset.preserveScroll || ""));
+    if (!position) return;
+    element.scrollLeft = position.left;
+    element.scrollTop = position.top;
+  });
+  return {
+    ok: true,
+    value: { dialogId, contentId: entry.contentEl.id },
+  };
+}
+
+export function registerAddonStyle(addonId, payload = {}) {
+  ownAddonUi(addonId);
+  const styleId = sanitizeAddonStyleId(payload?.styleId || payload?.id || "");
+  if (!styleId) return { ok: false, reason: "style_id_required" };
+  const sanitized = sanitizeAddonCss(addonId, payload?.cssText || payload?.css || "");
+  if (!sanitized.ok) return sanitized;
+  const cssText = sanitized.cssText;
+
+  const bucket = getAddonStyleBucket(addonId);
+  const existing = bucket.get(styleId);
+  if (existing) {
+    if (existing.dataset?.addonId !== addonId) return { ok: false, reason: "style_owner_mismatch" };
+    existing.textContent = cssText;
+    removeStyle(`addon-ui:${addonId}:${styleId}`);
+    if (stateManager.get("shadowRoot")) acquireStyle(`addon-ui:${addonId}:${styleId}`, cssText, "shadow", `addon:${addonId}`);
+    return { ok: true, value: { updated: true, styleId } };
+  }
+
+  const styleEl = createAddonStyleElement(addonId, styleId, cssText);
+  document.head.appendChild(styleEl);
+  bucket.set(styleId, styleEl);
+  if (stateManager.get("shadowRoot")) acquireStyle(`addon-ui:${addonId}:${styleId}`, cssText, "shadow", `addon:${addonId}`);
+
+  return { ok: true, value: { updated: false, styleId } };
+}
+
+export function unregisterAddonStyle(addonId, styleId = "") {
+  return { ok: true, value: removeAddonRegisteredStyles(addonId, styleId) };
+}
+
+export function cleanupAddonUi(addonId) {
+  addonDockButtonsState.delete(addonId);
+  removeAddonDockGroup(addonId);
+  removeAddonDialogs(addonId);
+  removeAddonMounts(addonId);
+  removeAddonRegisteredStyles(addonId);
+}
+
+export function getAddonUiPolicySnapshot() {
+  return {
+    slots: ADDON_UI_SLOT_POLICY,
+    owners: {
+      docks: [...addonDockButtonsState.keys()],
+      dialogs: [...addonDialogRegistry.keys()],
+      mounts: [...addonMountRegistry.keys()],
+      pendingMounts: [...pendingAddonMounts.values()].map((entry) => entry.addonId),
+      styles: [...addonStyleRegistry.keys()],
+    },
+  };
+}
+
+export function resetAddonUiHostForTests() {
+  for (const addonId of new Set([
+    ...addonDockButtonsState.keys(), ...addonDialogRegistry.keys(), ...addonMountRegistry.keys(),
+    ...addonStyleRegistry.keys(), ...[...pendingAddonMounts.values()].map((entry) => entry.addonId),
+  ])) cleanupAddonUi(addonId);
+  pendingAddonMounts.clear();
+  if (addonDockFlushTimer) window.clearTimeout(addonDockFlushTimer);
+  if (addonMountFlushTimer) window.clearTimeout(addonMountFlushTimer);
+  addonDockFlushTimer = 0;
+  addonMountFlushTimer = 0;
+}

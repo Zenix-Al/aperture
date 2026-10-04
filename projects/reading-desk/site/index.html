@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Reading Desk local fixture</title>
+<style>
+body { font: 18px/1.5 system-ui; margin: 1rem auto; max-width: 48rem; padding: 0 1rem; background: #f4f1e9; color: #242424; }
+nav { display: flex; flex-wrap: wrap; gap: .75rem; } button, a { font: inherit; } button { min-height: 44px; padding: .4rem .8rem; }
+:focus-visible { outline: 3px solid #2258b0; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style></head><body>
+<h1>Reading Desk</h1><p>A disposable local site for learning Aperture. No account or network API is needed.</p>
+<nav aria-label="Routes"><button data-route="/reading/one">Reading route</button><button data-route="/shelf/">Shelf route</button><button data-route="/reading/two">Another reading route</button></nav>
+<main id="article"><h2>Reading</h2><p>The helper belongs on reading routes. The bookmark add-on uses the core-owned panel and its own storage.</p></main>
+<p>Install <a href="/scripts/core.user.js">Reading Desk core</a>, then <a href="/scripts/bookmark.user.js">bookmark add-on</a>, and reload this page. Open the core Settings button to change the helper or add-on preferences.</p>
+<script>
+function render() { document.querySelector('#article h2').textContent = location.pathname.startsWith('/shelf/') ? 'Shelf' : 'Reading'; }
+document.querySelectorAll('[data-route]').forEach(button => button.addEventListener('click', () => { history.pushState({}, '', button.dataset.route); render(); }));
+window.addEventListener('popstate', render); render();
+</script></body></html>

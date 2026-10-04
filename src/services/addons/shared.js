@@ -1,0 +1,56 @@
+import policy from "aperture:addons";
+export { ADDON_COMMAND_EVENT, ADDONS_DEV_BRIDGE_MARKER, ADDONS_DEV_COMMAND_EVENT, ADDONS_API_VERSION } from "../../../addons/shared/contract.js";
+
+export const VALID_ADDON_STATUSES = new Set([
+  "installed",
+  "disabled",
+  "needs-update",
+  "error",
+  "broken",
+]);
+export const VALID_ADDON_CAPABILITIES = new Set([
+  "toast",
+  "feature",
+  "storage",
+  "page",
+  "observer",
+  "routing",
+  "idb",
+  "ui",
+  "ui.style",
+  "ui.mount",
+  "ui.dialog",
+  "ui.dock",
+  ...(policy.capabilities || []),
+]);
+export const UNTRUSTED_ALLOWED_CAPABILITIES = new Set(["toast", "feature", "storage"]);
+export const MAX_OBSERVER_SUBSCRIPTIONS_PER_ADDON = 4;
+
+
+export function sanitizeAddonId(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+export function sanitizeObserverSubscriptionId(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^a-z0-9_-]+/gi, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+export function sanitizeAddonCapabilities(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map((entry) => String(entry || "").trim()))].filter((entry) =>
+    VALID_ADDON_CAPABILITIES.has(entry),
+  );
+}
+
+export function sanitizeAddonIdList(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map((entry) => sanitizeAddonId(entry)).filter(Boolean))];
+}

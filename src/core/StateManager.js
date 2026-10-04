@@ -1,0 +1,130 @@
+// src/core/StateManager.js
+import { getByPath, setByPath } from "../utils/objectPath.js";
+
+function buildKnownPathsFromObject(obj, prefix = "", out = new Set()) {
+  if (!obj || typeof obj !== "object") return out;
+
+  for (const key of Object.keys(obj)) {
+    const fullPath = prefix ? `${prefix}.${key}` : key;
+    out.add(fullPath);
+    if (obj[key] && typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+      buildKnownPathsFromObject(obj[key], fullPath, out);
+    }
+  }
+
+  return out;
+}
+
+function isDomNodeLike(value) {
+  if (!value || typeof value !== "object") return false;
+  if (typeof Node !== "undefined" && value instanceof Node) return true;
+  return false;
+}
+
+function createSerializableSnapshot(source) {
+  const seen = new WeakSet();
+
+  const clone = (value) => {
+    if (value === null || typeof value !== "object") return value;
+    if (isDomNodeLike(value)) return null;
+    if (typeof value.toJSON === "function") {
+      try {
+        return clone(value.toJSON());
+      } catch {
+        return null;
+      }
+    }
+    if (seen.has(value)) return null;
+    seen.add(value);
+
+    if (Array.isArray(value)) {
+      const arr = value.map((item) => clone(item));
+      seen.delete(value);
+      return arr;
+    }
+
+    const out = {};
+    for (const [key, item] of Object.entries(value)) {
+      out[key] = clone(item);
+    }
+    seen.delete(value);
+    return out;
+  };
+
+  return clone(source);
+}
+
+export const createStateManager = (initialState = {}, options = {}) => {
+  const {
+    knownPaths = null,
+    warnUnknown = false,
+    throwUnknown = false,
+    name = "StateManager",
+  } = options;
+
+  let state = JSON.parse(JSON.stringify(initialState)); // Deep copy
+  const subscriptions = new Map();
+
+  const known = knownPaths ? new Set(knownPaths) : buildKnownPathsFromObject(initialState);
+
+  const isKnownPath = (path) => known.size === 0 || known.has(path);
+
+  const handleUnknownPath = (path) => {
+    const msg = `${name}: unknown state path '${path}'`;
+    if (throwUnknown) throw new Error(msg);
+    if (warnUnknown) console.warn(msg);
+  };
+
+  const get = (path) => getByPath(state, path);
+
+  const set = (path, value) => {
+    if (typeof path !== "string" || path.length === 0) return false;
+    if (!isKnownPath(path)) {
+      handleUnknownPath(path);
+      return false;
+    }
+
+    const didSet = setByPath(state, path, value);
+    if (!didSet) {
+      if (warnUnknown) {
+        console.warn(`${name}: failed to set path '${path}'`);
+      }
+      return false;
+    }
+    const pathParts = path.split(".");
+    for (let i = 1; i <= pathParts.length; i++) {
+      const currentPath = pathParts.slice(0, i).join(".");
+      if (subscriptions.has(currentPath)) {
+        subscriptions.get(currentPath).forEach((callback) => callback(get(currentPath)));
+      }
+    }
+    return true;
+  };
+
+  const subscribe = (path, callback) => {
+    if (!subscriptions.has(path)) {
+      subscriptions.set(path, new Set());
+    }
+    subscriptions.get(path).add(callback);
+
+    return () => {
+      const subs = subscriptions.get(path);
+      if (!subs) return;
+      subs.delete(callback);
+      if (subs.size === 0) {
+        subscriptions.delete(path);
+      }
+    };
+  };
+
+  const getState = () => createSerializableSnapshot(state);
+  const getKnownPaths = () => new Set(known);
+
+  return {
+    get,
+    set,
+    subscribe,
+    getState,
+    getKnownPaths,
+  };
+};

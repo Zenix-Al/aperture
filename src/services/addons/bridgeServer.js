@@ -1,0 +1,356 @@
+import policy from "aperture:addons";
+import { ADDON_PROJECT_ID, ADDON_LEGACY_PROTOCOL } from "../../../addons/shared/contract.js";
+
+export const ADDON_INSTANCE_ID = `instance-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+import { ensurePageBridge } from "../../core/pageBridge.js";
+import { recordHealthEvent } from "../../core/featureHealth.js";
+import { createReplayCache, createSafeAddonResponse, validateAddonRequestEnvelope } from "./protocol.js";
+
+const CORE_ACTION_RATE_WINDOW_MS = 5000;
+const CORE_ACTION_RATE_MAX = 100;
+const CORE_ACTION_MAX_CONCURRENT = 12;
+const STATUS_UPDATE_RATE_WINDOW_MS = 5000;
+const STATUS_UPDATE_RATE_MAX = 10;
+const REGISTER_RATE_WINDOW_MS = 30000;
+const REGISTER_RATE_MAX = 5;
+const UNREGISTER_RATE_WINDOW_MS = 10000;
+const UNREGISTER_RATE_MAX = 5;
+const UNTHROTTLED_CLEANUP_ACTIONS = new Set([
+  "observer.unwatch",
+  "ui.dialog.close",
+  "ui.dock.removeButtons",
+  "ui.style.unregister",
+  "ui.unmount",
+]);
+
+const addonActionTimestamps = new Map();
+const addonInflight = new Map();
+const addonStatusTimestamps = new Map();
+const addonRegisterTimestamps = new Map();
+const addonUnregisterTimestamps = new Map();
+const replayCache = createReplayCache();
+
+function checkRateLimit(map, key, windowMs, maxCount) {
+  const now = Date.now();
+  let timestamps = map.get(key);
+  if (!timestamps) {
+    timestamps = [];
+    map.set(key, timestamps);
+  }
+  const cutoff = now - windowMs;
+  let i = 0;
+  while (i < timestamps.length && timestamps[i] <= cutoff) i++;
+  if (i > 0) timestamps.splice(0, i);
+  if (timestamps.length >= maxCount) return false;
+  timestamps.push(now);
+  return true;
+}
+
+function tryAcquireInflight(addonId, maxConcurrent = CORE_ACTION_MAX_CONCURRENT) {
+  const count = addonInflight.get(addonId) || 0;
+  if (count >= maxConcurrent) return false;
+  addonInflight.set(addonId, count + 1);
+  return true;
+}
+
+function releaseInflight(addonId) {
+  addonInflight.set(addonId, Math.max(0, (addonInflight.get(addonId) || 0) - 1));
+}
+
+let isBridgeListenerBound = false;
+let bridgeListener = null;
+let bridgeEventName = "";
+let lastAddonRequest = null;
+
+function createBridgeScript(devCommandEvent, apiVersion, marker) {
+  return `
+    (() => {
+      if (window[${JSON.stringify(policy.consoleGlobal || `__APERTURE_ADDONS_${ADDON_PROJECT_ID}__`)}]) return;
+
+      const dispatch = (type, payload = {}) => {
+        window.dispatchEvent(
+          new CustomEvent("${devCommandEvent}", {
+            detail: { type, ...payload, ...( ${JSON.stringify(ADDON_LEGACY_PROTOCOL)} ? {} : { projectId: ${JSON.stringify(ADDON_PROJECT_ID)}, instanceId: ${JSON.stringify(ADDON_INSTANCE_ID)}, marker: ${JSON.stringify(marker)}, protocolVersion: ${JSON.stringify(apiVersion)} }) },
+          }),
+        );
+      };
+
+      window[${JSON.stringify(policy.consoleGlobal || `__APERTURE_ADDONS_${ADDON_PROJECT_ID}__`)}] = {
+        apiVersion: "${apiVersion}",
+        register(addon) {
+          dispatch("register", { addon });
+        },
+        unregister(addonId) {
+          dispatch("unregister", { addonId });
+        },
+        updateStatus(addonId, status, statusMessage = "") {
+          dispatch("update-status", { addonId, status, statusMessage });
+        },
+        invokeCoreAction(addonId, action, payload = {}, replyEvent = "", requestId = "") {
+          dispatch("core-action", { marker: "${marker}", protocolVersion: "${apiVersion}", requestId: requestId || ("req-" + Date.now() + "-" + Math.random().toString(36).slice(2)), addonId, action, payload, replyEvent });
+        },
+        teardownComplete(addonId, reason = "") {
+          dispatch("teardown-complete", { addonId, reason });
+        },
+        registerDemo() {
+          dispatch("register", {
+            addon: {
+              id: "console-demo-addon",
+              name: "Console Demo Add-in",
+              version: "0.1.0",
+              description: "A temporary add-in registered directly from the browser console for UI testing.",
+              status: "installed",
+              statusMessage: "Registered from the browser console.",
+              panelTitle: "Console Demo Add-in",
+              panelBody:
+                "This panel was created through the project add-on console registerDemo(). You can also call register({...}) manually with your own id, name, status, description, and panelBody.",
+              panelToastLabel: "Trigger Main Toast",
+              panelToastMessage: "Toast fired from Console Demo Add-in via main script.",
+              capabilities: ["toast", "storage", "observer"],
+            },
+          });
+        },
+      };
+    })();
+  `;
+}
+
+export function initAddonsBridgeServer({
+  marker,
+  devCommandEvent,
+  apiVersion,
+  isServiceDisabled,
+  getCoreActionThrottleConfig,
+  onRegister,
+  onUnregister,
+  onUpdateStatus,
+  onTeardownComplete,
+  onInvokeCoreAction,
+}) {
+  if (!isBridgeListenerBound) {
+    bridgeListener = (event) => {
+      const detail = event?.detail || {};
+      const type = String(detail.type || "").trim();
+      if (!ADDON_LEGACY_PROTOCOL && (detail.projectId !== ADDON_PROJECT_ID || detail.marker !== marker || detail.protocolVersion !== apiVersion || (type !== "ping" && detail.instanceId !== ADDON_INSTANCE_ID))) return;
+        typeBridgeListener(
+          type,
+          detail,
+          apiVersion, marker,
+          isServiceDisabled,
+          getCoreActionThrottleConfig,
+          onRegister,
+          onUnregister,
+          onUpdateStatus,
+        onTeardownComplete,
+        onInvokeCoreAction,
+      );
+    };
+    bridgeEventName = devCommandEvent;
+    window.addEventListener(devCommandEvent, bridgeListener);
+
+    isBridgeListenerBound = true;
+  }
+
+  if (!ADDON_LEGACY_PROTOCOL && policy.developmentAccess !== true) return { ok: true, transport: "custom-event", console: false };
+  return ensurePageBridge({
+    marker,
+    scriptContent: createBridgeScript(devCommandEvent, apiVersion, marker),
+  });
+}
+
+export function shutdownAddonsBridgeServer() {
+  if (bridgeListener && bridgeEventName) window.removeEventListener(bridgeEventName, bridgeListener);
+  bridgeListener = null;
+  bridgeEventName = "";
+  isBridgeListenerBound = false;
+  replayCache.clear();
+  addonActionTimestamps.clear();
+  addonInflight.clear();
+  addonStatusTimestamps.clear();
+  addonRegisterTimestamps.clear();
+  addonUnregisterTimestamps.clear();
+  lastAddonRequest = null;
+}
+
+export function getAddonsBridgeDiagnostics() {
+  return Object.freeze({ listenerBound: isBridgeListenerBound, activeRequestAddons: addonInflight.size, lastRequest: lastAddonRequest && { ...lastAddonRequest } });
+}
+
+function typeBridgeListener(
+  type,
+  detail = {},
+  apiVersion,
+  marker,
+  isServiceDisabled,
+  getCoreActionThrottleConfig,
+  onRegister,
+  onUnregister,
+  onUpdateStatus,
+  onTeardownComplete,
+  onInvokeCoreAction,
+) {
+  const serviceDisabled = typeof isServiceDisabled === "function" ? Boolean(isServiceDisabled()) : false;
+  if (serviceDisabled) {
+    if (type === "ping") {
+      const replyEvent = String(detail.replyEvent || "").trim();
+      if (!replyEvent) return;
+      window.dispatchEvent(
+        new CustomEvent(replyEvent, {
+          detail: { ok: false, reason: "addons_service_disabled", apiVersion },
+        }),
+      );
+      return;
+    }
+
+    if (type === "core-action") {
+      const replyEvent = String(detail.replyEvent || "").trim();
+      if (!replyEvent) return;
+      window.dispatchEvent(
+        new CustomEvent(replyEvent, {
+          detail: { ok: false, reason: "addons_service_disabled" },
+        }),
+      );
+      return;
+    }
+
+    if (type === "teardown-complete") {
+      onTeardownComplete?.(detail.addonId, detail.reason || "");
+    }
+
+    return;
+  }
+
+  let key = "";
+  if (type === "register") {
+    key = String(detail.addon?.id || "").trim();
+    if (!key) return;
+  } else if (type !== "ping") {
+    key = String(detail.addonId || "").trim();
+    if (!key) return;
+  }
+
+  switch (type) {
+    case "ping": {
+      const replyEvent = String(detail.replyEvent || "").trim();
+      if (!replyEvent) return;
+      window.dispatchEvent(
+        new CustomEvent(replyEvent, {
+          detail: {
+            ok: true,
+            apiVersion,
+            ...(ADDON_LEGACY_PROTOCOL ? {} : { projectId: ADDON_PROJECT_ID, instanceId: ADDON_INSTANCE_ID }),
+          },
+        }),
+      );
+      break;
+    }
+    case "register": {
+      if (
+        !checkRateLimit(addonRegisterTimestamps, key, REGISTER_RATE_WINDOW_MS, REGISTER_RATE_MAX)
+      ) {
+        return;
+      }
+      onRegister?.(detail.addon || {});
+      break;
+    }
+    case "unregister": {
+      if (
+        !checkRateLimit(
+          addonUnregisterTimestamps,
+          key,
+          UNREGISTER_RATE_WINDOW_MS,
+          UNREGISTER_RATE_MAX,
+        )
+      ) {
+        return;
+      }
+      onUnregister?.(detail.addonId);
+      break;
+    }
+    case "update-status": {
+      if (
+        !checkRateLimit(
+          addonStatusTimestamps,
+          key,
+          STATUS_UPDATE_RATE_WINDOW_MS,
+          STATUS_UPDATE_RATE_MAX,
+        )
+      ) {
+        return;
+      }
+      onUpdateStatus?.(detail.addonId, detail.status, detail.statusMessage || "");
+      break;
+    }
+    case "teardown-complete": {
+      onTeardownComplete?.(detail.addonId, detail.reason || "");
+      break;
+    }
+    case "core-action": {
+      const throttleConfig =
+        typeof getCoreActionThrottleConfig === "function"
+          ? getCoreActionThrottleConfig()
+          : {
+              windowMs: CORE_ACTION_RATE_WINDOW_MS,
+              maxCount: CORE_ACTION_RATE_MAX,
+              maxConcurrent: CORE_ACTION_MAX_CONCURRENT,
+            };
+      const replyEvent = String(detail.replyEvent || "").trim();
+      if (!replyEvent) return;
+      const validation = validateAddonRequestEnvelope(detail, { apiVersion, marker, instanceId: ADDON_INSTANCE_ID });
+      if (!validation.ok) {
+        recordHealthEvent({ code: "ADDON_REQUEST_REJECTED", severity: "warning", ownerId: String(detail.addonId || ""), subsystem: "addons", message: validation.reason, correlationId: String(detail.requestId || "") });
+        window.dispatchEvent(new CustomEvent(replyEvent, { detail: createSafeAddonResponse({ apiVersion, instanceId: ADDON_INSTANCE_ID, addonId: detail.addonId, requestId: detail.requestId, result: { ok: false, reason: validation.reason } }) }));
+        return;
+      }
+      if (replayCache.seen(detail.addonId, detail.requestId)) {
+        recordHealthEvent({ code: "ADDON_DUPLICATE_REQUEST", severity: "warning", ownerId: detail.addonId, subsystem: "addons", message: "Duplicate add-on request", correlationId: detail.requestId });
+        window.dispatchEvent(new CustomEvent(replyEvent, { detail: createSafeAddonResponse({ apiVersion, instanceId: ADDON_INSTANCE_ID, addonId: detail.addonId, requestId: detail.requestId, result: { ok: false, reason: "duplicate_request" } }) }));
+        return;
+      }
+      const action = String(detail.action || "").trim();
+      lastAddonRequest = { addonId: key, action, correlationId: detail.requestId, receivedAt: Date.now() };
+      recordHealthEvent({ code: "ADDON_REQUEST", severity: "info", ownerId: key, subsystem: "addons", message: `Action ${action}`, correlationId: detail.requestId, operationId: action });
+      const isCleanupAction = UNTHROTTLED_CLEANUP_ACTIONS.has(action);
+      if (
+        !isCleanupAction &&
+        !checkRateLimit(
+          addonActionTimestamps,
+          key,
+          throttleConfig.windowMs,
+          throttleConfig.maxCount,
+        )
+      ) {
+        window.dispatchEvent(
+          new CustomEvent(replyEvent, { detail: createSafeAddonResponse({ apiVersion, instanceId: ADDON_INSTANCE_ID, addonId: key, requestId: detail.requestId, result: { ok: false, reason: "rate_limited" } }) }),
+        );
+        return;
+      }
+      if (!isCleanupAction && !tryAcquireInflight(key, throttleConfig.maxConcurrent)) {
+        window.dispatchEvent(
+          new CustomEvent(replyEvent, {
+            detail: createSafeAddonResponse({ apiVersion, instanceId: ADDON_INSTANCE_ID, addonId: key, requestId: detail.requestId, result: { ok: false, reason: "too_many_concurrent_requests" } }),
+          }),
+        );
+        return;
+      }
+      Promise.resolve(
+        onInvokeCoreAction?.(key, action, detail.payload || {}) || {
+          ok: false,
+          reason: "unsupported_action",
+        },
+      )
+        .then((result) => {
+          if (!isCleanupAction) releaseInflight(key);
+          window.dispatchEvent(new CustomEvent(replyEvent, { detail: createSafeAddonResponse({ apiVersion, instanceId: ADDON_INSTANCE_ID, addonId: key, requestId: detail.requestId, result }) }));
+        })
+        .catch(() => {
+          if (!isCleanupAction) releaseInflight(key);
+          window.dispatchEvent(
+            new CustomEvent(replyEvent, { detail: createSafeAddonResponse({ apiVersion, instanceId: ADDON_INSTANCE_ID, addonId: key, requestId: detail.requestId, result: { ok: false, reason: "internal_error" } }) }),
+          );
+        });
+      break;
+    }
+  }
+}
