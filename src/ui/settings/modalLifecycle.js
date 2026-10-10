@@ -23,7 +23,7 @@ export function ensureModalSkeletonInjected() {
 }
 
 export function refreshModalAddonsUi(shadowRoot) {
-  policy.refreshAddonsUi?.(shadowRoot, {
+  if (__APERTURE_ADDONS__) policy.refreshAddonsUi?.(shadowRoot, {
     getRegisteredAddons: policy.getRegisteredAddons,
     getPinnedAddonIds: policy.getPinnedAddonIds,
     syncActiveSettingsPanel,
@@ -35,7 +35,7 @@ export function bindModalUiOnce(shadowRoot) {
   if (!shadowRoot || !host || host.dataset.settingsUiBound) return;
 
   initSettingsPanelNavigation(shadowRoot);
-  policy.initAddinsPanelActions?.(shadowRoot, {
+  if (__APERTURE_ADDONS__) policy.initAddinsPanelActions?.(shadowRoot, {
     setActivePanel: (panelId) => setActivePanel(shadowRoot, panelId),
     refreshAddonsUi: () => refreshModalAddonsUi(shadowRoot),
   });
@@ -61,8 +61,9 @@ export function bindModalUiOnce(shadowRoot) {
 
 export function refreshModalDynamicSections(shadowRoot) {
   if (!shadowRoot) return;
-  policy.updateRegisteredAddons?.(null, { refreshAddonsUi: () => refreshModalAddonsUi(shadowRoot) });
+  if (__APERTURE_ADDONS__) policy.updateRegisteredAddons?.(null, { refreshAddonsUi: () => refreshModalAddonsUi(shadowRoot) });
   renderAllSettingsSections();
+  syncActiveSettingsPanel(shadowRoot);
   syncStorageReadOnlyState(shadowRoot);
   policy.ensureTagsPanelDataLoaded?.();
 }

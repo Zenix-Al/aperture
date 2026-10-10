@@ -19,6 +19,44 @@ const {
 const { writeOutputs } = require("../build/writeOutputs.cjs");
 const ROOT = path.resolve(__dirname, "..");
 const TMP = path.join(__dirname, ".tmp-project-build");
+
+test('addons is a strict optional boolean; excluded projects need no manifest or catalog paths', () => {
+  const f = fixture();
+  try {
+    for (const value of ['false', null, {}, 0]) {
+      f.config.addons = value; f.save(); assert.throws(() => f.load(), /addons: must be a boolean/);
+    }
+    f.config.addons = false;
+    fs.rmSync(path.join(f.root, f.config.build.addonsManifest));
+    for (const key of ['addonsManifest', 'catalogDir', 'cacheFile']) delete f.config.build[key];
+    write(f.root, 'config.json', f.config);
+    const project = f.load(); assert.equal(project.addons, false); assert.deepEqual(catalog.readProjectManifest(project), []);
+  } finally { f.dispose(); }
+});
+
+test('core-only example excludes every platform implementation and asset in regular and release builds', async () => {
+  const optional = require('./optional-addons-helpers.cjs');
+  const enabled = await optional.bundle({ enabled: true });
+  assert(enabled.inputs.includes('src/services/addonsService.js'));
+  for (const release of [false, true]) {
+    const built = await optional.bundle({ release });
+    assert(!built.inputs.some(file => /^(?:addons\/|src\/services\/addons(?:\/|Service)|src\/ui\/components\/addons\/|src\/ui\/renderers\/addonsRenderer|src\/config\/addonSchema)/.test(file)));
+    for (const file of ['src/main.js', 'src/loader.js', 'src/core/observer.js', 'src/core/taskQueue.js', 'src/services/settingsService.js', 'src/ui/components/modal.js']) assert(built.inputs.includes(file), file);
+    for (const marker of ['installedMeta', 'trustedIds', 'addins-panel', 'settings-nav-pinned-group', 'Add-ons service settings', 'Add-on Health (installed only)', 'aperture-page-dock-addon-slot']) assert(!built.code.includes(marker), marker);
+    assert(built.code.length < enabled.code.length * .75);
+    const result = await coreBuilder.main(['--config', optional.CONFIG, '--smoke', ...(release ? ['--release'] : [])]);
+    assert.equal(result.artifacts.length, 2);
+    for (const artifact of result.artifacts) assert(!artifact.contents.includes('installedMeta'));
+  }
+  const addons = await addonBuilder.main(['--config', optional.CONFIG, '--all', '--smoke']);
+  assert.deepEqual(addons.artifacts, []);
+});
+
+test('excluded platform rejects a direct project import instead of silently bundling it', async () => {
+  const esbuild = require('esbuild'), project = loadProject({ rootDir: ROOT, configFile: 'projects/example/core-only.json' });
+  await assert.rejects(esbuild.build({ stdin: { contents: "import './src/services/addonsService.js';", resolveDir: ROOT }, bundle: true, write: false,
+    plugins: [require('../build/projectInputs.cjs').projectInputs(project)], logLevel: 'silent' }), /excluded by addons:false/);
+});
 fs.mkdirSync(TMP, { recursive: true });
 function write(root, relative, value) {
   const file = path.join(root, relative);

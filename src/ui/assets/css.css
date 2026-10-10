@@ -525,12 +525,14 @@
   color: var(--aperture-text-muted, #8f959e);
 }
 
+/* aperture:addons:start */
 .settings-nav-pinned-items {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/* aperture:addons:end */
 .settings-nav-item {
   appearance: none;
   border: 1px solid transparent;
@@ -559,6 +561,7 @@
   color: var(--aperture-text-primary, #fff);
 }
 
+/* aperture:addons:start */
 .settings-nav-item.settings-nav-addon-item {
   position: relative;
   padding-right: 34px;
@@ -577,6 +580,7 @@
   opacity: 0.85;
 }
 
+/* aperture:addons:end */
 .settings-sidebar-footer {
   margin-top: auto;
   padding: 8px 2px 2px;
@@ -623,6 +627,7 @@
   padding-left: 0;
 }
 
+/* aperture:addons:start */
 .addins-panel-section + .addins-panel-section {
   margin-top: 20px;
 }
@@ -920,6 +925,7 @@
   color: var(--aperture-text, #edf0f3);
 }
 
+/* aperture:addons:end */
 @media (max-width: 760px) {
   #tag-config-modal {
     padding: 0;
@@ -957,6 +963,7 @@
     margin-top: 6px;
   }
 
+  /* aperture:addons:start */
   .settings-nav-item.settings-nav-addon-item {
     padding-right: 12px;
   }
@@ -965,6 +972,7 @@
     display: inline;
   }
 
+  /* aperture:addons:end */
   /* Color panel keeps its own larger spacing */
   .settings-panel:not(#settings-panel-color):not(#settings-panel-addins) .config-row label {
     line-height: 1.35;

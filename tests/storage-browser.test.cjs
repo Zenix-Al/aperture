@@ -6,6 +6,54 @@ const path = require('node:path');
 const { chromium } = require('playwright');
 const { ROOT, bundle } = require('./storage-helpers.cjs');
 
+test('Chromium Web Locks coordinate concurrent settings writes from two independent same-origin tabs', async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const context = await browser.newContext();
+    await context.route('https://example.org/**', route => route.fulfill({ contentType: 'text/html', body: '<main>Cross-tab settings</main>' }));
+    await context.addInitScript(() => { globalThis.GM = {
+      info: { scriptHandler: 'browser regression fixture' },
+      getValue: async (key, fallback) => { const value = localStorage.getItem(key); return value === null ? fallback : JSON.parse(value); },
+      setValue: async (key, value) => localStorage.setItem(key, JSON.stringify(value)), deleteValue: async key => localStorage.removeItem(key),
+    }; });
+    const pages = [await context.newPage(), await context.newPage()], code = (await bundle({ sample: true })).outputFiles[0].text;
+    for (const page of pages) { await page.goto('https://example.org/articles/concurrent'); await page.addScriptTag({ content: code }); await page.evaluate(() => __storage.bootstrap.startStorageBootstrap()); }
+    const results = await Promise.all(pages.map((page, index) => page.evaluate(index => __storage.settings.updateConfig(draft => {
+      draft.preferences.pageSize += 1;
+      if (index === 0) draft.exampleEnabled = false;
+      else draft.preferences.token = 'fresh';
+    }), index)));
+    assert(results.every(result => result.committed));
+    const data = await pages[0].evaluate(() => JSON.parse(localStorage.getItem(__storage.keys.CONFIG_STORAGE_KEYS.current)).data);
+    assert.equal(data.preferences.pageSize, 22); assert.equal(data.exampleEnabled, false); assert.equal(data.preferences.token, 'fresh');
+  } finally { await browser.close(); }
+});
+
+test('Chromium IndexedDB aborts failed bulk callbacks and never leaves a partial write', async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage(), errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.route('https://example.org/**', route => route.fulfill({ contentType: 'text/html', body: '<main>IDB regression</main>' }));
+    await page.goto('https://example.org/articles/idb');
+    await page.addScriptTag({ content: (await bundle({ sample: true })).outputFiles[0].text });
+    const result = await page.evaluate(async () => {
+      let failed = false;
+      try {
+        await __storage.idb.idbBulkPutForAddon('addon-one', { dbName: 'rollback', entries: [
+          { value: { id: 'first', value: 'must roll back' } }, { value: { id: 'second', uncloneable: () => {} } },
+        ] });
+      } catch { failed = true; }
+      const first = await __storage.idb.idbGetForAddon('addon-one', { dbName: 'rollback', key: 'first' });
+      let synchronousFailure = false;
+      try { await __storage.idb.idbPutForAddon('addon-one', { dbName: 'rollback', value: {} }); } catch { synchronousFailure = true; }
+      return { failed, absent: first === undefined, synchronousFailure, count: await __storage.idb.idbCountForAddon('addon-one', { dbName: 'rollback' }) };
+    });
+    assert.deepEqual(result, { failed: true, absent: true, synchronousFailure: true, count: 0 });
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); }
+});
+
 test('Chromium sample boots original main, persists across reloads, transfers safely, isolates namespace and fails closed without GM', async () => {
   const browser = await chromium.launch({ headless: true });
   const evidence = { managerInstalled: false, browser: 'Chromium headless', storageBackend: 'GM stand-in backed by origin localStorage; disposable intercepted example.org', checks: [] };

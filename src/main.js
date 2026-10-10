@@ -131,7 +131,7 @@ async function runFastBootstrap() {
       fallback: () => null,
     },
     {
-      id: "initAddonsConsoleBridge",
+      id: __APERTURE_ADDONS__ ? "initAddonsConsoleBridge" : "initExtensions",
       classification: "optional",
       timeoutMs: 5000,
       run: () => application.extensions?.init?.(),

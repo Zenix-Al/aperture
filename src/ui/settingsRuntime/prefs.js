@@ -13,7 +13,7 @@ export function getDefaultSettingsPanelId() {
 }
 
 export async function persistSettingsUiValue(key, value) {
-  if (![SETTINGS_ACTIVE_PANEL_STORAGE_KEY, SETTINGS_PINNED_ADDONS_STORAGE_KEY].includes(key)) return false;
+  if (![SETTINGS_ACTIVE_PANEL_STORAGE_KEY, ...(__APERTURE_ADDONS__ ? [SETTINGS_PINNED_ADDONS_STORAGE_KEY] : [])].includes(key)) return false;
   const access = await waitForStorageWriteAccess();
   if (!access.ok) return false;
   try {
@@ -35,7 +35,7 @@ export async function ensureSettingsUiPrefsLoaded() {
     );
   } catch {}
 
-  try {
+  if (__APERTURE_ADDONS__) try {
     const storedPins = await storageAdapter.get(SETTINGS_PINNED_ADDONS_STORAGE_KEY, []);
     if (Array.isArray(storedPins)) {
       pinnedAddonIds = storedPins.map((id) => String(id || "").trim()).filter(Boolean);
@@ -43,6 +43,6 @@ export async function ensureSettingsUiPrefsLoaded() {
   } catch {}
 
   stateManager.set("settingsActivePanel", activePanel || DEFAULT_SETTINGS_PANEL);
-  stateManager.set("settingsPinnedAddonIds", [...new Set(pinnedAddonIds)]);
+  if (__APERTURE_ADDONS__) stateManager.set("settingsPinnedAddonIds", [...new Set(pinnedAddonIds)]);
   stateManager.set("settingsUiPrefsLoaded", true);
 }

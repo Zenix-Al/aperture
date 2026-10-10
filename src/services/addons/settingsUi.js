@@ -1,5 +1,4 @@
 import {
-  config,
   defaultAddonsApiThrottleSettings,
 } from "../../config.js";
 import { openConfirmDialog, openSettingsDialog } from "../../ui/components/dialog.js";
@@ -8,7 +7,7 @@ import {
   createToggleSetting,
 } from "../../ui/settings/metaFactory.js";
 import { resourceManager } from "../../core/resourceManager.js";
-import { saveConfigKeys } from "../settingsService.js";
+import { updateConfig } from "../settingsService.js";
 import {
   disableAddonsService,
   initAddonsConsoleBridge,
@@ -119,13 +118,9 @@ async function resetAddonsApiThrottleDefaults() {
   }
 
   resetThrottleConfirmUntil = 0;
-  const addons = JSON.parse(JSON.stringify(config.addons || {}));
-  const serviceConfig = addons.service && typeof addons.service === "object" ? addons.service : {};
-  addons.service = {
-    ...serviceConfig,
-    apiThrottle: { ...defaultAddonsApiThrottleSettings },
-  };
-  const persisted = await saveConfigKeys({ addons });
+  const persisted = await updateConfig(draft => {
+    draft.addons.service.apiThrottle = { ...defaultAddonsApiThrottleSettings };
+  }, { origin: "addons:reset-throttle" });
   if (!persisted.committed) return;
   addonsServiceSettingsDialog?.close();
   addonsServiceSettingsDialog = null;

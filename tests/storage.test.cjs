@@ -4,6 +4,157 @@ const { environment, manager, schema, plain } = require('./storage-helpers.cjs')
 const boot = e => e.api.bootstrap.startStorageBootstrap();
 const documentFor = e => plain(e.api.transfer.buildConfigExport());
 
+test('independent tabs serialize fresh read-modify-write and reject stale whole candidates', async () => {
+  const map = new Map(), first = await environment({ map }); await boot(first);
+  const second = await environment({ map }); await boot(second);
+  const stale = plain(second.api.state.config);
+  const results = await Promise.all([
+    first.api.settings.updateConfig(draft => { draft.count += 1; draft.preferences.title = 'first tab'; }),
+    second.api.settings.updateConfig(draft => { draft.count += 1; draft.enabled = false; }),
+  ]);
+  assert(results.every(result => result.committed));
+  const key = first.api.keys.CONFIG_STORAGE_KEYS.current;
+  assert.equal(map.get(key).data.count, 4);
+  assert.equal(map.get(key).data.preferences.title, 'first tab');
+  assert.equal(map.get(key).data.enabled, false);
+  await second.api.settings.updateConfig(draft => { draft.count = 10; });
+  const writes = first.gm.operations.filter(([op]) => op === 'set').length;
+  assert.equal((await first.api.settings.commitConfig(stale)).failed[0].code, 'config_stale_candidate');
+  assert.equal((await first.api.settings.saveConfigKeys({ preferences: stale.preferences })).failed[0].code, 'config_stale_candidate');
+  assert.equal(first.gm.operations.filter(([op]) => op === 'set').length, writes);
+  assert.equal(map.get(key).data.count, 10);
+});
+
+test('insecure or lockless environments load read-only without canonical or backup mutation', async () => {
+  const first = await environment(); await boot(first);
+  for (const options of [{ secureContext: false }, { noLocks: true }]) {
+    const e = await environment({ map: first.gm.map, ...options });
+    const before = plain([...e.gm.map.entries()]);
+    assert.equal((await boot(e)).state, 'degraded-readonly');
+    assert.equal((await e.api.settings.updateConfig(draft => { draft.count = 20; })).committed, false);
+    assert.deepEqual(plain([...e.gm.map.entries()]), before);
+    assert(!e.gm.operations.some(([op, key]) => op === 'set' && key === e.api.keys.CONFIG_STORAGE_KEYS.current));
+  }
+});
+
+test('failed backup write-back retains recovered settings and exact backup without claiming commitment', async () => {
+  const first = await environment(); await boot(first);
+  await first.api.settings.updateConfig(draft => { draft.count = 19; });
+  await first.api.settings.updateConfig(draft => { draft.count = 20; });
+  const keys = first.api.keys.CONFIG_STORAGE_KEYS, backup = plain(first.gm.map.get(keys.backup));
+  first.gm.map.set(keys.current, { broken: true });
+  const e = await environment({ map: first.gm.map, hooks: { set: key => { if (key === keys.current) throw new Error('blocked'); } } });
+  assert.equal((await boot(e)).state, 'degraded-readonly');
+  assert.equal(e.api.state.config.count, 19);
+  assert.equal((await e.api.settings.loadConfig()).persisted, false);
+  assert.deepEqual(e.gm.map.get(keys.backup), backup);
+  assert.equal((await e.api.settings.updateConfig(draft => { draft.count = 21; })).committed, false);
+});
+
+test('cross-tab cache-only changes refresh inside the lock and stale cache snapshots cannot overwrite them', async () => {
+  const definition = { schema: { ...schema, records: { type: 'array', defaultValue: [], items: { type: 'string', defaultValue: '' } } }, caches: { records: true } };
+  const map = new Map(), first = await environment({ map, definition }); await boot(first);
+  const second = await environment({ map, definition }); await boot(second);
+  assert.equal((await first.api.settings.saveConfigKeys({ records: ['one'] })).committed, true);
+  assert.equal((await second.api.settings.saveConfigKeys({ records: ['stale'] })).failed[0].code, 'config_stale_candidate');
+  assert.equal((await second.api.settings.updateConfig(draft => { draft.records = [...draft.records, 'two']; }, { persistRuntimeCatalogs: ['records'] })).committed, true);
+  assert.deepEqual(plain(map.get(first.api.keys.getCacheStorageKey('records'))), ['one', 'two']);
+  const current = plain(map.get(first.api.keys.CONFIG_STORAGE_KEYS.current)); current.revision += 1; current.data.count = 'invalid'; map.set(first.api.keys.CONFIG_STORAGE_KEYS.current, current);
+  assert.equal((await first.api.settings.updateConfig(draft => { draft.count = 8; })).failed[0].code, 'config_stale_canonical_invalid');
+});
+
+test('failed mixed cache/config commits roll back cache writes and never expose staged cache mutations', async () => {
+  const definition = { schema: { ...schema, records: { type: 'array', defaultValue: [], items: { type: 'string', defaultValue: '' } } }, caches: { records: true } };
+  const e = await environment({ definition }); await boot(e);
+  await e.api.settings.saveConfigKeys({ records: ['kept'] });
+  const keys = e.api.keys.CONFIG_STORAGE_KEYS, cacheKey = e.api.keys.getCacheStorageKey('records');
+  e.gm.hooks.set = key => { if (key === keys.current) throw new Error('blocked'); };
+  assert.equal((await e.api.settings.saveConfigKeys({ records: ['staged'], count: 3 })).committed, false);
+  assert.deepEqual(plain(e.api.state.config.records), ['kept']); assert.deepEqual(e.gm.map.get(cacheKey), ['kept']); assert.equal(e.api.state.config.count, 2);
+  assert.equal((await e.api.settings.updateConfig(draft => { draft.records.push('staged'); }, { persistRuntimeCatalogs: ['records'] })).committed, false);
+  assert.deepEqual(plain(e.api.state.config.records), ['kept']); assert.deepEqual(e.gm.map.get(cacheKey), ['kept']);
+});
+
+test('staged add-on deltas and installation sightings merge into fresh state without losing another tab', async () => {
+  const map = new Map(), first = await environment({ map }); await boot(first);
+  const second = await environment({ map }); await boot(second);
+  first.api.addonState.ensureAddonStateBucket('addon-one').bookmark = { path: '/one' };
+  await second.api.addonState.setAddonStateValue('addon-two', 'theme', 'dark');
+  await second.api.addonState.setAddonStateValue('addon-one', 'reminder', true);
+  assert.equal((await first.api.addonState.persistAddonsState()).ok, true);
+  const data = map.get(first.api.keys.CONFIG_STORAGE_KEYS.current).data;
+  assert.equal(data.addons.byAddon['addon-one'].state.bookmark.path, '/one');
+  assert.equal(data.addons.byAddon['addon-one'].state.reminder, true);
+  assert.equal(data.addons.byAddon['addon-two'].state.theme, 'dark');
+  await first.api.addonState.upsertInstalledAddonMeta('addon-one', { installedSeenAt: 100, lastSeenAt: 300 });
+  await second.api.addonState.upsertInstalledAddonMeta('addon-one', { installedSeenAt: 200, lastSeenAt: 250 });
+  const meta = map.get(first.api.keys.CONFIG_STORAGE_KEYS.current).data.addons.installedMeta['addon-one'];
+  assert.equal(meta.installedSeenAt, 100); assert.equal(meta.lastSeenAt, 300);
+});
+
+test('partial config import preserves fresh sensitive and omitted fields from another tab', async () => {
+  const map = new Map(), first = await environment({ map }); await boot(first);
+  const second = await environment({ map }); await boot(second);
+  const input = documentFor(first); input.settings = { preferences: { title: 'imported' } };
+  await second.api.settings.updateConfig(draft => { draft.count = 18; draft.preferences.secret = 'fresh secret'; });
+  assert.equal((await first.api.transfer.commitConfigImport(input)).ok, true);
+  assert.equal(first.api.state.config.preferences.secret, 'fresh secret'); assert.equal(first.api.state.config.count, 18);
+});
+
+test('JSON file imports reject oversized and wrong-type files before reading and handle reader failure', async () => {
+  const e = await environment(); let reads = 0;
+  const file = { name: 'settings.json', type: 'application/json', size: 5 * 1024 * 1024 + 1, text: async () => { reads++; return '{}'; } };
+  assert.equal((await e.api.transferIO.readJsonImportFile(file)).ok, false); assert.equal(reads, 0);
+  assert.equal((await e.api.transferIO.readJsonImportFile({ ...file, name: 'a.txt', type: 'text/plain', size: 2 })).ok, false); assert.equal(reads, 0);
+  assert.equal((await e.api.transferIO.readJsonImportFile({ ...file, size: 2 })).text, '{}');
+  assert.match((await e.api.transferIO.readJsonImportFile({ ...file, size: 2, text: async () => { throw new Error('private details'); } })).message, /could not read/);
+});
+
+test('picker cancellation releases focus timers; delayed selections and download URLs retain their lifetime', async () => {
+  const e = await environment(), { Window } = require('happy-dom');
+  const window = new Window({ url: 'https://example.org/' }), clock = require('./helpers.cjs').createFakeClock();
+  const revoked = []; let sequence = 0;
+  Object.assign(e.sandbox, { window, document: window.document, Blob, setTimeout: clock.setTimeout, clearTimeout: clock.clearTimeout,
+    URL: { createObjectURL: () => `blob:fixture-${++sequence}`, revokeObjectURL: url => revoked.push(url) } });
+  try {
+    const picker = e.api.transferIO.createJsonFilePicker(), input = window.document.querySelector('input');
+    window.dispatchEvent(new window.Event('focus')); await clock.tick(350);
+    assert(input.isConnected);
+    const file = { name: 'chosen.json' }; Object.defineProperty(input, 'files', { value: [file] });
+    input.dispatchEvent(new window.Event('change'));
+    assert.equal(await picker.promise, file); assert.equal(clock.pending(), 0);
+    const cancelled = e.api.transferIO.createJsonFilePicker();
+    window.dispatchEvent(new window.Event('focus'));
+    window.document.querySelector('input').dispatchEvent(new window.Event('cancel'));
+    assert.equal(await cancelled.promise, null); assert.equal(clock.pending(), 0);
+    const first = e.api.transferIO.downloadJsonFile('first.json', '{}');
+    const second = e.api.transferIO.downloadJsonFile('second.json', '{}');
+    await clock.tick(9999); assert.deepEqual(revoked, []);
+    first(); first(); assert.deepEqual(revoked, ['blob:fixture-1']);
+    await clock.tick(1); assert.deepEqual(revoked, ['blob:fixture-1', 'blob:fixture-2']);
+    second(); assert.equal(clock.pending(), 0);
+  } finally { await window.close(); }
+});
+
+test('IndexedDB completion observed before callback resolution still settles successfully', async () => {
+  const e = await environment();
+  const db = { close() {}, transaction() {
+    const tx = { abort() {}, objectStore() { return { get() {
+      const request = {};
+      queueMicrotask(() => { tx.oncomplete(); request.result = 'retained result'; request.onsuccess(); });
+      return request;
+    } }; } };
+    return tx;
+  } };
+  e.sandbox.indexedDB = { open() { const request = {}; queueMicrotask(() => { request.result = db; request.onsuccess(); }); return request; } };
+  const value = await Promise.race([
+    e.api.idb.idbGetForAddon('addon-one', { key: 'one' }),
+    new Promise((_, reject) => { const timer = setTimeout(() => reject(new Error('transaction completion was missed')), 1000); timer.unref(); }),
+  ]);
+  assert.equal(value, 'retained result');
+  e.api.idb.resetAddonDatabaseCacheForTests();
+});
+
 test('generic schema keeps original strict/tolerant validation and path metadata without product fields', async () => {
   const e = await environment(), api = e.api.schema;
   assert.equal(api.validateConfig(api.getDefaultConfig(), { mode: 'strict' }).valid, true);

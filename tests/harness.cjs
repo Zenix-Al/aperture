@@ -196,8 +196,16 @@ function createFakeDocument({ withBody = false } = {}) {
 }
 
 
+let finished = false;
+process.on("exit", () => {
+  if (finished) return;
+  console.error("Test run stopped early: unsettled tests remain (" + passed + " passed, " + failed + " failed).");
+  process.exitCode = 1;
+});
+
 function finish() {
   return testChain.then(() => {
+    finished = true;
     console.log("\nTest results: " + passed + " passed, " + failed + " failed");
     if (failed > 0) process.exitCode = 1;
   });

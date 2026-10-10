@@ -81,3 +81,14 @@ test('source size audits ignore checkout line endings but detect real growth', a
     fs.rmSync(directory, { recursive: true, force: true });
   }
 });
+test('custom runner fails when a test promise never settles before process exit', () => {
+  const child = require('node:child_process').spawnSync(process.execPath, ['-e', `
+    const harness = require('./tests/harness.cjs');
+    harness.runTest('unsettled fixture', () => new Promise(() => {}));
+    harness.finish();
+  `], { cwd: require('node:path').resolve(__dirname, '..'), encoding: 'utf8', timeout: 120000, windowsHide: true });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 1);
+  assert.match(child.stderr, /unsettled tests remain/);
+  assert(!child.stdout.includes('Test results:'));
+});

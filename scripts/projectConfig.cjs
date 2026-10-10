@@ -308,6 +308,7 @@ function loadProject({
     "routes",
     "theme",
     "addonUpdates",
+    "addons",
   ]);
   if (config.schemaVersion !== 1) fail("schemaVersion", "must be 1");
   for (const key of ["id", "storageNamespace"])
@@ -317,6 +318,7 @@ function loadProject({
     )
       fail(key, "requires a lowercase machine identifier (2–64 characters)");
   metadata(config.metadata);
+  if (config.addons !== undefined && typeof config.addons !== "boolean") fail("addons", "must be a boolean");
   if (config.addonUpdates !== undefined) {
     object(config.addonUpdates, "addonUpdates", ["catalogURL"]);
     if (config.addonUpdates.catalogURL !== undefined) {
@@ -350,13 +352,17 @@ function loadProject({
     "catalogDir",
     "cacheFile",
   ])
-    resolved[key] = repositoryPath(root, config.build[key], `build.${key}`, {
+    resolved[key] = repositoryPath(root, config.build[key] ?? (config.addons === false ? {
+      addonsManifest: `${path.posix.dirname(config.build.featuresDir)}/addons.manifest.json`,
+      catalogDir: `${path.posix.dirname(config.build.featureManifest)}/catalog`,
+      cacheFile: `${path.posix.dirname(config.build.featureManifest)}/addon-build-cache.json`,
+    }[key] : undefined), `build.${key}`, {
       exists: [
         "entry",
         "featuresDir",
         "versionFile",
         "addonsManifest",
-      ].includes(key),
+      ].includes(key) && !(key === "addonsManifest" && config.addons === false),
       directory: ["featuresDir", "outputDir", "catalogDir"].includes(key),
       writable: !["entry", "featuresDir"].includes(key),
     });

@@ -15,6 +15,7 @@ import {
 } from "../config/schema.js";
 import { recordHealthEvent } from "../core/featureHealth.js";
 import { applyConfigChange } from "./configChangeApplication.js";
+import { withConfigWriteLock } from "./configWriteLock.js";
 import {
   classifyLegacyUpgrade,
   CONFIG_MIGRATION_VERSION,
@@ -27,6 +28,8 @@ import {
 import { storageAdapter, storageDiagnosticReason } from "./storageAdapter.js";
 import {
   getStorageFailureMessage,
+  getStorageReadinessSnapshot,
+  publishStorageReadiness,
   waitForStorageWriteAccess,
 } from "./storageReadiness.js";
 
@@ -46,6 +49,8 @@ const MIGRATION_LOCK_TTL_MS = 15000;
 const INITIALIZATION_WAIT_MS = 15000;
 let configLoadPromise = null;
 let configUpdateQueue = Promise.resolve();
+let knownRevision = 0;
+let knownCaches = {};
 
 function cloneConfig(value) {
   return JSON.parse(JSON.stringify(value));
@@ -156,6 +161,8 @@ function buildEnvelope(data, revision) {
 }
 
 async function persistEnvelope(envelope, previousEnvelope = null, authorize) {
+  const initialDenial = authorize?.();
+  if (initialDenial) throw new Error(initialDenial);
   if (previousEnvelope) {
     const backup = {
       ...cloneConfig(previousEnvelope),
@@ -203,6 +210,8 @@ function makeLoadResult(data, details = {}) {
 }
 
 async function applyLoadedConfig(result) {
+  knownRevision = Number(result?.envelope?.revision) || 0;
+  knownCaches = Object.fromEntries(Object.keys(CACHE_CONFIG_KEYS).map(key => [key, cloneConfig(result.data[key])]));
   if (result?.data && isRecord(result.data)) {
     const applied = applyConfigChange(result.data, {
       origin: `load:${result.source}`,
@@ -465,17 +474,25 @@ async function loadFastPath(canonicalRaw) {
       if (!validatedBackup.valid) throw new Error("schema_migration_candidate_invalid");
       const recoveredData = validatedBackup.data;
       const recoveredEnvelope = buildEnvelope(recoveredData, Math.max(Number(canonicalRaw?.revision) || 0, backup.envelope.revision) + 1);
-      await persistEnvelope(recoveredEnvelope);
-      await verifyCanonicalEnvelope(recoveredEnvelope);
+      let persisted = false;
+      try {
+        await persistEnvelope(recoveredEnvelope);
+        await verifyCanonicalEnvelope(recoveredEnvelope);
+        persisted = true;
+      } catch (error) {
+        reportPersistenceHealth("RECOVERY_FAILED", "Recovered backup remains available in read-only mode.", {
+          reason: storageDiagnosticReason(error?.message, "storage_write_failed"),
+        });
+      }
       const caches = await readCachePayloads();
       return applyLoadedConfig(makeLoadResult(mergeRuntimeCaches(recoveredData, caches), {
         source: "backup",
         status: "recovered",
         recovered: true,
         degraded: true,
-        persisted: true,
+        persisted,
         issues: canonical.issues,
-        envelope: recoveredEnvelope,
+        envelope: persisted ? recoveredEnvelope : backup.envelope,
       }));
     }
     const defaults = getDefaultConfig();
@@ -576,7 +593,19 @@ async function loadConfigInternal() {
 }
 
 export async function loadConfig() {
-  if (!configLoadPromise) configLoadPromise = loadConfigInternal();
+  if (!configLoadPromise) configLoadPromise = withConfigWriteLock(loadConfigInternal).catch(async (error) => {
+    if (!String(error?.message).startsWith("config_")) throw error;
+    const raw = await storageAdapter.get(CONFIG_ENVELOPE_KEY, null);
+    const canonical = validateStoredEnvelope(raw);
+    const backup = canonical.valid ? null : validateStoredEnvelope(await storageAdapter.get(CONFIG_BACKUP_KEY, null));
+    const selected = canonical.valid ? canonical : backup;
+    const data = selected?.valid ? selected.data : getDefaultConfig();
+    return applyLoadedConfig(makeLoadResult(mergeRuntimeCaches(data, await readCachePayloads()), {
+      source: canonical.valid ? "canonical" : backup?.valid ? "backup" : "defaults",
+      status: error.message, persisted: false, degraded: true, recovered: !canonical.valid,
+      envelope: selected?.envelope,
+    }));
+  });
   return configLoadPromise;
 }
 
@@ -604,6 +633,45 @@ function notReadyResult(origin, access = {}) {
     previousConfig: cloneRuntimeSnapshot(config),
     config: cloneRuntimeSnapshot(config),
   };
+}
+
+async function refreshConfigIfStale({ rejectStale = false, cacheSections = [] } = {}) {
+  const raw = await storageAdapter.get(CONFIG_ENVELOPE_KEY, null);
+  const revision = Number(raw?.revision) || 0;
+  if (revision < knownRevision || envelopeStructureIssues(raw).length) throw new Error("config_stale_canonical_invalid");
+  const caches = await readCachePayloads();
+  const cacheChanged = Object.keys(CACHE_CONFIG_KEYS).some(key => !storageValuesEqual(
+    validateConfigSection(key, caches[key], { mode: "tolerant" }).data[key], knownCaches[key],
+  ));
+  if ((rejectStale && revision > knownRevision) || cacheSections.some(key => !storageValuesEqual(
+    validateConfigSection(key, caches[key], { mode: "tolerant" }).data[key], knownCaches[key],
+  ))) throw new Error("config_stale_candidate");
+  if (revision <= knownRevision && !cacheChanged) return;
+  const stored = revision > knownRevision ? validateConfigEnvelope(raw) : null;
+  if (stored && !stored.valid) throw new Error("config_stale_canonical_invalid");
+  const next = mergeRuntimeCaches(stored?.data || config, caches);
+  const applied = applyConfigChange(next, { origin: "cross-tab-refresh", notify: false });
+  await applied.effects;
+  knownRevision = Math.max(knownRevision, revision);
+  knownCaches = Object.fromEntries(Object.keys(CACHE_CONFIG_KEYS).map(key => [key, cloneConfig(next[key])]));
+}
+
+async function runLockedConfigWrite(origin, operation, refreshOptions) {
+  const access = await ensureConfigReady();
+  if (!access.ok) return notReadyResult(origin, access);
+  try {
+    return await withConfigWriteLock(async () => {
+      await refreshConfigIfStale(refreshOptions);
+      return operation();
+    });
+  } catch (error) {
+    const reason = storageDiagnosticReason(error?.message, "storage_write_failed");
+    if (["config_secure_context_required", "config_lock_unavailable", "config_stale_canonical_invalid"].includes(reason)) {
+      publishStorageReadiness({ ...getStorageReadinessSnapshot(), state: "degraded-readonly", reason });
+    }
+    reportPersistenceHealth("SAVE_FAILED", "Configuration write was blocked before persistence.", { origin, reason });
+    return notReadyResult(origin, { reason });
+  }
 }
 
 async function commitConfigNow(candidate, {
@@ -642,6 +710,8 @@ async function commitConfigNow(candidate, {
         const key = CACHE_CONFIG_KEYS[section];
         const previous = await storageAdapter.get(key, null);
         if (storageValuesEqual(validation.data[section], previous)) continue;
+        const denied = authorize?.();
+        if (denied) throw new Error(denied);
         cacheRollback.push({ key, previous });
         await writeStorageValue(key, cloneConfig(validation.data[section]));
       }
@@ -651,12 +721,14 @@ async function commitConfigNow(candidate, {
     const previous = validateStoredEnvelope(latestRaw);
     const envelope = buildEnvelope(validation.data, latestRevision + 1);
     const denied = authorize?.();
-    if (denied) return { committed: false, saved: [], failed: [{ code: denied }], origin };
+    if (denied) throw new Error(denied);
     await persistEnvelope(envelope, previous.valid ? previous.envelope : null, authorize);
     await verifyCanonicalEnvelope(envelope);
+    knownRevision = envelope.revision;
 
     const applied = applyConfigChange(validation.data, { origin });
     await applied.effects;
+    knownCaches = Object.fromEntries(Object.keys(CACHE_CONFIG_KEYS).map(key => [key, cloneConfig(config[key])]));
     await clearRecoveryMarker();
     return {
       committed: true,
@@ -704,11 +776,11 @@ async function commitConfigNow(candidate, {
 }
 
 export function commitConfig(candidate, { origin = "local" } = {}) {
-  return enqueueConfigUpdate(() => commitConfigNow(candidate, { origin }));
+  return enqueueConfigUpdate(() => runLockedConfigWrite(origin, () => commitConfigNow(candidate, { origin }), { rejectStale: true, cacheSections: Object.keys(CACHE_CONFIG_KEYS) }));
 }
 
 export function updateConfig(updater, { origin = "local", persistRuntimeCatalogs = [], authorize } = {}) {
-  return enqueueConfigUpdate(async () => {
+  return enqueueConfigUpdate(() => runLockedConfigWrite(origin, async () => {
     if (typeof updater !== "function") {
       return {
         committed: false,
@@ -723,6 +795,9 @@ export function updateConfig(updater, { origin = "local", persistRuntimeCatalogs
 
     const previousConfig = cloneRuntimeSnapshot(config);
     const draft = cloneRuntimeSnapshot(config);
+    for (const section of persistRuntimeCatalogs) {
+      if (Object.hasOwn(CACHE_CONFIG_KEYS, section)) draft[section] = cloneConfig(draft[section]);
+    }
     const changed = updater(draft);
     if (changed === false) {
       return {
@@ -744,7 +819,7 @@ export function updateConfig(updater, { origin = "local", persistRuntimeCatalogs
       persistRuntimeCatalogs,
       authorize,
     });
-  });
+  }));
 }
 
 async function saveConfigKeysNow(updates, { origin = "local", authorize } = {}) {
@@ -756,6 +831,13 @@ async function saveConfigKeysNow(updates, { origin = "local", authorize } = {}) 
   for (const [key, value] of Object.entries(patch)) {
     if (Object.hasOwn(CACHE_CONFIG_KEYS, key)) cachePatch[key] = value;
     else corePatch[key] = value;
+  }
+
+  if (Object.keys(corePatch).length && Object.keys(cachePatch).length) {
+    const result = await commitConfigNow({ ...cloneRuntimeSnapshot(config), ...patch }, {
+      origin, authorize, persistRuntimeCatalogs: Object.keys(cachePatch),
+    });
+    return result.committed ? { ...result, saved: Object.keys(patch) } : result;
   }
 
   if (Object.keys(cachePatch).length > 0) {
@@ -771,6 +853,8 @@ async function saveConfigKeysNow(updates, { origin = "local", authorize } = {}) 
         };
       }
       try {
+        const denied = authorize?.();
+        if (denied) return { committed: false, saved: [], failed: [{ code: denied }], origin };
         await writeStorageValue(CACHE_CONFIG_KEYS[section], cloneConfig(validation.data[section]));
       } catch (error) {
         reportPersistenceHealth("SAVE_FAILED", "Configuration cache write failed.", {
@@ -792,6 +876,7 @@ async function saveConfigKeysNow(updates, { origin = "local", authorize } = {}) 
     const next = { ...cloneRuntimeSnapshot(config), ...Object.fromEntries(Object.entries(cachePatch).map(([section, value]) => [section, validateCachePayload(section, value).data[section]])) };
     const applied = applyConfigChange(next, { origin });
     await applied.effects;
+    knownCaches = Object.fromEntries(Object.keys(CACHE_CONFIG_KEYS).map(key => [key, cloneConfig(config[key])]));
     if (Object.keys(corePatch).length === 0) {
       return {
         ...applied,
@@ -811,7 +896,10 @@ async function saveConfigKeysNow(updates, { origin = "local", authorize } = {}) 
 }
 
 export function saveConfigKeys(updates, { origin = "local", authorize } = {}) {
-  return enqueueConfigUpdate(() => saveConfigKeysNow(updates, { origin, authorize }));
+  return enqueueConfigUpdate(() => runLockedConfigWrite(origin, () => saveConfigKeysNow(updates, { origin, authorize }), {
+    rejectStale: Object.keys(updates || {}).some(key => !Object.hasOwn(CACHE_CONFIG_KEYS, key)),
+    cacheSections: Object.keys(updates || {}).filter(key => Object.hasOwn(CACHE_CONFIG_KEYS, key)),
+  }));
 }
 
 export async function loadData() {

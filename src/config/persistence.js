@@ -6,8 +6,8 @@ export const CONFIG_STORAGE_KEYS = Object.freeze(project.storageKeys || Object.f
   current: "config", backup: "config:last-known-good", recovery: "config:recovery",
   migrationVersion: "config:migration-version", migrationLock: "config:migration-lock",
   initializationLock: "config:initialization-lock", tagsCache: "cache:tags", prefixesCache: "cache:prefixes",
-  probe: "storage:probe:", activePanel: "ui:active-panel", pinnedAddons: "ui:pinned-addons",
-  catalogCache: "addons:trusted-catalog-cache", addonDatabasePrefix: "addon:db",
+  probe: "storage:probe:", activePanel: "ui:active-panel",
+  ...(__APERTURE_ADDONS__ ? { pinnedAddons: "ui:pinned-addons", catalogCache: "addons:trusted-catalog-cache", addonDatabasePrefix: "addon:db" } : {}),
 }).map(([key, suffix]) => [key, prefix + suffix])));
 export function getCacheStorageKey(section) {
   if (!/^[A-Za-z][A-Za-z0-9_-]{0,63}$/.test(section)) throw new TypeError("Invalid cache section");

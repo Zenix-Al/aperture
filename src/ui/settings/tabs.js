@@ -51,7 +51,7 @@ export function defineSettingsTabs(input = {}) {
     containers[sectionId] = "settings-section-" + sectionId;
     general.sections.push({ id: sectionId });
   }
-  return { tabs: [general, addons, ...tabs], containers, settings };
+  return { tabs: [general, ...(__APERTURE_ADDONS__ ? [addons] : []), ...tabs], containers, settings };
 }
 export const settingsTabs = defineSettingsTabs(ui);
 

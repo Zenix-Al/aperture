@@ -29,7 +29,8 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...gmGlobals,        __APERTURE_DEBUG__: "readonly",
+        ...gmGlobals,        __APERTURE_ADDONS__: "readonly",
+        __APERTURE_DEBUG__: "readonly",
         __APERTURE_PROJECT_ID__: "readonly",
       },
     },

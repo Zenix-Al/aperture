@@ -1,12 +1,15 @@
 const { Window } = require("happy-dom");
+const { locksFor } = require("./config-lock-helpers.cjs");
 
 function createDomSandbox(url = "https://example.org/reading/one") {
   const window = new Window({ url });
   const previous = {};
-  for (const key of ["window", "document", "HTMLElement", "Node", "CustomEvent", "Event", "MutationObserver", "location", "history", "navigator"]) {
+  for (const key of ["window", "document", "HTMLElement", "Node", "CustomEvent", "Event", "MutationObserver", "location", "history", "navigator", "isSecureContext"]) {
     previous[key] = global[key];
     global[key] = window[key];
   }
+  global.isSecureContext = new URL(url).protocol === "https:" || new URL(url).hostname === "localhost";
+  Object.defineProperty(window.navigator, "locks", { value: locksFor(window), configurable: true });
   return {
     window,
     document: window.document,

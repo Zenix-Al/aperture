@@ -64,11 +64,12 @@ function ensureDock() {
   const mainSlot = document.createElement("div");
   mainSlot.id = PAGE_DOCK_MAIN_SLOT_ID;
 
-  const addonSlot = document.createElement("div");
-  addonSlot.id = PAGE_DOCK_ADDON_SLOT_ID;
-
   dock.appendChild(mainSlot);
-  dock.appendChild(addonSlot);
+  if (__APERTURE_ADDONS__) {
+    const addonSlot = document.createElement("div");
+    addonSlot.id = PAGE_DOCK_ADDON_SLOT_ID;
+    dock.appendChild(addonSlot);
+  }
   shadowRoot.appendChild(dock);
 
   bindDockAutoHide(dock);

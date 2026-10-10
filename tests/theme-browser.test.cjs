@@ -7,6 +7,44 @@ const { chromium } = require('playwright');
 const { ROOT, bundle } = require('./theme-helpers.cjs');
 const { validateTheme } = require('../scripts/themeContract.cjs');
 function rgb(hex){return `rgb(${parseInt(hex.slice(1,3),16)}, ${parseInt(hex.slice(3,5),16)}, ${parseInt(hex.slice(5,7),16)})`;}
+
+test('core-only production example keeps settings, persistence, transfer and diagnostics without platform UI or storage', async () => {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const optional = require('./optional-addons-helpers.cjs'), built = await optional.bundle();
+    const page = await browser.newPage(), errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.route('http://localhost/**', route => route.fulfill({ contentType: 'text/html', body: '<main>Core-only example</main>' }));
+    await page.addInitScript(() => { globalThis.operations = []; globalThis.GM = {
+      info: { scriptHandler: 'Chromium fixture' },
+      getValue: async (key, fallback) => { operations.push(['get', key]); const value = localStorage.getItem(key); return value === null ? fallback : JSON.parse(value); },
+      setValue: async (key, value) => { operations.push(['set', key]); localStorage.setItem(key, JSON.stringify(value)); },
+      deleteValue: async key => { operations.push(['delete', key]); localStorage.removeItem(key); },
+    }; });
+    await page.goto('http://localhost/'); await page.addScriptTag({ content: built.code });
+    await page.locator('#tag-config-button').click();
+    await page.locator('#setting-pageSize').waitFor();
+    assert.equal(await page.locator('[data-target="settings-panel-addins"]').count(), 0);
+    assert.equal(await page.locator('#settings-nav-pinned-group').count(), 0);
+    assert.equal(await page.locator('#aperture-page-dock-addon-slot').count(), 0);
+    assert.equal(await page.locator('[data-setting-key="addonsServiceSettings"]').count(), 0);
+    await page.locator('#setting-pageSize').fill('31'); await page.locator('#setting-pageSize').dispatchEvent('change');
+    const key = `aperture:${built.project.id}:${built.project.storageNamespace}:config`;
+    await page.waitForFunction(key => JSON.parse(localStorage.getItem(key)).data.preferences.pageSize === 31, key);
+    await page.locator('[data-setting-key="featureHealth"] button').click();
+    const health = await page.locator('.feature-health-content').textContent();
+    assert.match(health, /Storage: state=ready/); assert.match(health, /Framework: Aperture v/); assert(!/add-on/i.test(health));
+    await page.locator('[data-setting-key="configTransfer"] button').click();
+    assert.equal(await page.locator('#latest-config-dialog').count(), 1);
+    const stored = await page.evaluate(key => ({ data: JSON.parse(localStorage.getItem(key)).data, operations }), key);
+    assert(!Object.hasOwn(stored.data, 'addons')); assert(!stored.operations.some(([, key]) => /addon/i.test(key)));
+    await page.reload(); await page.addScriptTag({ content: built.code }); await page.locator('#tag-config-button').click();
+    assert.equal(await page.locator('#setting-pageSize').inputValue(), '31');
+    await page.evaluate(() => window.dispatchEvent(new Event('pagehide')));
+    await page.waitForFunction(() => !document.querySelector('[data-aperture-ui-owner]'));
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); }
+});
 for(const theme of ['default','light'])test('Chromium '+theme+': original settings, dialogs, owned add-on styles, accessibility and cleanup',async()=>{
  const browser=await chromium.launch({headless:true});const errors=[];
  try{

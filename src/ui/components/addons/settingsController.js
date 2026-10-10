@@ -130,18 +130,7 @@ export function movePinnedAddon(addonId, direction) {
 export function updateRegisteredAddons(addons, { refreshAddonsUi } = {}) {
   const source = Array.isArray(addons) && addons.length > 0 ? addons : listKnownAddons();
   const normalized = source.map(normalizeAddonEntry).filter(Boolean);
-  const byId = new Map(normalized.map((addon) => [addon.id, addon]));
-
-  const validIds = new Set(normalized.map((addon) => addon.id));
-  const nextPins = getPinnedAddonIds().filter((id) => {
-    if (!validIds.has(id)) return false;
-    const addon = byId.get(id);
-    return addon?.status !== "not-installed";
-  });
-
   stateManager.set("registeredAddons", normalized);
-  stateManager.set("settingsPinnedAddonIds", nextPins);
-  void persistSettingsUiValue(SETTINGS_PINNED_ADDONS_STORAGE_KEY, nextPins);
 
   if (typeof refreshAddonsUi === "function") {
     refreshAddonsUi();
@@ -260,9 +249,13 @@ export function initAddinsPanelActions(
       });
       if (!confirmed) return;
 
-      removeAddonInstallationTrace(addonId);
+      const removed = await removeAddonInstallationTrace(addonId);
+      if (!removed.ok) { showToast("Could not delete add-on trace."); return; }
+      const nextPins = getPinnedAddonIds().filter(id => id !== addonId);
+      const savedPins = await persistSettingsUiValue(SETTINGS_PINNED_ADDONS_STORAGE_KEY, nextPins);
+      if (savedPins) stateManager.set("settingsPinnedAddonIds", nextPins);
       updateRegisteredAddons(listKnownAddons(), { refreshAddonsUi });
-      showToast("Add-on trace deleted.");
+      showToast(savedPins ? "Add-on trace deleted." : "Add-on trace deleted, but the pinned shortcut could not be saved.");
     },
     "back-to-addins": async () => {
       setActivePanel("settings-panel-addins");

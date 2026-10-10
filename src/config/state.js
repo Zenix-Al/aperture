@@ -10,7 +10,7 @@ export const stateManager = definition.stateManager || createStateManager({
   modalInjected: false,
   settingsUiPrefsLoaded: false,
   settingsActivePanel: "settings-panel-general",
-  settingsPinnedAddonIds: [],
+  ...(__APERTURE_ADDONS__ ? { settingsPinnedAddonIds: [] } : {}),
   ...definition.state,
   shadowRoot: definition.state?.shadowRoot ?? null,
   ...Object.fromEntries(Object.keys(pageDefinitions).map(key => [key, false])),

@@ -27,81 +27,82 @@
     ]
   },
   "authored": {
-    "fileCount": 73,
-    "physicalLines": 8693,
-    "meaningfulLines": 7594,
-    "authoredBytes": 296883,
+    "fileCount": 74,
+    "physicalLines": 8837,
+    "meaningfulLines": 7719,
+    "authoredBytes": 305389,
     "bytesByArea": {
-      "config": 20747,
+      "config": 20865,
       "core": 92685,
-      "services": 64441,
+      "services": 70958,
       "features": 0,
-      "ui": 119010
+      "ui": 120881
     },
     "bytesByFile": {
-      "src/services/settingsService.js": 31456,
-      "src/ui/assets/css.css": 26808,
-      "src/config/schema.js": 12794,
-      "src/services/configTransfer/index.js": 12583,
+      "src/services/settingsService.js": 36525,
+      "src/ui/assets/css.css": 27028,
+      "src/config/schema.js": 12835,
+      "src/services/configTransfer/index.js": 12712,
       "src/core/taskQueue.js": 12467,
       "src/ui/components/dialog.js": 12398,
-      "src/ui/components/featureHealth/index.js": 10710,
+      "src/ui/components/featureHealth/index.js": 10986,
       "src/core/observer.js": 9521,
       "src/core/featureFactory.js": 8732,
       "src/core/featureHealth.js": 8567,
       "src/core/bootstrap.js": 7260,
-      "src/ui/settings/tabs.js": 6556,
+      "src/ui/settings/tabs.js": 6590,
       "src/core/teardown.js": 5885,
       "src/ui/settings/metaRegistry.js": 5860,
       "src/core/resourceManager.js": 5502,
       "src/services/storageBootstrapService.js": 5406,
       "src/services/configChangeApplication.js": 5163,
+      "src/services/storageAdapter.js": 4848,
       "src/core/featureCatalog.js": 4719,
-      "src/services/storageAdapter.js": 4719,
       "src/ui/settings/panelNavigation.js": 4301,
-      "src/ui/assets/startup.css": 4118,
+      "src/ui/assets/startup.css": 4172,
       "src/ui/components/toast.js": 3940,
       "src/ui/renderers/renderSetting.js": 3849,
       "src/core/pageBridge.js": 3659,
+      "src/services/storageReadiness.js": 3631,
       "src/core/listenerRegistry.js": 3534,
+      "src/ui/components/configButton.js": 3422,
       "src/core/StateManager.js": 3393,
-      "src/ui/components/configButton.js": 3384,
-      "src/ui/settings/index.js": 3261,
-      "src/config/persistence.js": 3223,
+      "src/ui/settings/index.js": 3315,
+      "src/config/persistence.js": 3259,
       "src/config/addonSchema.js": 3209,
-      "src/services/storageReadiness.js": 3149,
+      "src/ui/configTransfer/transferIO.js": 2968,
       "src/ui/components/modal.js": 2861,
-      "src/ui/configTransfer/index.js": 2699,
       "src/core/styleRegistry.js": 2673,
       "src/core/routeObserver.js": 2632,
       "src/core/pageDetection.js": 2574,
+      "src/ui/configTransfer/index.js": 2539,
       "src/core/routeState.js": 2513,
-      "src/ui/assets/ui.html": 2335,
-      "src/ui/settings/modalLifecycle.js": 2188,
-      "src/ui/settings/storageReadOnly.js": 2179,
+      "src/ui/assets/ui.html": 2483,
+      "src/ui/settings/modalLifecycle.js": 2302,
       "src/core/coreContext.js": 2159,
-      "src/ui/configTransfer/transferIO.js": 2020,
+      "src/ui/settings/storageReadOnly.js": 2126,
       "src/ui/settingsRuntime/sectionsRegistry.js": 1892,
-      "src/ui/settingsRuntime/prefs.js": 1774,
+      "src/ui/settingsRuntime/prefs.js": 1858,
       "src/core/frameBudget.js": 1764,
       "src/ui/configTransfer/dialogError.js": 1609,
       "src/services/configMigrationService.js": 1583,
       "src/core/createStyledFeature.js": 1485,
       "src/ui/index.js": 1408,
+      "src/ui/settings/globalSettings.js": 1321,
       "src/ui/theme.js": 1296,
       "src/core/pageLifecycle.js": 1272,
-      "src/ui/settings/globalSettings.js": 1243,
       "src/core/logger.js": 1232,
       "src/ui/settings/metaFactory.js": 1166,
       "src/ui/renderers/createInput.js": 1151,
       "src/ui/renderers/coerceSettingValue.js": 1140,
       "src/ui/helpers/cssInjector.js": 990,
+      "src/config/state.js": 967,
       "src/ui/components/listeners.js": 966,
-      "src/config/state.js": 931,
       "src/ui/assets/accessibility.css": 920,
+      "src/ui/layers.js": 796,
       "src/ui/renderers/applyEffects.js": 786,
-      "src/ui/layers.js": 760,
       "src/core/createDebouncedTask.js": 708,
+      "src/services/configWriteLock.js": 708,
       "src/ui/renderers/settingsSection.js": 621,
       "src/ui/assets/document.css": 496,
       "src/ui/renderers/reRenderSetting.js": 495,
@@ -110,18 +111,18 @@
       "src/config/timings.js": 430,
       "src/services/notificationService.js": 382,
       "src/ui/configTransfer/constants.js": 179,
-      "src/config/index.js": 160,
+      "src/config/index.js": 165,
       "src/ui/getShadowRoot.js": 160
     },
     "largestFiles": [
       {
         "path": "src/services/settingsService.js",
         "area": "services",
-        "bytes": 31456,
-        "physicalLines": 826,
-        "meaningfulLines": 763,
+        "bytes": 36525,
+        "physicalLines": 914,
+        "meaningfulLines": 848,
         "fanIn": 3,
-        "fanOut": 8,
+        "fanOut": 9,
         "exports": [
           "CONFIG_ENVELOPE_KEY",
           "CONFIG_BACKUP_KEY",
@@ -145,8 +146,8 @@
       {
         "path": "src/ui/assets/css.css",
         "area": "ui",
-        "bytes": 26808,
-        "physicalLines": 1167,
+        "bytes": 27028,
+        "physicalLines": 1175,
         "meaningfulLines": 989,
         "fanIn": 1,
         "fanOut": 0,
@@ -155,11 +156,11 @@
       {
         "path": "src/config/schema.js",
         "area": "config",
-        "bytes": 12794,
+        "bytes": 12835,
         "physicalLines": 283,
         "meaningfulLines": 255,
         "fanIn": 7,
-        "fanOut": 1,
+        "fanOut": 0,
         "exports": [
           "getDefaultConfig",
           "mergeWithDefaults",
@@ -176,9 +177,9 @@
       {
         "path": "src/services/configTransfer/index.js",
         "area": "services",
-        "bytes": 12583,
-        "physicalLines": 282,
-        "meaningfulLines": 252,
+        "bytes": 12712,
+        "physicalLines": 284,
+        "meaningfulLines": 254,
         "fanIn": 1,
         "fanOut": 4,
         "exports": [
@@ -223,9 +224,9 @@
       {
         "path": "src/ui/components/featureHealth/index.js",
         "area": "ui",
-        "bytes": 10710,
-        "physicalLines": 279,
-        "meaningfulLines": 261,
+        "bytes": 10986,
+        "physicalLines": 282,
+        "meaningfulLines": 264,
         "fanIn": 1,
         "fanOut": 4,
         "exports": [
@@ -321,7 +322,7 @@
       {
         "path": "src/ui/settings/tabs.js",
         "area": "ui",
-        "bytes": 6556,
+        "bytes": 6590,
         "physicalLines": 112,
         "meaningfulLines": 109,
         "fanIn": 3,
@@ -416,6 +417,22 @@
         ]
       },
       {
+        "path": "src/services/storageAdapter.js",
+        "area": "services",
+        "bytes": 4848,
+        "physicalLines": 129,
+        "meaningfulLines": 117,
+        "fanIn": 3,
+        "fanOut": 1,
+        "exports": [
+          "storageDiagnosticReason",
+          "getStorageCapabilities",
+          "probeStorageCapabilities",
+          "createStorageAdapter",
+          "storageAdapter"
+        ]
+      },
+      {
         "path": "src/core/featureCatalog.js",
         "area": "core",
         "bytes": 4719,
@@ -429,22 +446,6 @@
           "listRegisteredFeatures",
           "listFeaturesByBootstrapMode",
           "resetFeatureCatalogForTests"
-        ]
-      },
-      {
-        "path": "src/services/storageAdapter.js",
-        "area": "services",
-        "bytes": 4719,
-        "physicalLines": 128,
-        "meaningfulLines": 116,
-        "fanIn": 3,
-        "fanOut": 1,
-        "exports": [
-          "storageDiagnosticReason",
-          "getStorageCapabilities",
-          "probeStorageCapabilities",
-          "createStorageAdapter",
-          "storageAdapter"
         ]
       },
       {
@@ -467,7 +468,7 @@
         {
           "path": "src/services/settingsService.js",
           "fanIn": 3,
-          "fanOut": 8
+          "fanOut": 9
         },
         {
           "path": "src/ui/assets/css.css",
@@ -477,7 +478,7 @@
         {
           "path": "src/config/schema.js",
           "fanIn": 7,
-          "fanOut": 1
+          "fanOut": 0
         },
         {
           "path": "src/services/configTransfer/index.js",
@@ -550,14 +551,14 @@
           "fanOut": 5
         },
         {
-          "path": "src/core/featureCatalog.js",
-          "fanIn": 1,
-          "fanOut": 2
-        },
-        {
           "path": "src/services/storageAdapter.js",
           "fanIn": 3,
           "fanOut": 1
+        },
+        {
+          "path": "src/core/featureCatalog.js",
+          "fanIn": 1,
+          "fanOut": 2
         },
         {
           "path": "src/ui/settings/panelNavigation.js",
@@ -585,19 +586,24 @@
           "fanOut": 1
         },
         {
+          "path": "src/services/storageReadiness.js",
+          "fanIn": 5,
+          "fanOut": 0
+        },
+        {
           "path": "src/core/listenerRegistry.js",
           "fanIn": 8,
           "fanOut": 2
         },
         {
-          "path": "src/core/StateManager.js",
-          "fanIn": 1,
-          "fanOut": 0
-        },
-        {
           "path": "src/ui/components/configButton.js",
           "fanIn": 2,
           "fanOut": 3
+        },
+        {
+          "path": "src/core/StateManager.js",
+          "fanIn": 1,
+          "fanOut": 0
         },
         {
           "path": "src/ui/settings/index.js",
@@ -606,27 +612,22 @@
         },
         {
           "path": "src/config/persistence.js",
-          "fanIn": 6,
+          "fanIn": 7,
           "fanOut": 0
         },
         {
           "path": "src/config/addonSchema.js",
-          "fanIn": 2,
+          "fanIn": 0,
           "fanOut": 0
         },
         {
-          "path": "src/services/storageReadiness.js",
-          "fanIn": 5,
-          "fanOut": 0
+          "path": "src/ui/configTransfer/transferIO.js",
+          "fanIn": 1,
+          "fanOut": 2
         },
         {
           "path": "src/ui/components/modal.js",
           "fanIn": 3,
-          "fanOut": 5
-        },
-        {
-          "path": "src/ui/configTransfer/index.js",
-          "fanIn": 1,
           "fanOut": 5
         },
         {
@@ -645,6 +646,11 @@
           "fanOut": 3
         },
         {
+          "path": "src/ui/configTransfer/index.js",
+          "fanIn": 1,
+          "fanOut": 5
+        },
+        {
           "path": "src/core/routeState.js",
           "fanIn": 3,
           "fanOut": 1
@@ -660,17 +666,12 @@
           "fanOut": 7
         },
         {
-          "path": "src/ui/settings/storageReadOnly.js",
-          "fanIn": 1,
-          "fanOut": 2
-        },
-        {
           "path": "src/core/coreContext.js",
           "fanIn": 10,
           "fanOut": 0
         },
         {
-          "path": "src/ui/configTransfer/transferIO.js",
+          "path": "src/ui/settings/storageReadOnly.js",
           "fanIn": 1,
           "fanOut": 2
         },
@@ -710,6 +711,11 @@
           "fanOut": 6
         },
         {
+          "path": "src/ui/settings/globalSettings.js",
+          "fanIn": 1,
+          "fanOut": 4
+        },
+        {
           "path": "src/ui/theme.js",
           "fanIn": 2,
           "fanOut": 3
@@ -718,11 +724,6 @@
           "path": "src/core/pageLifecycle.js",
           "fanIn": 0,
           "fanOut": 1
-        },
-        {
-          "path": "src/ui/settings/globalSettings.js",
-          "fanIn": 1,
-          "fanOut": 4
         },
         {
           "path": "src/core/logger.js",
@@ -750,17 +751,22 @@
           "fanOut": 4
         },
         {
-          "path": "src/ui/components/listeners.js",
-          "fanIn": 1,
-          "fanOut": 2
-        },
-        {
           "path": "src/config/state.js",
           "fanIn": 17,
           "fanOut": 3
         },
         {
+          "path": "src/ui/components/listeners.js",
+          "fanIn": 1,
+          "fanOut": 2
+        },
+        {
           "path": "src/ui/assets/accessibility.css",
+          "fanIn": 1,
+          "fanOut": 0
+        },
+        {
+          "path": "src/ui/layers.js",
           "fanIn": 1,
           "fanOut": 0
         },
@@ -770,14 +776,14 @@
           "fanOut": 1
         },
         {
-          "path": "src/ui/layers.js",
-          "fanIn": 1,
-          "fanOut": 0
-        },
-        {
           "path": "src/core/createDebouncedTask.js",
           "fanIn": 0,
           "fanOut": 0
+        },
+        {
+          "path": "src/services/configWriteLock.js",
+          "fanIn": 1,
+          "fanOut": 1
         },
         {
           "path": "src/ui/renderers/settingsSection.js",
@@ -822,7 +828,7 @@
         {
           "path": "src/config/index.js",
           "fanIn": 0,
-          "fanOut": 4
+          "fanOut": 3
         },
         {
           "path": "src/ui/getShadowRoot.js",
@@ -854,7 +860,7 @@
         {
           "from": "services",
           "to": "config",
-          "count": 11,
+          "count": 12,
           "examples": [
             {
               "from": "src/services/configChangeApplication.js",
@@ -995,6 +1001,7 @@
         }
       ],
       "orphanFiles": [
+        "src/config/addonSchema.js",
         "src/config/index.js",
         "src/core/createDebouncedTask.js",
         "src/core/createStyledFeature.js",
@@ -1133,14 +1140,14 @@
   "bundle": {
     "readable": {
       "mode": "regular",
-      "bytes": 530997,
-      "gzipBytes": 112472,
-      "coreBytes": 260361,
-      "excludedBytes": 264960,
+      "bytes": 537453,
+      "gzipBytes": 114206,
+      "coreBytes": 264519,
+      "excludedBytes": 267079,
       "contributors": [
         {
           "path": "src/services/settingsService.js",
-          "bytes": 31967
+          "bytes": 33298
         },
         {
           "path": "src/ui/assets/css.css",
@@ -1151,12 +1158,12 @@
           "bytes": 18211
         },
         {
-          "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 14546
+          "path": "src/services/addons/idbStore.js",
+          "bytes": 14833
         },
         {
-          "path": "src/services/addons/idbStore.js",
-          "bytes": 14304
+          "path": "src/ui/components/addons/settingsController.js",
+          "bytes": 14550
         },
         {
           "path": "src/services/addons/bridgeServer.js",
@@ -1164,23 +1171,23 @@
         },
         {
           "path": "src/services/configTransfer/index.js",
-          "bytes": 13076
+          "bytes": 13209
         },
         {
           "path": "src/config/schema.js",
-          "bytes": 13019
+          "bytes": 13039
+        },
+        {
+          "path": "src/services/addons/state.js",
+          "bytes": 12696
         },
         {
           "path": "src/services/addons/registry.js",
           "bytes": 11903
         },
         {
-          "path": "src/services/addons/state.js",
-          "bytes": 11426
-        },
-        {
           "path": "src/ui/components/featureHealth/index.js",
-          "bytes": 10864
+          "bytes": 11049
         },
         {
           "path": "src/services/addons/knownAddons.js",
@@ -1195,12 +1202,12 @@
           "bytes": 8317
         },
         {
-          "path": "src/core/observer.js",
-          "bytes": 8191
+          "path": "src/services/addons/uiSanitizer.js",
+          "bytes": 8201
         },
         {
-          "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 8157
+          "path": "src/core/observer.js",
+          "bytes": 8191
         },
         {
           "path": "src/services/addons/observer.js",
@@ -1222,7 +1229,7 @@
       "coreContributors": [
         {
           "path": "src/services/settingsService.js",
-          "bytes": 31967
+          "bytes": 33298
         },
         {
           "path": "src/ui/assets/css.css",
@@ -1230,15 +1237,15 @@
         },
         {
           "path": "src/services/configTransfer/index.js",
-          "bytes": 13076
+          "bytes": 13209
         },
         {
           "path": "src/config/schema.js",
-          "bytes": 13019
+          "bytes": 13039
         },
         {
           "path": "src/ui/components/featureHealth/index.js",
-          "bytes": 10864
+          "bytes": 11049
         },
         {
           "path": "src/core/featureHealth.js",
@@ -1254,7 +1261,7 @@
         },
         {
           "path": "src/ui/settings/tabs.js",
-          "bytes": 6917
+          "bytes": 6934
         },
         {
           "path": "src/services/storageBootstrapService.js",
@@ -1277,12 +1284,12 @@
           "bytes": 5257
         },
         {
-          "path": "src/ui/settings/metaRegistry.js",
-          "bytes": 4969
+          "path": "src/services/storageAdapter.js",
+          "bytes": 5021
         },
         {
-          "path": "src/services/storageAdapter.js",
-          "bytes": 4890
+          "path": "src/ui/settings/metaRegistry.js",
+          "bytes": 4969
         },
         {
           "path": "src/ui/settings/panelNavigation.js",
@@ -1307,24 +1314,24 @@
           "bytes": 18211
         },
         {
-          "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 14546
+          "path": "src/services/addons/idbStore.js",
+          "bytes": 14833
         },
         {
-          "path": "src/services/addons/idbStore.js",
-          "bytes": 14304
+          "path": "src/ui/components/addons/settingsController.js",
+          "bytes": 14550
         },
         {
           "path": "src/services/addons/bridgeServer.js",
           "bytes": 13488
         },
         {
-          "path": "src/services/addons/registry.js",
-          "bytes": 11903
+          "path": "src/services/addons/state.js",
+          "bytes": 12696
         },
         {
-          "path": "src/services/addons/state.js",
-          "bytes": 11426
+          "path": "src/services/addons/registry.js",
+          "bytes": 11903
         },
         {
           "path": "src/services/addons/knownAddons.js",
@@ -1336,7 +1343,7 @@
         },
         {
           "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 8157
+          "bytes": 8201
         },
         {
           "path": "src/services/addons/observer.js",
@@ -1364,7 +1371,7 @@
         },
         {
           "path": "src/services/addons/settingsUi.js",
-          "bytes": 6718
+          "bytes": 6546
         },
         {
           "path": "src/services/addons/lifecycle.js",
@@ -1372,7 +1379,7 @@
         },
         {
           "path": "src/main.js",
-          "bytes": 5980
+          "bytes": 6006
         },
         {
           "path": "src/ui/components/addons/addonDialog.js",
@@ -1386,10 +1393,10 @@
     },
     "uglified": {
       "mode": "release",
-      "bytes": 261642,
-      "gzipBytes": 79369,
-      "coreBytes": 136458,
-      "excludedBytes": 125044,
+      "bytes": 264556,
+      "gzipBytes": 80445,
+      "coreBytes": 138507,
+      "excludedBytes": 125909,
       "contributors": [
         {
           "path": "src/ui/assets/css.css",
@@ -1397,7 +1404,7 @@
         },
         {
           "path": "src/services/settingsService.js",
-          "bytes": 13993
+          "bytes": 14568
         },
         {
           "path": "src/services/addons/uiHost.js",
@@ -1405,7 +1412,7 @@
         },
         {
           "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 7336
+          "bytes": 7391
         },
         {
           "path": "src/services/addons/bridgeServer.js",
@@ -1413,7 +1420,7 @@
         },
         {
           "path": "src/services/addons/idbStore.js",
-          "bytes": 6485
+          "bytes": 6603
         },
         {
           "path": "src/config/schema.js",
@@ -1421,11 +1428,15 @@
         },
         {
           "path": "src/services/configTransfer/index.js",
-          "bytes": 6240
+          "bytes": 6278
         },
         {
           "path": "src/ui/components/featureHealth/index.js",
           "bytes": 5848
+        },
+        {
+          "path": "src/services/addons/state.js",
+          "bytes": 5788
         },
         {
           "path": "src/services/addons/registry.js",
@@ -1436,12 +1447,8 @@
           "bytes": 5425
         },
         {
-          "path": "src/services/addons/state.js",
-          "bytes": 5121
-        },
-        {
           "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 4229
+          "bytes": 4264
         },
         {
           "path": "src/ui/settings/tabs.js",
@@ -1479,7 +1486,7 @@
         },
         {
           "path": "src/services/settingsService.js",
-          "bytes": 13993
+          "bytes": 14568
         },
         {
           "path": "src/config/schema.js",
@@ -1487,7 +1494,7 @@
         },
         {
           "path": "src/services/configTransfer/index.js",
-          "bytes": 6240
+          "bytes": 6278
         },
         {
           "path": "src/ui/components/featureHealth/index.js",
@@ -1519,7 +1526,7 @@
         },
         {
           "path": "src/services/storageAdapter.js",
-          "bytes": 2535
+          "bytes": 2638
         },
         {
           "path": "src/ui/components/dialog.js",
@@ -1532,6 +1539,10 @@
         {
           "path": "src/core/teardown.js",
           "bytes": 2338
+        },
+        {
+          "path": "src/services/storageReadiness.js",
+          "bytes": 2158
         },
         {
           "path": "src/services/configChangeApplication.js",
@@ -1548,10 +1559,6 @@
         {
           "path": "src/ui/settings/panelNavigation.js",
           "bytes": 1978
-        },
-        {
-          "path": "src/config/persistence.js",
-          "bytes": 1933
         }
       ],
       "excludedContributors": [
@@ -1561,7 +1568,7 @@
         },
         {
           "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 7336
+          "bytes": 7391
         },
         {
           "path": "src/services/addons/bridgeServer.js",
@@ -1569,7 +1576,11 @@
         },
         {
           "path": "src/services/addons/idbStore.js",
-          "bytes": 6485
+          "bytes": 6603
+        },
+        {
+          "path": "src/services/addons/state.js",
+          "bytes": 5788
         },
         {
           "path": "src/services/addons/registry.js",
@@ -1580,12 +1591,8 @@
           "bytes": 5425
         },
         {
-          "path": "src/services/addons/state.js",
-          "bytes": 5121
-        },
-        {
           "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 4229
+          "bytes": 4264
         },
         {
           "path": "src/ui/renderers/addonsRenderer.js",
@@ -1600,12 +1607,12 @@
           "bytes": 3719
         },
         {
-          "path": "src/services/addons/settingsUi.js",
-          "bytes": 3557
-        },
-        {
           "path": "src/services/addons/invocation.js",
           "bytes": 3524
+        },
+        {
+          "path": "src/services/addons/settingsUi.js",
+          "bytes": 3484
         },
         {
           "path": "src/services/addons/scope.js",

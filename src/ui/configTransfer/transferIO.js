@@ -8,6 +8,17 @@ export function formatDateForFilename(date = new Date()) {
   return `${yyyy}-${mm}-${dd}`;
 }
 
+export async function readJsonImportFile(file) {
+  if (!String(file?.name || "").toLowerCase().endsWith(".json") && !String(file?.type || "").toLowerCase().includes("json")) {
+    return { ok: false, message: "Import failed: JSON file only (.json)." };
+  }
+  if (!Number.isFinite(file.size) || file.size < 0 || file.size > 5 * 1024 * 1024) {
+    return { ok: false, message: "Import failed: file is larger than 5 MB." };
+  }
+  try { return { ok: true, text: await file.text() }; }
+  catch { return { ok: false, message: "Import failed: could not read the file." }; }
+}
+
 export function downloadJsonFile(filename, text) {
   const blob = new Blob([text], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -20,12 +31,17 @@ export function downloadJsonFile(filename, text) {
   anchor.remove();
 
   let revoked = false;
+  let timer;
   const revoke = () => {
     if (revoked) return;
     revoked = true;
+    clearTimeout(timer);
+    owner.release();
     URL.revokeObjectURL(url);
   };
-  setTimeout(revoke, 0);
+  const owner = createResourceOwner(`ui:config-transfer-download:${url}`);
+  owner.register(`config-transfer-download:${url}`, revoke);
+  timer = setTimeout(revoke, 10000);
   return revoke;
 }
 
@@ -60,8 +76,12 @@ export function createJsonFilePicker() {
   });
 
   reg(input, "change", () => finish(input.files?.[0] || null));
+  reg(input, "cancel", () => finish(null));
+  let focusTimer;
+  owner.register("focus-timer", () => clearTimeout(focusTimer));
   reg(window, "focus", () => {
-    setTimeout(() => finish(input.files?.[0] || null), 300);
+    clearTimeout(focusTimer);
+    focusTimer = setTimeout(() => finish(input.files?.[0] || null), 1500);
   });
   input.click();
 

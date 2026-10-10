@@ -4,7 +4,7 @@ Keep `build.entry` as `src/main.js`. The shared main/loader compose project read
 
 ## Application input
 
-`build.application` selects a default-exported project object. The minimal examples reuse storage bootstrap, core UI and the add-on service from [the example composition](../../projects/example/application.js).
+`build.application` selects a default-exported project object. The minimal examples reuse storage bootstrap, core UI and the optional add-on service from [the example composition](../../projects/example/application.js). Its guarded extension imports support the build-time `addons: false` option.
 
 | Input | Role |
 | --- | --- |

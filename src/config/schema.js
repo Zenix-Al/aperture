@@ -1,5 +1,5 @@
 import settingsDefinition from "aperture:settings";
-import { addonConfigSchema } from "./addonSchema.js";
+import { addonConfigSchema } from "aperture:addon-schema";
 
 function clone(value) {
   if (value === undefined) return undefined;
@@ -25,7 +25,7 @@ const CONFIG_SCHEMA = {
     exportable: true, additionalProperties: false,
     properties: { configVisibility: node("boolean", true) },
   }),
-  addons: addonConfigSchema,
+  ...(__APERTURE_ADDONS__ ? { addons: addonConfigSchema } : {}),
   ...projectSchema,
 };
 

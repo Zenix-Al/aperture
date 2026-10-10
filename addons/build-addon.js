@@ -328,6 +328,11 @@ async function main(args = process.argv.slice(2), { rootDir = ROOT } = {}) {
   const configIndex = args.indexOf('--config');
   const requested = args.find((arg, index) => arg && !arg.startsWith('--') && !(configIndex >= 0 && index === configIndex + 1));
   const addons = readProjectManifest(project);
+  if (project.addons === false) {
+    if (requested && requested !== "all") throw new Error("Add-on builds are disabled by addons:false");
+    console.log("Add-on platform excluded; no add-on artifacts generated.");
+    return { projectId: project.id, isSmoke, artifacts: [], built: 0, total: 0 };
+  }
   const targets = !requested || requested === 'all' ? addons : addons.filter(addon => addon.id === requested);
   if (requested && targets.length === 0) throw new Error('Unknown add-on: ' + requested);
   const cache = readBuildCache(project.resolved.cacheFile);

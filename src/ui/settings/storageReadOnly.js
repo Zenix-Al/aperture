@@ -5,11 +5,9 @@ import {
 } from "../../services/storageReadiness.js";
 import { createEl } from "../../utils/dom.js";
 
-const CORE_SETTING_SELECTOR = [
-  ".settings-panel:not([data-addon-panel='true']) .config-row input",
-  ".settings-panel:not([data-addon-panel='true']) .config-row select",
-  ".settings-panel:not([data-addon-panel='true']) .config-row textarea",
-].join(",");
+const CORE_SETTING_SELECTOR = ["input", "select", "textarea"].map(tag =>
+  (__APERTURE_ADDONS__ ? ".settings-panel:not([data-addon-panel='true'])" : ".settings-panel") + " .config-row " + tag,
+).join(",");
 
 let boundRoot = null;
 let unsubscribe = null;

@@ -3,6 +3,22 @@ const assert = require('node:assert/strict');
 const { environment, bundle, descriptor } = require('./addon-platform-helpers.cjs');
 const plain = value => JSON.parse(JSON.stringify(value));
 
+test('registry absence preserves pinned shortcuts and persisted installation history', async () => {
+  const e = await environment();
+  try {
+    e.register();
+    await e.client.invokeCoreAction('storage.set', { key: 'sighting', value: true });
+    e.api.state.stateManager.set('settingsPinnedAddonIds', ['example-addon', 'temporarily-absent']);
+    await e.api.prefs.persistSettingsUiValue(e.api.prefs.SETTINGS_PINNED_ADDONS_STORAGE_KEY, ['example-addon', 'temporarily-absent']);
+    const writes = e.gm.operations.filter(([op]) => op === 'set').length;
+    e.api.settingsController.updateRegisteredAddons([{ id: 'example-addon', name: 'Example', status: 'not-installed' }]);
+    assert.deepEqual(plain(e.api.settingsController.getPinnedAddonIds()), ['example-addon', 'temporarily-absent']);
+    assert.equal(e.gm.operations.filter(([op]) => op === 'set').length, writes);
+    e.api.registry.unregisterAddon('example-addon');
+    assert(e.api.service.listKnownAddons().some(addon => addon.id === 'example-addon' && addon.installedSeenAt > 0));
+  } finally { await e.close(); }
+});
+
 test('selected platform keeps 29 generic descriptors and excludes product modules', async () => {
   const e = await environment();
   try {

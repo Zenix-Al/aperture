@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "aperture-example-core",
+  "storageNamespace": "aperture_example_core",
+  "addons": false,
+  "metadata": {
+    "name": "Aperture Core Example",
+    "namespace": "https://example.org/aperture/core",
+    "description": "Example project without the optional add-on platform",
+    "author": "Aperture contributors",
+    "license": "MIT",
+    "matches": ["http://localhost/*"],
+    "grants": ["GM.setValue", "GM.getValue", "GM.deleteValue"],
+    "runAt": "document-start"
+  },
+  "build": {
+    "application": "projects/example/application.js",
+    "settings": "projects/example/settings.js",
+    "ui": "projects/example/ui.js",
+    "entry": "src/main.js",
+    "featuresDir": "projects/example/features",
+    "featureManifest": "projects/example/generated/features.generated.js",
+    "versionFile": "projects/example/version.json",
+    "outputDir": "projects/example/dist/core-only",
+    "outputName": "aperture-example-core"
+  },
+  "routes": { "isExample": { "hostEquals": ["localhost"] } },
+  "theme": "default"
+}
