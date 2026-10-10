@@ -6,15 +6,17 @@ import { contributeToSection } from "../settingsRuntime/sectionsRegistry.js";
 import { resourceManager } from "../../core/resourceManager.js";
 import { globalSettingsMeta } from "./globalSettings.js";
 import { registerSettingsMetadata } from "./metaRegistry.js";
-import { addonsServiceSettingsDialogMeta, addonsServiceSettingsMeta } from "../../services/addons/settingsUi.js";
+import { addonsServiceSettingsDialogMeta, addonsServiceSettingsMeta } from "aperture:addon-settings";
 let coreInitialized = false;
 export function registerCoreSettings() {
   if (coreInitialized) return;
   const cleanups = [];
   try {
     cleanups.push(contributeToSection("global", globalSettingsMeta, "base:global"));
-    cleanups.push(contributeToSection("global", addonsServiceSettingsMeta, "addons:service-settings"));
-    cleanups.push(registerSettingsMetadata("global", addonsServiceSettingsDialogMeta, "addons:service-dialog"));
+    if (__APERTURE_ADDONS__) {
+      cleanups.push(contributeToSection("global", addonsServiceSettingsMeta, "addons:service-settings"));
+      cleanups.push(registerSettingsMetadata("global", addonsServiceSettingsDialogMeta, "addons:service-dialog"));
+    }
     resourceManager.register("ui:core-settings", () => { cleanups.forEach(cleanup => cleanup()); coreInitialized = false; }, "ui:settings");
     coreInitialized = true;
   } catch (error) { cleanups.forEach(cleanup => cleanup()); throw error; }
@@ -55,7 +57,7 @@ export async function initModalUi() {
   }
   await ensureSettingsUiPrefsLoaded();
 
-  policy.initAddonsRegistryBridge?.({
+  if (__APERTURE_ADDONS__) policy.initAddonsRegistryBridge?.({
     onRegistryUpdate: (addons) => {
       policy.updateRegisteredAddons?.(addons, {
         refreshAddonsUi: () => {

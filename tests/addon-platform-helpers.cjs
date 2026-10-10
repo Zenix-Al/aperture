@@ -5,6 +5,7 @@ const { Window } = require('happy-dom');
 const { loadProject } = require('../scripts/projectConfig.cjs');
 const { projectInputs } = require('../build/projectInputs.cjs');
 const { manager } = require('./storage-helpers.cjs');
+const { locksFor } = require('./config-lock-helpers.cjs');
 const ROOT = path.resolve(__dirname, '..');
 const descriptor = require('../projects/example/addons.manifest.json').addons[0];
 async function bundle({ projectId, policy = {}, theme, routePrefix, addonUpdates, uiDefinition } = {}) {
@@ -30,6 +31,8 @@ export * as settings from './src/services/settingsService.js';
 export * as ui from './src/services/addons/uiHost.js';
 export * as modal from './src/ui/components/modal.js';
 export * as tabs from './src/ui/settings/tabs.js';
+export * as settingsController from './src/ui/components/addons/settingsController.js';
+export * as prefs from './src/ui/settingsRuntime/prefs.js';
 export * as teardown from './src/core/teardown.js';
 export * as example from './addons/example-addon/src/app/createExampleAddonApp.js';
 ` }, bundle: true, write: false, metafile: true, format: 'iife', globalName: '__addons',
@@ -45,6 +48,7 @@ async function environment(options = {}) {
   const window = options.window || new Window({ url: 'http://localhost/' });
   const gm = manager(options.map, options.hooks), logs = [];
   const sandbox = { window, document: window.document, location: window.location, history: window.history,
+    isSecureContext: true, navigator: { locks: locksFor(gm.map) },
     Node: window.Node, HTMLElement: window.HTMLElement, MutationObserver: window.MutationObserver,
     CustomEvent: window.CustomEvent, Event: window.Event, DOMException, AbortController, URL,
     TextEncoder, performance, setTimeout, clearTimeout, queueMicrotask, GM: gm.api,

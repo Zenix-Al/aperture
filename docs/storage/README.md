@@ -12,7 +12,13 @@ New projects start at persisted schema 1. Migration registration begins empty; n
 
 Commit changes through `updateConfig(draft => { ... })` from the settings service. Check the structured committed result before reporting success. Validation, serialized revisions, readback, readiness and the sole write gate govern every commit. Metadata effects apply after a successful commit. Never write raw canonical storage from a feature/control.
 
+Canonical initialization, recovery and writes use an exclusive project-namespaced Web Lock. Writes require a secure browser context (HTTPS, or trusted localhost for development) and Web Locks support; unsupported environments load read-only. Updaters read fresh canonical state and caches inside the lock. Whole snapshots passed to `commitConfig` or `saveConfigKeys` are rejected if another tab changed their persisted basis; use an updater for changes that must merge.
+
+Web Locks serialize tabs on the same origin. They do not coordinate different origins sharing a userscript manager dataset. Deploy a writable project on one origin; cross-origin shared writes are not supported. Initialization/migration leases remain recovery markers beneath the Web Lock, not a replacement for it.
+
 Bootstrap probes read/write/readback/delete behavior. Reads can succeed while writes are unavailable. Degraded-readonly state disables persisted controls; unsettled, upgrade-required or failed readiness cannot authorize writes. Recovery retains the valid canonical/backup boundary and reports bounded issues rather than claiming a failed write succeeded.
+
+If restoring canonical storage fails, the valid backup still supplies the running configuration in read-only mode. The backup remains intact and the load does not report verified persistence.
 
 | Storage surface | Owner |
 | --- | --- |

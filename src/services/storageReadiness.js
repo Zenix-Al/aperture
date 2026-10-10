@@ -66,6 +66,10 @@ export async function waitForStorageWriteAccess() {
 }
 
 export function getStorageFailureMessage(reason) {
+  if (reason === "config_secure_context_required") return "Settings writes require a secure context (HTTPS or localhost).";
+  if (reason === "config_lock_unavailable") return "Settings writes require browser Web Locks support.";
+  if (reason === "config_stale_candidate") return "Settings changed in another tab. Reload and retry this change.";
+  if (reason === "config_stale_canonical_invalid") return "Newer stored settings could not be verified. Settings were not overwritten.";
   if (reason === "storage_read_only") return "Settings are read-only because storage recovery did not finish. Open Feature Health for details.";
   if (reason === "storage_unavailable") return "Userscript storage is unavailable. Open Feature Health and check the manager grants and storage permissions.";
   if (reason === "upgrade_required") return "This stored configuration requires the supported bridge version. Open Feature Health for details.";

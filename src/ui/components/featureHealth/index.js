@@ -8,7 +8,7 @@ import {
   subscribeFeatureHealth,
 } from "../../../core/featureHealth.js";
 import { stateManager } from "../../../config.js";
-import { listKnownAddons } from "../../../services/addonsService.js";
+import { listKnownAddons } from "aperture:addon-service";
 import { retryStorageBootstrap } from "../../../services/storageBootstrapService.js";
 import { subscribeStorageReadiness } from "../../../services/storageReadiness.js";
 
@@ -56,6 +56,7 @@ async function copyTextToClipboard(text) {
 }
 
 function getInstalledAddonHealthEntries() {
+  if (!__APERTURE_ADDONS__) return [];
   try {
     return listKnownAddons()
       .filter((addon) => addon && addon.status !== "not-installed")
@@ -133,7 +134,7 @@ export function formatFeatureHealthReport(
     `Timestamp: ${timestamp}`,
     `Page: ${page}`,
     `Summary: running=${counts.running}, disabled=${counts.disabled}, degraded=${counts.degraded}, failing=${counts.failing}, unknown=${counts.unknown}`,
-    `Add-ons (installed): total=${addonCounts.totalInstalled}, healthy=${addonCounts.healthy}, failing=${addonCounts.failing}, degraded=${addonCounts.degraded}, scoped-to-page=${addonCounts.scopeMatchesPage}, active-here=${addonCounts.activeOnPage}`,
+    ...(__APERTURE_ADDONS__ ? [`Add-ons (installed): total=${addonCounts.totalInstalled}, healthy=${addonCounts.healthy}, failing=${addonCounts.failing}, degraded=${addonCounts.degraded}, scoped-to-page=${addonCounts.scopeMatchesPage}, active-here=${addonCounts.activeOnPage}`] : []),
     `Resources: total=${resources.totalResources || 0}, owners=${resources.ownerCount || 0}; Queues: total=${queues.queueCount || 0}, pending=${queues.pendingCount || 0}, running=${queues.runningCount || 0}`,
     `Storage: ${formatStorageHealth(storage)}`,
     "",
@@ -154,6 +155,7 @@ export function formatFeatureHealthReport(
     for (const error of runtimeErrors) lines.push(`  [${error.timestamp}] ${error.details}`);
   }
 
+  if (__APERTURE_ADDONS__) {
   lines.push("", "Add-on Health (installed only):");
   if (addonEntries.length === 0) {
     lines.push("No installed add-ons detected.");
@@ -168,6 +170,7 @@ export function formatFeatureHealthReport(
       const details = addon.statusMessage ? ` - ${addon.statusMessage}` : "";
       lines.push(`${addon.name} (${addon.id}): ${addon.status} [${statusBits.join(", ")}]${details}`);
     }
+  }
   }
   return lines.join("\n");
 }
@@ -240,9 +243,9 @@ function ensureBox(root, container) {
 
 function updateFeatureHealthBox(box, providedStatuses, providedReportText) {
   const statuses = providedStatuses || getAllFeatureStatuses();
-  const addonEntries = getInstalledAddonHealthEntries();
+  const addonEntries = __APERTURE_ADDONS__ ? getInstalledAddonHealthEntries() : [];
   const counts = summarizeFeatureStatuses(statuses);
-  const addonCounts = summarizeAddons(addonEntries);
+  const addonCounts = __APERTURE_ADDONS__ ? summarizeAddons(addonEntries) : null;
   const diagnostics = getHealthDiagnostics();
   const reportText = providedReportText
     || formatFeatureHealthReport(statuses, counts, addonEntries, addonCounts, { diagnostics });
@@ -250,18 +253,18 @@ function updateFeatureHealthBox(box, providedStatuses, providedReportText) {
   const retryBtn = [...box.querySelectorAll("button")]
     .find((button) => button.textContent === "Retry storage");
   if (retryBtn) retryBtn.hidden = diagnostics.snapshots?.storage?.state !== "unavailable";
-  return { counts, addonCounts };
+  return { counts, ...(__APERTURE_ADDONS__ ? { addonCounts } : {}) };
 }
 
 export function showFeatureHealthBox(providedStatuses, providedReportText) {
   try {
     const statuses = providedStatuses || getAllFeatureStatuses();
-    const addonEntries = getInstalledAddonHealthEntries();
+    const addonEntries = __APERTURE_ADDONS__ ? getInstalledAddonHealthEntries() : [];
     const counts = summarizeFeatureStatuses(statuses);
-    const addonCounts = summarizeAddons(addonEntries);
+    const addonCounts = __APERTURE_ADDONS__ ? summarizeAddons(addonEntries) : null;
 
     showToast(
-      `Feature health - running: ${counts.running}, disabled: ${counts.disabled}, degraded: ${counts.degraded}, failing: ${counts.failing}, unknown: ${counts.unknown} | add-ons installed: ${addonCounts.totalInstalled}, healthy: ${addonCounts.healthy}, failing: ${addonCounts.failing}, degraded: ${addonCounts.degraded}`,
+      `Feature health - running: ${counts.running}, disabled: ${counts.disabled}, degraded: ${counts.degraded}, failing: ${counts.failing}, unknown: ${counts.unknown}` + (__APERTURE_ADDONS__ ? ` | add-ons installed: ${addonCounts.totalInstalled}, healthy: ${addonCounts.healthy}, failing: ${addonCounts.failing}, degraded: ${addonCounts.degraded}` : ""),
     );
 
     const shadow = stateManager.get("shadowRoot") || window.__LATEST_HIGHLIGHTER_SHADOW__ || null;

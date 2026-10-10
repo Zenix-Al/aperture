@@ -4,6 +4,29 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { checkMarkdownLinks } = require('../scripts/check-docs.cjs');
+test('add-on baseline checks accept LF and CRLF but reject changed evidence', () => {
+  const { spawnSync } = require('node:child_process');
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'aperture-baseline-newlines-'));
+  const report = path.join(directory, 'baseline.json');
+  const source = fs.readFileSync(path.join(__dirname, '../audits/addon-baseline.json'), 'utf8').replace(/\r\n?/g, '\n');
+  const check = () => spawnSync(process.execPath, [path.join(__dirname, '../scripts/addon-baseline.cjs'), '--check', report], { cwd: path.join(__dirname, '..'), encoding: 'utf8' });
+  try {
+    for (const text of [source, source.replace(/\n/g, '\r\n')]) {
+      fs.writeFileSync(report, text);
+      const result = check();
+      assert.equal(result.status, 0, result.stdout + result.stderr);
+    }
+    const changed = JSON.parse(source);
+    changed.unexpectedEvidence = true;
+    fs.writeFileSync(report, JSON.stringify(changed, null, 2) + '\n');
+    const result = check();
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /Add-on baseline differs/);
+  } finally {
+    assert(path.resolve(directory).startsWith(path.resolve(os.tmpdir()) + path.sep));
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
 function fixture(markdown, verify) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'aperture-doc-links-'));
   try {
@@ -80,4 +103,15 @@ test('source size audits ignore checkout line endings but detect real growth', a
     assert(path.resolve(directory).startsWith(path.resolve(os.tmpdir()) + path.sep));
     fs.rmSync(directory, { recursive: true, force: true });
   }
+});
+test('custom runner fails when a test promise never settles before process exit', () => {
+  const child = require('node:child_process').spawnSync(process.execPath, ['-e', `
+    const harness = require('./tests/harness.cjs');
+    harness.runTest('unsettled fixture', () => new Promise(() => {}));
+    harness.finish();
+  `], { cwd: require('node:path').resolve(__dirname, '..'), encoding: 'utf8', timeout: 120000, windowsHide: true });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 1);
+  assert.match(child.stderr, /unsettled tests remain/);
+  assert(!child.stdout.includes('Test results:'));
 });

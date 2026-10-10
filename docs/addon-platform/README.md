@@ -4,6 +4,8 @@ For setup, source layout and commands, start with [add-on authoring](../guides/a
 
 ## Project setup and trust
 
+Projects enable this platform by default. Top-level `addons: false` excludes it during bundling, including its schema and UI; see [project configuration](../build/project-config.md#add-on-manifest-and-updates) and the core-only example there. This is separate from temporarily disabling an included service in Settings.
+
 Reusable source stays in `addons/<id>/src/`; project-specific entries may live under `projects/<project>/`. The selected project's `build.addonsManifest`
 lists the add-ons to build and authorize. The example selects
 `projects/example/addons.manifest.json`; output stays under its project output
@@ -103,6 +105,10 @@ use the selected project namespace and readiness/persistence queue.
 Queued storage commits, schema upgrades and IDB transactions reauthorize at their
 asynchronous boundaries. An already issued browser/GM write cannot be retroactively
 revoked; checks prevent a subsequent unauthorized commit from starting.
+
+Staged add-on state changes merge only their changed fields into fresh configuration under the settings write lock. Installation metadata retains the earliest sighting and latest observation. Registration on the current page is separate from that persisted history; temporary registry absence does not remove pinned shortcuts.
+
+IndexedDB transactions abort when a write callback throws or rejects, and success requires both the callback result and transaction completion. Page CSS rejects escapes, URL/image-set loads, global selectors and leading sibling selectors; ordinary sibling rules remain confined beneath the owned mount.
 
 The management/settings UI is retained with the local project catalog.
 Its subscription and listeners belong to the existing registries. Example

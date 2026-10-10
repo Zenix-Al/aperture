@@ -1,6 +1,7 @@
 const path = require('node:path');
 const vm = require('node:vm');
 const esbuild = require('esbuild');
+const { locksFor } = require('./config-lock-helpers.cjs');
 const { loadProject } = require('../scripts/projectConfig.cjs');
 const { projectInputs } = require('../build/projectInputs.cjs');
 const ROOT = path.resolve(__dirname, '..');
@@ -31,6 +32,8 @@ export * as idb from './src/services/addons/idbStore.js';
 export * as idbActions from './src/services/addons/actions/families/idb.js';
 export * as prefs from './src/ui/settingsRuntime/prefs.js';
 export * as health from './src/core/featureHealth.js';
+export * as addonState from './src/services/addons/state.js';
+export * as transferIO from './src/ui/configTransfer/transferIO.js';
 ${main ? "export * as main from './src/main.js'; export * as teardown from './src/core/teardown.js';" : ''}
 ` }, loader: { '.css': 'text', '.html': 'text' }, bundle: true, write: false, format: 'iife', globalName: '__storage', metafile: true,
     define: { __APERTURE_DEBUG__: 'false', __APERTURE_PROJECT_ID__: JSON.stringify(project.id) },
@@ -54,6 +57,8 @@ async function environment(options = {}) {
     __settingsInputs: options.definition || { schema, schemaVersion: 1, migrations: [] },
     console: Object.fromEntries(['log', 'warn', 'error', 'info', 'groupCollapsed', 'groupEnd'].map(key => [key, (...args) => logs.push(args)])),
     setTimeout, clearTimeout, queueMicrotask, performance, AbortController, URL,
+    isSecureContext: options.secureContext !== false,
+    navigator: { locks: options.noLocks ? undefined : locksFor(gm.map) },
   };
   vm.createContext(sandbox);
   const built = await bundle(options);

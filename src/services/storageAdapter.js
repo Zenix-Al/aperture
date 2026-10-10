@@ -5,6 +5,7 @@ const STORAGE_PROBE_PREFIX = CONFIG_STORAGE_KEYS.probe;
 export function storageDiagnosticReason(value, fallback = "storage_failed") {
   const reason = String(value || fallback).slice(0, 120);
   if (settingsDefinition.diagnostics?.preserveManagerReason) return reason;
+  if (/^config_(secure_context_required|lock_unavailable|stale_candidate|stale_canonical_invalid)$/.test(reason)) return reason;
   return /^(read|write|delete)_(unsupported|returned_false|failed)$|^readback_mismatch$|^delete_verification_failed$|^cleanup_failed$|^storage_write_returned_false$|^canonical_verification_failed$|^backup_verification_failed$|^unsupported_config_schema$/.test(reason) ? reason : fallback;
 }
 

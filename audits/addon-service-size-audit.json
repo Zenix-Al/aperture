@@ -21,11 +21,11 @@
   },
   "summary": {
     "coreService": {
-      "authoredBytes": 236982,
-      "readableBytes": 530997,
-      "uglifiedBytes": 261642,
-      "readableGzipBytes": 112472,
-      "uglifiedGzipBytes": 79369
+      "authoredBytes": 238477,
+      "readableBytes": 537453,
+      "uglifiedBytes": 264556,
+      "readableGzipBytes": 114206,
+      "uglifiedGzipBytes": 80447
     },
     "addons": {
       "count": 1,
@@ -49,15 +49,15 @@
   "beforeAfter": {
     "coreService": {
       "authoredBytes": {
-        "current": 236982,
-        "baseline": 236982,
+        "current": 238477,
+        "baseline": 238477,
         "delta": 0
       },
       "owningFiles": [
         "src/services/addons/uiHost.js",
+        "src/services/addons/state.js",
         "src/services/addons/idbStore.js",
         "src/ui/components/addons/settingsController.js",
-        "src/services/addons/state.js",
         "src/services/addons/bridgeServer.js",
         "src/services/addons/registry.js",
         "src/services/addons/knownAddons.js",
@@ -109,9 +109,9 @@
   "coreAddOnService": {
     "source": {
       "fileCount": 50,
-      "authoredBytes": 236982,
-      "physicalLines": 6396,
-      "nonblankLines": 5555,
+      "authoredBytes": 238477,
+      "physicalLines": 6420,
+      "nonblankLines": 5581,
       "largestFiles": [
         {
           "path": "src/services/addons/uiHost.js",
@@ -120,22 +120,22 @@
           "nonblankLines": 490
         },
         {
+          "path": "src/services/addons/state.js",
+          "bytes": 14565,
+          "physicalLines": 323,
+          "nonblankLines": 273
+        },
+        {
           "path": "src/services/addons/idbStore.js",
-          "bytes": 13963,
-          "physicalLines": 416,
-          "nonblankLines": 366
+          "bytes": 14453,
+          "physicalLines": 433,
+          "nonblankLines": 384
         },
         {
           "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 13858,
-          "physicalLines": 369,
-          "nonblankLines": 325
-        },
-        {
-          "path": "src/services/addons/state.js",
-          "bytes": 13420,
-          "physicalLines": 304,
-          "nonblankLines": 255
+          "bytes": 13839,
+          "physicalLines": 362,
+          "nonblankLines": 320
         },
         {
           "path": "src/services/addons/bridgeServer.js",
@@ -181,7 +181,7 @@
         },
         {
           "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 7336,
+          "bytes": 7380,
           "physicalLines": 165,
           "nonblankLines": 145
         },
@@ -205,9 +205,9 @@
         },
         {
           "path": "src/services/addons/settingsUi.js",
-          "bytes": 6080,
-          "physicalLines": 176,
-          "nonblankLines": 162
+          "bytes": 5915,
+          "physicalLines": 171,
+          "nonblankLines": 157
         },
         {
           "path": "src/ui/components/addons/addonCard.js",
@@ -351,9 +351,9 @@
         },
         {
           "path": "src/services/addons/idbStore.js",
-          "bytes": 13963,
-          "physicalLines": 416,
-          "nonblankLines": 366
+          "bytes": 14453,
+          "physicalLines": 433,
+          "nonblankLines": 384
         },
         {
           "path": "src/services/addons/invocation.js",
@@ -405,9 +405,9 @@
         },
         {
           "path": "src/services/addons/settingsUi.js",
-          "bytes": 6080,
-          "physicalLines": 176,
-          "nonblankLines": 162
+          "bytes": 5915,
+          "physicalLines": 171,
+          "nonblankLines": 157
         },
         {
           "path": "src/services/addons/shared.js",
@@ -417,9 +417,9 @@
         },
         {
           "path": "src/services/addons/state.js",
-          "bytes": 13420,
-          "physicalLines": 304,
-          "nonblankLines": 255
+          "bytes": 14565,
+          "physicalLines": 323,
+          "nonblankLines": 273
         },
         {
           "path": "src/services/addons/uiHost.js",
@@ -429,7 +429,7 @@
         },
         {
           "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 7336,
+          "bytes": 7380,
           "physicalLines": 165,
           "nonblankLines": 145
         },
@@ -519,9 +519,9 @@
         },
         {
           "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 13858,
-          "physicalLines": 369,
-          "nonblankLines": 325
+          "bytes": 13839,
+          "physicalLines": 362,
+          "nonblankLines": 320
         },
         {
           "path": "src/ui/components/addons/statusMeta.js",
@@ -762,15 +762,15 @@
       },
       "core-ui-integration": {
         "fileCount": 16,
-        "authoredBytes": 46169,
-        "physicalLines": 1448,
-        "nonblankLines": 1264,
+        "authoredBytes": 46150,
+        "physicalLines": 1441,
+        "nonblankLines": 1259,
         "largestFiles": [
           {
             "path": "src/ui/components/addons/settingsController.js",
-            "bytes": 13858,
-            "physicalLines": 369,
-            "nonblankLines": 325
+            "bytes": 13839,
+            "physicalLines": 362,
+            "nonblankLines": 320
           },
           {
             "path": "src/ui/renderers/addonsRenderer.js",
@@ -944,9 +944,9 @@
           },
           {
             "path": "src/ui/components/addons/settingsController.js",
-            "bytes": 13858,
-            "physicalLines": 369,
-            "nonblankLines": 325
+            "bytes": 13839,
+            "physicalLines": 362,
+            "nonblankLines": 320
           },
           {
             "path": "src/ui/components/addons/statusMeta.js",
@@ -1008,21 +1008,21 @@
       },
       "other": {
         "fileCount": 5,
-        "authoredBytes": 19861,
-        "physicalLines": 522,
-        "nonblankLines": 467,
+        "authoredBytes": 19740,
+        "physicalLines": 517,
+        "nonblankLines": 462,
         "largestFiles": [
           {
             "path": "src/services/addons/uiSanitizer.js",
-            "bytes": 7336,
+            "bytes": 7380,
             "physicalLines": 165,
             "nonblankLines": 145
           },
           {
             "path": "src/services/addons/settingsUi.js",
-            "bytes": 6080,
-            "physicalLines": 176,
-            "nonblankLines": 162
+            "bytes": 5915,
+            "physicalLines": 171,
+            "nonblankLines": 157
           },
           {
             "path": "src/services/addons/runtimeLifecycle.js",
@@ -1058,9 +1058,9 @@
           },
           {
             "path": "src/services/addons/settingsUi.js",
-            "bytes": 6080,
-            "physicalLines": 176,
-            "nonblankLines": 162
+            "bytes": 5915,
+            "physicalLines": 171,
+            "nonblankLines": 157
           },
           {
             "path": "src/services/addons/shared.js",
@@ -1070,7 +1070,7 @@
           },
           {
             "path": "src/services/addons/uiSanitizer.js",
-            "bytes": 7336,
+            "bytes": 7380,
             "physicalLines": 165,
             "nonblankLines": 145
           }
@@ -1148,15 +1148,15 @@
       },
       "registry-state": {
         "fileCount": 3,
-        "authoredBytes": 37017,
-        "physicalLines": 942,
-        "nonblankLines": 828,
+        "authoredBytes": 38162,
+        "physicalLines": 961,
+        "nonblankLines": 846,
         "largestFiles": [
           {
             "path": "src/services/addons/state.js",
-            "bytes": 13420,
-            "physicalLines": 304,
-            "nonblankLines": 255
+            "bytes": 14565,
+            "physicalLines": 323,
+            "nonblankLines": 273
           },
           {
             "path": "src/services/addons/registry.js",
@@ -1186,23 +1186,23 @@
           },
           {
             "path": "src/services/addons/state.js",
-            "bytes": 13420,
-            "physicalLines": 304,
-            "nonblankLines": 255
+            "bytes": 14565,
+            "physicalLines": 323,
+            "nonblankLines": 273
           }
         ]
       },
       "storage-idb-observer": {
         "fileCount": 2,
-        "authoredBytes": 22040,
-        "physicalLines": 644,
-        "nonblankLines": 555,
+        "authoredBytes": 22530,
+        "physicalLines": 661,
+        "nonblankLines": 573,
         "largestFiles": [
           {
             "path": "src/services/addons/idbStore.js",
-            "bytes": 13963,
-            "physicalLines": 416,
-            "nonblankLines": 366
+            "bytes": 14453,
+            "physicalLines": 433,
+            "nonblankLines": 384
           },
           {
             "path": "src/services/addons/observer.js",
@@ -1214,9 +1214,9 @@
         "files": [
           {
             "path": "src/services/addons/idbStore.js",
-            "bytes": 13963,
-            "physicalLines": 416,
-            "nonblankLines": 366
+            "bytes": 14453,
+            "physicalLines": 433,
+            "nonblankLines": 384
           },
           {
             "path": "src/services/addons/observer.js",
@@ -2344,33 +2344,33 @@
     },
     "bundle": {
       "readable": {
-        "bytes": 530997,
-        "gzipBytes": 112472,
-        "contributionBytes": 135331,
+        "bytes": 537453,
+        "gzipBytes": 114206,
+        "contributionBytes": 137178,
         "contributors": [
           {
             "path": "src/services/addons/uiHost.js",
             "bytes": 18211
           },
           {
-            "path": "src/ui/components/addons/settingsController.js",
-            "bytes": 14546
+            "path": "src/services/addons/idbStore.js",
+            "bytes": 14833
           },
           {
-            "path": "src/services/addons/idbStore.js",
-            "bytes": 14304
+            "path": "src/ui/components/addons/settingsController.js",
+            "bytes": 14550
           },
           {
             "path": "src/services/addons/bridgeServer.js",
             "bytes": 13488
           },
           {
-            "path": "src/services/addons/registry.js",
-            "bytes": 11903
+            "path": "src/services/addons/state.js",
+            "bytes": 12696
           },
           {
-            "path": "src/services/addons/state.js",
-            "bytes": 11426
+            "path": "src/services/addons/registry.js",
+            "bytes": 11903
           },
           {
             "path": "src/services/addons/knownAddons.js",
@@ -2382,7 +2382,7 @@
           },
           {
             "path": "src/services/addons/uiSanitizer.js",
-            "bytes": 8157
+            "bytes": 8201
           },
           {
             "path": "src/services/addons/observer.js",
@@ -2399,9 +2399,9 @@
         ]
       },
       "uglified": {
-        "bytes": 261642,
-        "gzipBytes": 79369,
-        "contributionBytes": 59691,
+        "bytes": 264556,
+        "gzipBytes": 80447,
+        "contributionBytes": 60566,
         "contributors": [
           {
             "path": "src/services/addons/uiHost.js",
@@ -2409,7 +2409,7 @@
           },
           {
             "path": "src/ui/components/addons/settingsController.js",
-            "bytes": 7336
+            "bytes": 7391
           },
           {
             "path": "src/services/addons/bridgeServer.js",
@@ -2417,7 +2417,11 @@
           },
           {
             "path": "src/services/addons/idbStore.js",
-            "bytes": 6485
+            "bytes": 6603
+          },
+          {
+            "path": "src/services/addons/state.js",
+            "bytes": 5788
           },
           {
             "path": "src/services/addons/registry.js",
@@ -2428,12 +2432,8 @@
             "bytes": 5425
           },
           {
-            "path": "src/services/addons/state.js",
-            "bytes": 5121
-          },
-          {
             "path": "src/services/addons/uiSanitizer.js",
-            "bytes": 4229
+            "bytes": 4264
           },
           {
             "path": "src/ui/renderers/addonsRenderer.js",
@@ -2457,7 +2457,7 @@
       },
       {
         "path": "src/ui/components/addons/settingsController.js",
-        "bytes": 7336
+        "bytes": 7391
       },
       {
         "path": "src/services/addons/bridgeServer.js",
@@ -2465,7 +2465,11 @@
       },
       {
         "path": "src/services/addons/idbStore.js",
-        "bytes": 6485
+        "bytes": 6603
+      },
+      {
+        "path": "src/services/addons/state.js",
+        "bytes": 5788
       },
       {
         "path": "src/services/addons/registry.js",
@@ -2476,12 +2480,8 @@
         "bytes": 5425
       },
       {
-        "path": "src/services/addons/state.js",
-        "bytes": 5121
-      },
-      {
         "path": "src/services/addons/uiSanitizer.js",
-        "bytes": 4229
+        "bytes": 4264
       },
       {
         "path": "src/ui/renderers/addonsRenderer.js",

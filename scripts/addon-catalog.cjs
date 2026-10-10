@@ -229,6 +229,7 @@ function addonMetadata(addon, project) {
   return result;
 }
 function readProjectManifest(project) {
+  if (project.addons === false) return [];
   const document = parseJson(fs.readFileSync(project.resolved.addonsManifest, 'utf8'), 'addonsManifest');
   if (!document || Array.isArray(document) || typeof document !== 'object' || Object.keys(document).some(key => key !== 'addons') || !Array.isArray(document.addons)) throw new Error('addonsManifest: requires an object with an addons array');
   const reserved = [project.configPath, project.resolved.entry, project.resolved.versionFile, project.resolved.addonsManifest, project.resolved.theme, project.resolved.featureManifest, project.resolved.cacheFile, ...['user.js', 'uglified.user.js'].map(suffix => path.join(project.resolved.outputDir, `${project.build.outputName}.${suffix}`))];
@@ -358,6 +359,10 @@ function checkCatalogArtifacts(addons = readManifest(), { rootDir = ROOT, projec
 function run(args = process.argv.slice(2)) {
   const project = loadProject({ configFile: configArgument(args) });
   const addons = readProjectManifest(project);
+  if (project.addons === false) {
+    console.log("Add-on platform excluded; no catalog artifacts generated.");
+    return;
+  }
   const errors = validateManifest(addons, { project, rootDir: project.rootDir });
   if (errors.length > 0) throw new Error(errors.join("\n"));
   if (args.includes("--check-manifest")) {

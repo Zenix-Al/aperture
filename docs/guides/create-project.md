@@ -14,7 +14,7 @@ Copy-Item projects/reading-desk/application.js projects/my-site/application.js
 Copy-Item projects/reading-desk/version.json projects/my-site/version.json
 ```
 
-The copied application uses the existing composition in `projects/example/application.js`: storage bootstrap, core UI and the add-on service. Keep these owners; add site policy through project inputs. The other files below are new project files.
+The copied application uses the existing composition in `projects/example/application.js`: storage bootstrap, core UI and the optional add-on service. Set top-level `addons: false` to exclude the platform; its guarded imports already support that choice. See the [core-only example](../../projects/example/core-only.json). Keep these owners; add site policy through project inputs. The other files below are new project files.
 
 ## 2. Define the site and output paths
 
@@ -116,4 +116,3 @@ npm run build -- --config projects/my-site/config.json
 Install `projects/my-site/dist/my-site.user.js` in your userscript manager. Visit a matching page, open Site settings, toggle the helper, reload, and navigate between applicable/nonapplicable routes. Ordinary builds do not bump the version. Add tests for your selectors, route matching, setting effects and cleanup before distributing.
 
 See [build/test commands](build-test.md), [config reference](../build/project-config.md) and [add-on authoring](addons.md).
-

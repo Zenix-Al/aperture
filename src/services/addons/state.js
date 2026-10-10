@@ -1,5 +1,5 @@
 import { config } from "../../config/state.js";
-import { saveConfigKeys, updateConfig } from "../settingsService.js";
+import { updateConfig } from "../settingsService.js";
 import { getCanonicalAddonId, listTrustedAddonAliases } from "./catalog.js";
 import { sanitizeAddonId } from "./shared.js";
 
@@ -82,6 +82,21 @@ export function resolveAddonId(addonId) {
 }
 
 let pendingAddonConfig = null;
+let pendingAddonBase = null;
+
+function applyAddonChanges(target, before, after) {
+  for (const key of new Set([...Object.keys(before || {}), ...Object.keys(after || {})])) {
+    if (!Object.hasOwn(after, key)) { delete target[key]; continue; }
+    if (JSON.stringify(before?.[key]) === JSON.stringify(after[key])) continue;
+    const next = after[key];
+    if (next && typeof next === "object" && !Array.isArray(next)) {
+      if (!Object.hasOwn(target, key) || !target[key] || typeof target[key] !== "object" || Array.isArray(target[key])) {
+        Object.defineProperty(target, key, { value: {}, enumerable: true, configurable: true, writable: true });
+      }
+      applyAddonChanges(target[key], before?.[key] || {}, next);
+    } else Object.defineProperty(target, key, { value: clone(next), enumerable: true, configurable: true, writable: true });
+  }
+}
 
 function ensureInstalledMetaBucket(addons, addonId) {
   const normalizedId = resolveAddonId(addonId);
@@ -145,10 +160,8 @@ function applyInstalledAddonMeta(addons, addonId, partial = {}) {
   bucket.capabilities = Array.isArray(partial.capabilities)
     ? partial.capabilities.map((entry) => String(entry || "").trim()).filter(Boolean)
     : Array.isArray(bucket.capabilities) ? bucket.capabilities : [];
-  bucket.installedSeenAt = Number.isFinite(incomingInstalledSeenAt) && incomingInstalledSeenAt > 0
-    ? incomingInstalledSeenAt
-    : bucket.installedSeenAt || now;
-  bucket.lastSeenAt = Number.isFinite(incomingLastSeenAt) && incomingLastSeenAt > 0 ? incomingLastSeenAt : now;
+  bucket.installedSeenAt = Math.min(...[bucket.installedSeenAt, incomingInstalledSeenAt, now].filter(value => Number.isFinite(value) && value > 0));
+  bucket.lastSeenAt = Math.max(bucket.lastSeenAt || 0, Number.isFinite(incomingLastSeenAt) && incomingLastSeenAt > 0 ? incomingLastSeenAt : now);
   return bucket;
 }
 
@@ -169,6 +182,7 @@ export function ensureAddonStateBucket(addonId) {
   const normalizedId = resolveAddonId(addonId);
   if (!normalizedId) return {};
   if (!pendingAddonConfig) {
+    pendingAddonBase = clone(config.addons);
     pendingAddonConfig = ensureAddonsConfigBucket(clone(config.addons));
     canonicalizeAddonIdentityRoot(pendingAddonConfig);
   }
@@ -191,11 +205,16 @@ export function listInstalledAddonMeta() {
 }
 
 export async function persistAddonsState(addons = config.addons, { authorize } = {}) {
-  const candidate = pendingAddonConfig || clone(addons);
+  const candidate = clone(pendingAddonConfig || addons);
+  const base = pendingAddonBase || clone(config.addons);
   canonicalizeAddonIdentityRoot(candidate);
-  const result = await saveConfigKeys({ addons: clone(candidate) }, { authorize });
   pendingAddonConfig = null;
-  return result.committed
+  pendingAddonBase = null;
+  const result = await updateConfig(draft => {
+    applyAddonChanges(ensureAddonsConfigBucket(draft.addons), base, candidate);
+    canonicalizeAddonIdentityRoot(draft.addons);
+  }, { origin: "addons:state", authorize });
+  return result.committed || result.skipped
     ? { ok: true, result }
     : { ok: false, reason: result.failed?.[0]?.code || "storage_write_failed", result };
 }

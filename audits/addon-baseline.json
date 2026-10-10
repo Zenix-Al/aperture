@@ -1052,9 +1052,9 @@
     },
     "servicesAddons": {
       "fileCount": 33,
-      "authoredBytes": 189147,
-      "physicalLines": 4905,
-      "nonblankLines": 4250,
+      "authoredBytes": 190661,
+      "physicalLines": 4936,
+      "nonblankLines": 4281,
       "files": [
         {
           "path": "src/services/addons/access.js",
@@ -1172,9 +1172,9 @@
         },
         {
           "path": "src/services/addons/idbStore.js",
-          "bytes": 13963,
-          "physicalLines": 416,
-          "nonblankLines": 366
+          "bytes": 14453,
+          "physicalLines": 433,
+          "nonblankLines": 384
         },
         {
           "path": "src/services/addons/invocation.js",
@@ -1226,9 +1226,9 @@
         },
         {
           "path": "src/services/addons/settingsUi.js",
-          "bytes": 6080,
-          "physicalLines": 176,
-          "nonblankLines": 162
+          "bytes": 5915,
+          "physicalLines": 171,
+          "nonblankLines": 157
         },
         {
           "path": "src/services/addons/shared.js",
@@ -1238,9 +1238,9 @@
         },
         {
           "path": "src/services/addons/state.js",
-          "bytes": 13420,
-          "physicalLines": 304,
-          "nonblankLines": 255
+          "bytes": 14565,
+          "physicalLines": 323,
+          "nonblankLines": 273
         },
         {
           "path": "src/services/addons/uiHost.js",
@@ -1250,7 +1250,7 @@
         },
         {
           "path": "src/services/addons/uiSanitizer.js",
-          "bytes": 7336,
+          "bytes": 7380,
           "physicalLines": 165,
           "nonblankLines": 145
         }
@@ -1258,9 +1258,9 @@
     },
     "uiIntegration": {
       "fileCount": 16,
-      "authoredBytes": 46169,
-      "physicalLines": 1448,
-      "nonblankLines": 1264,
+      "authoredBytes": 46150,
+      "physicalLines": 1441,
+      "nonblankLines": 1259,
       "files": [
         {
           "path": "src/ui/components/addons/actionButton.js",
@@ -1342,9 +1342,9 @@
         },
         {
           "path": "src/ui/components/addons/settingsController.js",
-          "bytes": 13858,
-          "physicalLines": 369,
-          "nonblankLines": 325
+          "bytes": 13839,
+          "physicalLines": 362,
+          "nonblankLines": 320
         },
         {
           "path": "src/ui/components/addons/statusMeta.js",

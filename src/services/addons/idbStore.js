@@ -262,14 +262,31 @@ async function withStore(addonId, payload, mode, cb, authorize) {
 
     tx.onabort = () => fail(tx.error || new Error("indexeddb_tx_aborted"));
     tx.onerror = () => fail(tx.error || new Error("indexeddb_tx_failed"));
-
-    Promise.resolve(cb(tx.objectStore(storeName), tx))
+    let result;
+    let hasResult = false;
+    let committed = false;
+    const settle = () => { if (hasResult && committed) complete(result); };
+    const abortAndFail = (error) => {
+      try { tx.abort(); } catch { /* The transaction may already have ended. */ }
+      fail(error);
+    };
+    tx.oncomplete = () => { committed = true; settle(); };
+    let pending;
+    try {
+      pending = Promise.resolve(cb(tx.objectStore(storeName), tx));
+    } catch (error) {
+      abortAndFail(error);
+      return;
+    }
+    pending
       .then((value) => {
         const denied = authorize?.();
-        if (denied) { tx.abort(); fail(new Error(denied)); return; }
-        tx.oncomplete = () => complete(value);
+        if (denied) { abortAndFail(new Error(denied)); return; }
+        result = value;
+        hasResult = true;
+        settle();
       })
-      .catch((error) => fail(error));
+      .catch(abortAndFail);
   });
 }
 
@@ -303,7 +320,7 @@ export function idbDeleteForAddon(addonId, payload = {}, authorize) {
 export function idbBulkPutForAddon(addonId, payload = {}, authorize) {
   const entries = Array.isArray(payload?.entries) ? payload.entries : [];
   return withStore(addonId, payload, "readwrite", (store) => {
-    const writes = entries.map((entry) => {
+    const writes = entries.map(async (entry) => {
       const hasKey = Object.prototype.hasOwnProperty.call(entry || {}, "key");
       const req = putValueInStore(store, entry?.value, entry?.key, hasKey);
       return requestToPromise(req);
@@ -315,7 +332,7 @@ export function idbBulkPutForAddon(addonId, payload = {}, authorize) {
 export function idbBulkDeleteForAddon(addonId, payload = {}, authorize) {
   const keys = Array.isArray(payload?.keys) ? payload.keys : [];
   return withStore(addonId, payload, "readwrite", (store) => {
-    const deletes = keys.map((key) => requestToPromise(store.delete(key)));
+    const deletes = keys.map(async (key) => requestToPromise(store.delete(key)));
     return Promise.all(deletes);
   }, authorize);
 }

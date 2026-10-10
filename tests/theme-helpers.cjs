@@ -24,7 +24,7 @@ async function bundle(theme = 'default', { addons = true, minify = false, zIndex
  ${addons ? "export * as addons from './src/services/addons/uiHost.js';" : ''}
  `},bundle:true,write:false,format:'iife',globalName:'__theme',minify,metafile:true,
  loader:{'.css':'text','.html':'text'},define:{__APERTURE_DEBUG__:'false',__APERTURE_PROJECT_ID__:JSON.stringify(project.id)},
- plugins:[{name:'phase-four-addon-command-fixture',setup(build){build.onLoad({filter:/projects[\\/]example[\\/]ui\.js$/},()=>({contents:fs.readFileSync(path.join(ROOT,'tests/fixtures/themeOnlyUi.js'),'utf8').replace('export default {', 'export default {' + (zIndex === undefined ? '' : 'zIndex: '+JSON.stringify(zIndex)+',')),loader:'js',resolveDir:path.join(ROOT,'projects/example')}));build.onLoad({filter:/projects[\\/]example[\\/]application\.js$/},args=>({contents:fs.readFileSync(args.path,'utf8').replace(/  extensions: \{[\s\S]*?\n  \},\n/,''),loader:'js',resolveDir:path.dirname(args.path)}));
+ plugins:[{name:'phase-four-addon-command-fixture',setup(build){build.onLoad({filter:/projects[\\/]example[\\/]ui\.js$/},()=>({contents:fs.readFileSync(path.join(ROOT,'tests/fixtures/themeOnlyUi.js'),'utf8').replace('export default {', 'export default {' + (zIndex === undefined ? '' : 'zIndex: '+JSON.stringify(zIndex)+',')),loader:'js',resolveDir:path.join(ROOT,'projects/example')}));build.onLoad({filter:/projects[\\/]example[\\/]application\.js$/},args=>({contents:fs.readFileSync(args.path,'utf8').replace(/  extensions: __APERTURE_ADDONS__ \? \{[\s\S]*?\n  \} : \{\},\n/,''),loader:'js',resolveDir:path.dirname(args.path)}));
  }},projectInputs(project)],logLevel:'silent'});
  return {code:result.outputFiles[0].text,metafile:result.metafile,project};
 }

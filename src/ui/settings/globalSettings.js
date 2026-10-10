@@ -25,7 +25,7 @@ export const globalSettingsMeta = {
     type: "button",
     text: "Feature health",
     buttonText: "Run check",
-    tooltip: "Run a diagnostic that reports feature and installed add-on health states",
+    tooltip: __APERTURE_ADDONS__ ? "Run a diagnostic that reports feature and installed add-on health states" : "Run a diagnostic that reports feature health states",
     onClick: () => {
       try {
         showFeatureHealthBox();

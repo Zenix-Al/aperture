@@ -196,8 +196,8 @@ function suppliedValues(normalized, supplied) {
   return Object.fromEntries(Object.keys(supplied).map(key => [key, suppliedValues(normalized[key], supplied[key])]));
 }
 
-function buildCandidate(settings) {
-  const candidate = clone(config);
+function buildCandidate(settings, current = config) {
+  const candidate = clone(current);
   for (const [key, value] of Object.entries(settings)) {
     candidate[key] = mergePartial(candidate[key], value);
   }
@@ -220,7 +220,7 @@ export function buildConfigExport({ exportedAt = new Date() } = {}) {
   };
 }
 
-export function previewConfigImport(input) {
+export function previewConfigImport(input, current = config) {
   const document = readDocument(input);
   if (!document.ok) return { ok: false, issues: document.issues, warnings: document.warnings };
   if (Object.keys(document.settings).length === 0) {
@@ -246,11 +246,11 @@ export function previewConfigImport(input) {
 
   const validation = validateConfig(settings, { mode: "strict", partial: true });
   if (!validation.valid) return { ok: false, issues: validation.issues, warnings };
-  const candidate = buildCandidate(requireIdentity ? suppliedValues(validation.data, settings) : validation.data);
+  const candidate = buildCandidate(requireIdentity ? suppliedValues(validation.data, settings) : validation.data, current);
   const completeValidation = validateConfig(candidate, { mode: "strict" });
   if (!completeValidation.valid) return { ok: false, issues: completeValidation.issues, warnings };
 
-  const changedPaths = [...new Set(diffPaths(config, completeValidation.data).filter(Boolean))].sort();
+  const changedPaths = [...new Set(diffPaths(current, completeValidation.data).filter(Boolean))].sort();
   return {
     ok: true,
     candidate: completeValidation.data,
@@ -265,9 +265,11 @@ export function previewConfigImport(input) {
 }
 
 export async function commitConfigImport(input) {
-  const preview = previewConfigImport(input);
+  let preview = previewConfigImport(input);
   if (!preview.ok) return preview;
   const result = await updateConfig((draft) => {
+    preview = previewConfigImport(input, draft);
+    if (!preview.ok) return false;
     for (const section of preview.changedSections || []) {
       draft[section] = clone(preview.candidate[section]);
     }

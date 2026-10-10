@@ -96,6 +96,12 @@ runTest(
         ".card { color: red; } .card > button { display: block; }",
       );
       assert.strictEqual(scoped.ok, true);
+      for (const css of ['+ .outside {color:red}', '~ .outside {color:red}', '.card {background: \\75 rl(https://example.test/a)}', '.card {background:image-set("https://example.test/a" 1x)}', '.card {background:-webkit-image-set("a" 1x)}']) {
+        assert.strictEqual(sanitizeAddonCss("example-addon", css).ok, false, css);
+      }
+      const siblings = sanitizeAddonCss("example-addon", '.card + .other {color:red}');
+      assert.strictEqual(siblings.ok, true);
+      assert.ok(!siblings.cssText.includes('[data-addon-id="example-addon"].card +'));
       assert.ok(
         scoped.cssText.includes('[data-addon-id="example-addon"] .card'),
       );

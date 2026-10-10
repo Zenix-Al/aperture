@@ -92,7 +92,7 @@ export function normalizeAddonMountSlot(value) {
 }
 
 function hasUnsafeCssConstruct(cssText) {
-  return /(?:@import|@namespace|@font-face|@document|expression\s*\(|-moz-binding|behavior\s*:|url\s*\(|<\/style)/i.test(cssText);
+  return /(?:\\|@import|@namespace|@font-face|@document|expression\s*\(|-moz-binding|behavior\s*:|url\s*\(|image-set\s*\(|<\/style)/i.test(cssText);
 }
 
 function splitCssRules(cssText) {
@@ -154,7 +154,7 @@ export function sanitizeAddonCss(addonId, value, { maxBytes = MAX_STYLE_BYTES } 
       }
       if (selectorText.startsWith("@")) return { ok: false, reason: "unsupported_css_rule" };
       const selectors = selectorText.split(",").map((selector) => selector.trim());
-      if (selectors.some((selector) => !selector || /(?:^|[\s>+~])(?:html|body|:root)(?:\b|\s|[>+~.#[:])|\*/i.test(selector))) {
+      if (selectors.some((selector) => !selector || /^[+~]/.test(selector) || /(?:^|[\s>+~])(?:html|body|:root)(?:\b|\s|[>+~.#[:])|\*/i.test(selector))) {
         return { ok: false, reason: "unsafe_css_selector" };
       }
       scoped.push(`${selectors.map((selector) => (/[+~]/.test(selector) ? `${scope} ${selector}` : `${scope}${selector}, ${scope} ${selector}`)).join(", ")}${declarationText}`);
