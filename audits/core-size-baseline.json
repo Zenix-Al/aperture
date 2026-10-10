@@ -1394,7 +1394,7 @@
     "uglified": {
       "mode": "release",
       "bytes": 264556,
-      "gzipBytes": 80445,
+      "gzipBytes": 80447,
       "coreBytes": 138507,
       "excludedBytes": 125909,
       "contributors": [

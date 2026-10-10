@@ -15,3 +15,5 @@ node scripts/css-audit.cjs --output audits/css-audit.json
 ```
 
 Regenerating a measured inventory does not authorize loosening fixed numerical references or growth limits. Those require their own reviewed rationale. Tests and temporary smoke builds preserve distributions and versions.
+
+After changing the framework version in root `package.json`, refresh the add-on service size and core size reports using the commands above. Builds embed this version in core UI and diagnostics, so even a version-only change can alter compressed bundle measurements. Run the report checks after the version update.
