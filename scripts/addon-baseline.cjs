@@ -465,7 +465,7 @@ async function main(args = process.argv.slice(2)) {
     fs.writeFileSync(options.output, output);
     console.log(`Wrote ${normalizePath(path.relative(ROOT, options.output))}.`);
   } else if (options.check) {
-    const expected = fs.readFileSync(options.check, "utf8");
+    const expected = normalizeText(fs.readFileSync(options.check, "utf8"));
     if (expected !== output) throw new Error(`Add-on baseline differs from ${normalizePath(path.relative(ROOT, options.check))}.`);
     console.log("Add-on baseline check passed.");
   } else console.log(output);

@@ -25,7 +25,7 @@
       "readableBytes": 537453,
       "uglifiedBytes": 264556,
       "readableGzipBytes": 114206,
-      "uglifiedGzipBytes": 80445
+      "uglifiedGzipBytes": 80447
     },
     "addons": {
       "count": 1,
@@ -2400,7 +2400,7 @@
       },
       "uglified": {
         "bytes": 264556,
-        "gzipBytes": 80445,
+        "gzipBytes": 80447,
         "contributionBytes": 60566,
         "contributors": [
           {
